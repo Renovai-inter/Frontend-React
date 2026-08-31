@@ -1,0 +1,12 @@
+:root {
+    --vinho-renovai: #882B4E;
+    --vermelho-renovai: #C04775;
+    --verde-claro-renovai: #79B581;
+    --verde-base-renovai: #519058;
+    --amarelo-renovai: #D4E699;
+
+}
+body{
+    margin: 0;
+    padding: 0;
+}
