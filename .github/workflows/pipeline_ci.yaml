@@ -1,0 +1,14 @@
+name: Pipeline React
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: node:latest
+    steps:
+      - name: Testar build do React
+        run: |
+          npm install
+          npm run build
