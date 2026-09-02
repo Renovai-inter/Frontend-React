@@ -4,9 +4,19 @@
     --verde-claro-renovai: #79B581;
     --verde-base-renovai: #519058;
     --amarelo-renovai: #D4E699;
+    --background-renovai: #F4F1F2;
 
 }
-body{
+
+*{
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    min-height: 100vh;
+    width: 100vw;
+    background-color: var(--background-renovai);
+    justify-items: center;
 }
