@@ -6,9 +6,18 @@ on:
 
 jobs:
   build:
-    runs-on: node:latest
+    runs-on: ubuntu:latest
     steps:
-      - name: Testar build do React
-        run: |
-          npm install
-          npm run build
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Build do React
+        run: npm run build
