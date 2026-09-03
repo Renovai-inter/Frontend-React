@@ -1,4 +1,4 @@
-import type { CardProps } from "../../types/CardProps"
+import type { CardProps } from "../../types/CardProps/CardProps.tsx"
 import "./style.css"
 
 function Card({title, bigNumber, labelBigNumber, labelInfo}: CardProps) {
