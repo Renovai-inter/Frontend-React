@@ -1,0 +1,54 @@
+.card {
+    padding: 20px;
+    min-width: 300px;
+    width: 100%;
+    height: fit-content;
+    border-radius: 10px;
+    background-color: #FFFFFFFF;
+    color: rgb(128, 128, 128);
+    box-shadow: 0px 0px 10px rgb(211, 211, 211);
+}
+
+.sectionBigNumber {
+    display: flex;
+    align-items: flex-end;
+    column-gap: 10px;
+    margin-top: auto;
+    margin-bottom: 14px;
+}
+
+.icon {
+    width: 25px;
+    height: 25px;
+    border-radius: 7px;
+    background-color: var(--verde-base-renovai);
+}
+
+.bigNumber {
+    color: var(--vinho-renovai);
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 1;
+}
+
+.labelBigNumber {
+    font-size: 16px;
+    line-height: 1;
+    font-weight: 500;
+}
+
+.sectionHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.title {
+    font-size: 16px;
+}
+
+.labelInfo {
+    font-size: 14px;
+    font-weight: 300;
+}
