@@ -1,0 +1,113 @@
+aside {
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--vinho-renovai);
+    color: #fff;
+    padding: 22px 16px;
+    position: sticky;
+    height: 100vh;
+    justify-content: space-between;
+}
+.header__aside p{
+    margin: 0;
+    font-size: 0.75rem;
+    margin-top: -8px;
+}
+.header__aside hr {
+    border: 1px solid rgba(255, 255, 255, .08);
+    background-color: rgba(255, 255, 255, .08);
+    margin: 16px 0;
+}
+.nome__img {
+    width: 70%;
+    height: auto;
+    margin-bottom: 16px;
+}
+nav {
+    flex: none;
+    gap: 8px;
+}
+
+nav a {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 15px 12px;
+    border-radius: 10px;
+    color: var(--bege-renovai);
+    text-decoration: none;
+    font-size: 14px;
+    transition: background .15s ease, color .15s ease;
+    cursor: pointer;
+    font-weight: 400;
+}
+
+nav a:hover {
+    background: rgba(255, 255, 255, .08);
+    color: var(--bege-renovai);
+}
+
+nav a.selected {
+    background: rgba(192, 71, 117, .40);
+    color: var(--bege-renovai);
+}
+
+svg {
+    color: var(--bege-renovai);
+}
+
+.user {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+}
+.user hr {
+    border: 1px solid rgba(255, 255, 255, .08);
+    background-color: rgba(255, 255, 255, .08);
+    margin: 16px 0;
+}
+
+.user-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 6px 10px;
+}
+
+.user-row .avatar {
+    background-color: var(--bege-renovai);
+    color: var(--vinho-renovai);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+    flex: none;
+}
+
+.user-row .txt .name {
+    font-size: 12.5px;
+    font-weight: 600;
+}
+
+.user-row .txt .email {
+    font-size: 10.5px;
+    color: rgba(255, 255, 255, .55);
+}
+
+.signout {
+    background: none;
+    border: none;
+    color: var(--bege-renovai);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    padding: 2px 6px;
+    text-decoration: none;
+    cursor: pointer;
+}
