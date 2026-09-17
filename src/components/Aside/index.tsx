@@ -52,20 +52,22 @@ function Aside() {
                     Rotas
                 </NavLink>
             </nav>
-            <div className="user">
-                <hr />
-                <div className="user-row">
-                    <div className="avatar">M</div>
-                    <div className="txt">
-                        <div className="name">Maria Souza</div>
-                        <div className="email">maria@novaesperanca.coop.br</div>
+            <div className='bottom'>
+                <div className="user">
+                    <hr />
+                    <div className="user-row">
+                        <div className="avatar">M</div>
+                        <div className="txt">
+                            <div className="name">Maria Souza</div>
+                            <div className="email">maria@novaesperanca.coop.br</div>
+                        </div>
                     </div>
                 </div>
+                <button className="signout" onClick={handleSignOut}>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" /><path d="M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    Sair da conta
+                </button>
             </div>
-            <button className="signout" onClick={handleSignOut}>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" /><path d="M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg>
-                Sair da conta
-            </button>
         </aside>
     )
 }

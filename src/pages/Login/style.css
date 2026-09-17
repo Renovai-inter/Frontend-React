@@ -87,3 +87,27 @@
     max-width: 200px;
     margin-bottom: 16px;
 }
+
+@media (max-width: 1024px){
+    .login__container{
+        width: 50vw;
+    }
+    .login__sidespace{
+        width: 50vw;
+    }
+}
+
+@media (max-width: 768px) {
+    .login {
+        flex-direction: column;
+    }
+
+    .login__container {
+        width: 100vw;
+        height: 100vh;
+    }
+
+    .login__sidespace {
+        display: none;
+    }
+}
