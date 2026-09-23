@@ -1,0 +1,116 @@
+.dinamic-table-container {
+    width: 90%;
+}
+
+/* Título */
+.dinamic-table-container .titulo {
+    background: #fff;
+
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--vinho-renovai);
+
+    margin: 0;
+    padding: 20px 22px 14px;
+
+    border: 1px solid #2E1B27;
+    border-bottom: none;
+
+    border-radius: 10px 10px 0 0;
+}
+
+/* Área que realmente sofre scroll */
+.dinamic-table {
+    max-height: 420px;
+
+    background: #fff;
+
+    border: 1px solid #2E1B27;
+    border-top: none;
+
+    border-radius: 0 0 10px 10px;
+
+    padding: 0 22px;
+
+    color: #2E1B27;
+
+    overflow: auto;
+}
+
+/* Tabela */
+.dinamic-table table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 480px;
+}
+
+/* Header */
+.dinamic-table thead th {
+    position: sticky;
+    top: 0;
+
+    z-index: 10;
+
+    background: #fff;
+
+    text-align: left;
+    font-size: 10.5px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 600;
+
+    padding: 9px 12px;
+
+    border-bottom: 1px solid #ECE3E7;
+
+    white-space: nowrap;
+}
+
+/* Corpo */
+.dinamic-table tbody td {
+    padding: 10px;
+    font-size: 13px;
+
+    border-bottom: 1px solid #ECE3E7;
+
+    color: #2E1B27;
+    vertical-align: middle;
+}
+
+.dinamic-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.dinamic-table tbody tr:hover {
+    background: #FBF6F8;
+}
+/* ---------- Coluna(s) de ação (Editar / Excluir) ---------- */
+/* th.acoes-tabela fica sem rótulo — só reserva o espaço da coluna */
+.dinamic-table th.acoes-tabela {
+    width: 1%;
+    white-space: nowrap;
+}
+
+.dinamic-table td.acoes-tabela {
+    width: 1%;
+    white-space: nowrap;
+    text-align: center;
+    font-weight: 600;
+    font-size: 12.5px;
+    color: var(--vermelho-renovai);
+    cursor: pointer;
+    transition: color .15s ease;
+}
+
+.dinamic-table td.acoes-tabela:hover {
+    color: var(--vinho-renovai);
+    text-decoration: underline;
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 640px) {
+    .dinamic-table {
+        padding: 16px 14px;
+    }
+}
