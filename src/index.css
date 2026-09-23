@@ -5,6 +5,7 @@
     --verde-base-renovai: #519058;
     --amarelo-renovai: #D4E699;
     --bege-renovai: #F4F1F2;
+    --cinza-renovai: ;
     font-family: 'Kenit', sans-serif;
 }
 
@@ -18,6 +19,6 @@
 
 body{
     min-height: 100vh;
-    width: 100vw;
+    width: 100%;
     background-color: var(--bege-renovai);
 }
