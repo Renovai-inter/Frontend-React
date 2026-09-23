@@ -7,6 +7,7 @@ function Aside() {
         localStorage.removeItem("renovai_token");
         localStorage.removeItem("renovai_role");
         localStorage.removeItem("renovai_email");
+        localStorage.removeItem("renovai_userId")
         window.location.href = "/login";
     }
 
