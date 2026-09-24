@@ -23,13 +23,14 @@ function Login() {
       localStorage.setItem("renovai_token", response.token);
       localStorage.setItem("renovai_role", response.role);
       localStorage.setItem("renovai_email", response.email);
+      localStorage.setItem("renovai_userId", response.usuarioId);
       navigate("/home");
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const mensagem =
           err.response?.data?.message ??
           err.response?.data?.erro ??
-          "E-mail ou senha inválidos.";
+          "E-mail ou senha inválidos. ";
         setErro(mensagem);
       } else {
         setErro("Não foi possível conectar ao servidor. Tente novamente.");
@@ -77,7 +78,9 @@ function Login() {
           </button>
         </form>
       </section>
-      <section className="login__sidespace"></section>
+      <section className="login__sidespace">
+
+      </section>
     </div>
   );
 }
