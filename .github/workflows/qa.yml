@@ -1,21 +1,22 @@
-name: Pipeline React
+name: Pipeline QA
 
 on:
   push:
-    branches: ['**']
+    branches: [develop]
   pull_request:
+    branches: [develop]
     types: [opened, synchronize, reopened]
 
 permissions:
   contents: read
 
 concurrency:
-  group: ci-${{ github.event.pull_request.number || github.ref }}
+  group: qa-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   validate:
-    name: Lint e build
+    name: Lint e build (QA)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do código
@@ -33,5 +34,13 @@ jobs:
       - name: Executar lint
         run: npm run lint
 
-      - name: Gerar build
+      - name: Gerar build de QA
         run: npm run build
+
+      - name: Publicar artefato de QA
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-qa-${{ github.sha }}
+          path: dist/
+          if-no-files-found: error
+          retention-days: 7
