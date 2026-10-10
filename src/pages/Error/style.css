@@ -1,0 +1,45 @@
+.error-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 32px;
+    background: var(--bege-renovai);
+}
+
+.error-page__conteudo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+    max-width: 480px;
+}
+
+.error-page__imagem {
+    max-width: 320px;
+    width: 100%;
+}
+
+.error-page__status {
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--vermelho-renovai);
+}
+
+.error-page__titulo {
+    font-size: 1.75rem;
+    color: var(--vinho-renovai);
+}
+
+.error-page__descricao {
+    font-size: 0.95rem;
+    color: var(--cinza-texto);
+}
+
+.error-page__acoes {
+    display: flex;
+    gap: 16px;
+    margin-top: 20px;
+}

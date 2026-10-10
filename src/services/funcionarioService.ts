@@ -105,7 +105,7 @@ export async function buscarPorId(id: string): Promise<FuncionarioResponse> {
 
 // GET /funcionarios/por-usuario/{userId}
 export async function buscarPorUserId(userId: string): Promise<FuncionarioResponse>{
-    const response = await api.get<FuncionarioResponse>(`/fucionarios/por-usuario/${userId}`);
+    const response = await api.get<FuncionarioResponse>(`/funcionarios/por-usuario/${userId}`);
     return response.data;
 }
 

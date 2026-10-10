@@ -3,7 +3,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Nome from '../../assets/nome_renovai.svg'
 import { login } from "../../services/authService";
+import { buscarPorUserId } from "../../services/funcionarioService";
 import axios from 'axios'
+import { removerSessao, salvarSessao } from "../../utils/armazenamentoSessao";
 
 function Login() {
 
@@ -20,10 +22,21 @@ function Login() {
 
     try {
       const response = await login({ email, senha });
-      localStorage.setItem("renovai_token", response.token);
-      localStorage.setItem("renovai_role", response.role);
-      localStorage.setItem("renovai_email", response.email);
-      localStorage.setItem("renovai_userId", response.usuarioId);
+      salvarSessao("renovai_token", response.token);
+      salvarSessao("renovai_role", response.role);
+      salvarSessao("renovai_email", response.email);
+      salvarSessao("renovai_userId", response.usuarioId);
+
+      // O token já está salvo, então a chamada autenticada abaixo funciona.
+      try {
+        const funcionario = await buscarPorUserId(response.usuarioId);
+        salvarSessao("renovai_cooperativaId", funcionario.cooperativaId);
+        salvarSessao("renovai_funcionarioId", funcionario.funcionarioId);
+      } catch {
+        removerSessao("renovai_cooperativaId");
+        removerSessao("renovai_funcionarioId");
+      }
+
       navigate("/home");
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -70,10 +83,14 @@ function Login() {
               required
             />
           </div>
+          <div className='login__utils'>
+            <button type="button">Esqueci a senha</button>
+            <button type="button" onClick={() => navigate("/cadastro-usuario")}>Não possui login? Cadastre-se</button>
+          </div>
 
           {erro && <p className="login__erro">{erro}</p>}
 
-          <button type="submit" disabled={loading}>
+          <button className='login__send' type="submit" disabled={loading}>
             {loading ? "Entrando..." : "Entrar"}
           </button>
         </form>

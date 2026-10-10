@@ -3,13 +3,14 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import './style.css'
 import Nome from '../../assets/nome_renovai_aside.svg'
 import { encerrarSessao } from '../../utils/sessao'
+import { lerSessao } from '../../utils/armazenamentoSessao'
 import { buscarPorId, type UsuarioResponse } from '../../services/usuarioService'
 
 function Aside() {
     const navigate = useNavigate();
     const [usuario, setUsuario] = useState<UsuarioResponse | null>(null);
     const [saindo, setSaindo] = useState(false);
-    const email = localStorage.getItem("renovai_email") ?? "";
+    const email = lerSessao("renovai_email") ?? "";
     const [retraido, setRetraido] = useState(() => localStorage.getItem("renovai_aside_retraido") === "true");
 
     function alternarAside() {
@@ -20,7 +21,7 @@ function Aside() {
     }
 
     useEffect(() => {
-        const usuarioId = localStorage.getItem("renovai_userId");
+        const usuarioId = lerSessao("renovai_userId");
         if (!usuarioId) return;
 
         let cancelado = false;
