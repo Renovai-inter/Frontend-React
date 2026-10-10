@@ -1,0 +1,154 @@
+.cadastro-usuario {
+    min-height: 100vh;
+    display: flex;
+}
+
+.cadastro-usuario__container {
+    width: 40vw;
+    background: var(--branco);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.cadastro-usuario__header {
+    margin-bottom: 32px;
+    text-align: center;
+}
+
+.cadastro-usuario__header p {
+    margin: 0;
+    color: var(--cinza-texto);
+    font-size: 0.95rem;
+}
+
+.cadastro-usuario__form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: 85%;
+    align-self: center;
+}
+
+.cadastro-usuario__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.cadastro-usuario__field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.cadastro-usuario__field label {
+    color: var(--vinho-renovai);
+    font-weight: 600;
+}
+
+.cadastro-usuario__field input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.cadastro-usuario__field input:focus {
+    outline: none;
+    border-color: var(--vinho-renovai);
+}
+
+.cadastro-usuario__field input[aria-invalid="true"] {
+    border-color: var(--vermelho-renovai);
+}
+
+.cadastro-usuario__erro {
+    color: var(--vermelho-renovai);
+    font-size: 0.85rem;
+}
+
+.cadastro-usuario__form .cadastro-usuario__send {
+    margin-top: 16px;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 10px;
+    background: var(--vermelho-renovai);
+    color: var(--branco);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.cadastro-usuario__form .cadastro-usuario__send:hover {
+    background: var(--vinho-renovai);
+}
+
+.cadastro-usuario__sidespace {
+    width: 60vw;
+    background: var(--vinho-renovai);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--bege-renovai);
+}
+
+.cadastro-usuario__utils {
+    display: flex;
+    justify-content: space-between;
+}
+
+.cadastro-usuario__utils button {
+    border: none;
+    background: none;
+    color: var(--cinza-texto);
+}
+
+.cadastro-usuario__utils button:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    color: var(--vinho-renovai);
+}
+
+.nome__img {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: 100%;
+    max-width: 200px;
+    margin-bottom: 16px;
+}
+
+@media (max-width: 1024px) {
+    .cadastro-usuario__container {
+        width: 50vw;
+    }
+    .cadastro-usuario__sidespace {
+        width: 50vw;
+    }
+}
+
+@media (max-width: 768px) {
+    .cadastro-usuario {
+        flex-direction: column;
+    }
+
+    .cadastro-usuario__container {
+        width: 100vw;
+        min-height: 100vh;
+    }
+
+    .cadastro-usuario__sidespace {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .cadastro-usuario__row {
+        grid-template-columns: 1fr;
+    }
+}

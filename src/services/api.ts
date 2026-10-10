@@ -1,55 +1,36 @@
 import axios, { type AxiosError } from "axios";
+import { redirecionarParaErro } from "../utils/erroNavegacao";
+import { lerSessao } from "../utils/armazenamentoSessao";
 
-const PROD_API_URL = "https://spring-api-2t71.onrender.com/api";
-const LOCAL_API_URL = "http://localhost:8080/api";
+const API_URL = "https://spring-api-2t71.onrender.com/api";
 
 const api = axios.create({
-    baseURL: PROD_API_URL,
-});
-
-const fallbackApi = axios.create({
-    baseURL: LOCAL_API_URL,
+    baseURL: API_URL,
 });
 
 // Injeta o token em todas as requisições autenticadas
 api.interceptors.request.use((config) => {
-    const token = localStorage.getItem("renovai_token");
+    const token = lerSessao("renovai_token");
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
 });
 
-// Fallback: se der erro de rede (servidor de produção fora do ar) e estivermos em dev,
-// tenta a mesma requisição contra a API local
+// Com o usuário logado, erros 401/403/404/5xx (ou sem resposta do servidor) levam para a página de erro.
+// Rotas /auth/* ficam de fora: login, cadastro etc. tratam o próprio erro no formulário.
 api.interceptors.response.use(
     (response) => response,
-    async (error: AxiosError) => {
-        const isNetworkError = error.code === "ERR_NETWORK";
-        const alreadyRetried = (error.config as any)?._retriedFallback;
+    (error: AxiosError<{ message?: string }>) => {
+        const status = error.response?.status;
+        const logado = !!lerSessao("renovai_token");
+        const rotaDeAuth = error.config?.url?.startsWith("/auth/");
+        const cancelada = error.code === "ERR_CANCELED";
+        const deveRedirecionar =
+            status === undefined || status === 401 || status === 403 || status === 404 || status >= 500;
 
-        if (isNetworkError && import.meta.env.DEV && !alreadyRetried) {
-            const retryConfig = {
-                ...error.config,
-                baseURL: LOCAL_API_URL, // sobrescreve explicitamente o baseURL original
-                _retriedFallback: true,
-            };
-            return fallbackApi.request(retryConfig as any);
-        }
-
-        return Promise.reject(error);
-    }
-);
-
-// Se o token expirar/for inválido, desloga e manda pro login
-api.interceptors.response.use(
-    (response) => response,
-    (error: AxiosError) => {
-        if (error.response?.status === 401) {
-            localStorage.removeItem("renovai_token");
-            localStorage.removeItem("renovai_role");
-            localStorage.removeItem("renovai_email");
-            window.location.href = "/login";
+        if (logado && !rotaDeAuth && !cancelada && deveRedirecionar) {
+            redirecionarParaErro({ status, mensagem: error.response?.data?.message });
         }
         return Promise.reject(error);
     }

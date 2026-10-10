@@ -8,6 +8,10 @@ export interface UsuarioRequest {
     dataNascimento?: string;
     imagemUrl?: string;
 }
+export interface UsuarioCadastroRequest {
+    email: string;
+    senha: string;
+}
 
 export interface UsuarioResponse {
     usuarioId: string;

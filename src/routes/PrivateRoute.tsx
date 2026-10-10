@@ -1,7 +1,8 @@
 import { Navigate, Outlet } from "react-router-dom";
+import { lerSessao } from "../utils/armazenamentoSessao";
 
 function PrivateRoute() {
-    const token = localStorage.getItem("renovai_token");
+    const token = lerSessao("renovai_token");
 
     return token ? <Outlet /> : <Navigate to="/login" replace />;
 }

@@ -1,0 +1,185 @@
+.cadastro-cooperativa {
+    min-height: 100vh;
+    display: flex;
+}
+
+.cadastro-cooperativa__container {
+    width: 40vw;
+    background: var(--branco);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.cadastro-cooperativa__header {
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.cadastro-cooperativa__header p {
+    margin: 0;
+    color: var(--cinza-texto);
+    font-size: 0.95rem;
+}
+
+.cadastro-cooperativa__form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: 85%;
+    align-self: center;
+    padding-top: 16px;
+}
+
+.cadastro-cooperativa__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.cadastro-cooperativa__field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.cadastro-cooperativa__field label {
+    color: var(--vinho-renovai);
+    font-weight: 600;
+}
+
+.cadastro-cooperativa__field input,
+.cadastro-cooperativa__field select,
+.cadastro-cooperativa__field textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.cadastro-cooperativa__field input:focus,
+.cadastro-cooperativa__field select:focus,
+.cadastro-cooperativa__field textarea:focus {
+    outline: none;
+    border-color: var(--vinho-renovai);
+}
+
+.cadastro-cooperativa__field input[aria-invalid="true"],
+.cadastro-cooperativa__field select[aria-invalid="true"],
+.cadastro-cooperativa__field textarea[aria-invalid="true"] {
+    border-color: var(--vermelho-renovai);
+}
+
+.cadastro-cooperativa__field textarea {
+    resize: vertical;
+    font-family: inherit;
+}
+
+.cadastro-cooperativa__erro-geral {
+    margin: 0;
+    color: var(--vermelho-renovai);
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.cadastro-cooperativa__send:disabled {
+    opacity: .6;
+    cursor: default;
+}
+
+.cadastro-cooperativa__utils button:disabled {
+    opacity: .6;
+    cursor: default;
+    text-decoration: none;
+}
+
+.cadastro-cooperativa__erro {
+    color: var(--vermelho-renovai);
+    font-size: 0.85rem;
+}
+
+.cadastro-cooperativa__form .cadastro-cooperativa__send {
+    margin-top: 8px;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 10px;
+    background: var(--vermelho-renovai);
+    color: var(--branco);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.cadastro-cooperativa__form .cadastro-cooperativa__send:hover {
+    background: var(--vinho-renovai);
+}
+
+.cadastro-cooperativa__sidespace {
+    width: 60vw;
+    background: var(--vinho-renovai);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--bege-renovai);
+}
+
+.cadastro-cooperativa__utils {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.cadastro-cooperativa__utils button {
+    border: none;
+    background: none;
+    color: var(--cinza-texto);
+}
+
+.cadastro-cooperativa__utils button:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    color: var(--vinho-renovai);
+}
+
+.nome__img {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: 100%;
+    max-width: 200px;
+    margin-bottom: 16px;
+}
+
+@media (max-width: 1024px) {
+    .cadastro-cooperativa__container {
+        width: 50vw;
+    }
+    .cadastro-cooperativa__sidespace {
+        width: 50vw;
+    }
+}
+
+@media (max-width: 768px) {
+    .cadastro-cooperativa {
+        flex-direction: column;
+    }
+
+    .cadastro-cooperativa__container {
+        width: 100%;
+        min-height: 100vh;
+    }
+
+    .cadastro-cooperativa__sidespace {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .cadastro-cooperativa__row {
+        grid-template-columns: 1fr;
+    }
+}

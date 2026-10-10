@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useEffect } from "react";
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 
 import Login from "../pages/Login";
 import PrivateRoute from "./PrivateRoute";
@@ -11,12 +12,33 @@ import Coletas from "../pages/Coletas";
 import Triagens from "../pages/Triagens";
 import Rateios from "../pages/Rateios";
 import RotasColeta from "../pages/RotasColeta";
+import CadastroUsuario from "../pages/CadastroUsuario";
+import CadastroCooperativa from "../pages/CadastroCooperativa";
+import Pedidos from "../pages/Pedidos";
+import PerfilUsuario from "../pages/PerfilUsuario";
+import ErrorPage from "../pages/Error";
+import { registrarNavegacao } from "../utils/erroNavegacao";
+
+// Disponibiliza o navigate para o interceptor do axios, que roda fora do React
+function RegistraNavegacao() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        registrarNavegacao(navigate);
+        return () => registrarNavegacao(null);
+    }, [navigate]);
+
+    return null;
+}
 
 function AppRoutes() {
     return (
         <BrowserRouter>
+            <RegistraNavegacao />
             <Routes>
                 <Route path="/login" element={<Login />} />
+                <Route path="/cadastro-usuario" element={<CadastroUsuario />} />
+                <Route path="/cadastro-cooperativa" element={<CadastroCooperativa />} />
                 
                 <Route element={<PrivateRoute />}>
                     <Route path="/" element={<Layout />}>
@@ -28,13 +50,15 @@ function AppRoutes() {
                         <Route path="triagens" element={<Triagens />} />
                         <Route path="rateios" element={<Rateios />} />
                         <Route path="rotas-coleta" element={<RotasColeta />} />
+                        <Route path="pedidos" element={<Pedidos />} />
+                        <Route path="perfil" element={<PerfilUsuario />}/>
                     </Route>
+                    <Route path="/error" element={<ErrorPage />} />
                 </Route>
 
                 <Route
                     path="*"
-                    element={<Navigate to="/login" replace />}
-                    //dps arrumar aq, n vai para o login, vai para a tela de erro 404, pq o path * pega tudo que não é definido
+                    element={<Navigate to="/error" replace state={{ status: 404 }} />}
                 />
 
             </Routes>
