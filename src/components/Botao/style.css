@@ -1,0 +1,34 @@
+.botao {
+    padding: 12px 24px;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.botao--primario {
+    background: var(--vermelho-renovai);
+    color: var(--branco);
+}
+
+.botao--primario:hover:not(:disabled) {
+    background: var(--vinho-renovai);
+}
+
+.botao--secundario {
+    background: transparent;
+    border-color: var(--vinho-renovai);
+    color: var(--vinho-renovai);
+}
+
+.botao--secundario:hover:not(:disabled) {
+    background: var(--vinho-renovai);
+    color: var(--branco);
+}
+
+.botao:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

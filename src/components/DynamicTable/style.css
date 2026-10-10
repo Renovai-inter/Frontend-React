@@ -1,116 +1,122 @@
-.dinamic-table-container {
-    width: 90%;
+.dynamic-table-container {
+    width: 100%;
+    min-width: 0;
+    border-radius: 10px;
+    background: var(--branco);
+    box-shadow: 0 0 10px rgb(211, 211, 211);
+    overflow: hidden;
 }
 
-/* Título */
-.dinamic-table-container .titulo {
-    background: #fff;
-
+.dynamic-table__title {
+    margin: 0;
+    padding: 20px 22px 14px;
     font-size: 14.5px;
     font-weight: 600;
     color: var(--vinho-renovai);
-
-    margin: 0;
-    padding: 20px 22px 14px;
-
-    border: 1px solid #2E1B27;
-    border-bottom: none;
-
-    border-radius: 10px 10px 0 0;
 }
 
-/* Área que realmente sofre scroll */
-.dinamic-table {
+/* Área que realmente sofre scroll (vertical e horizontal) */
+.dynamic-table {
     max-height: 420px;
-
-    background: #fff;
-
-    border: 1px solid #2E1B27;
-    border-top: none;
-
-    border-radius: 0 0 10px 10px;
-
-    padding: 0 22px;
-
+    padding: 0 22px 8px;
     color: #2E1B27;
-
     overflow: auto;
 }
 
-/* Tabela */
-.dinamic-table table {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 480px;
+.dynamic-table--no-title {
+    padding-top: 8px;
 }
 
-/* Header */
-.dinamic-table thead th {
+.dynamic-table table {
+    width: 100%;
+    min-width: 480px;
+    border-collapse: collapse;
+}
+
+/* Cabeçalho fixo durante o scroll */
+.dynamic-table thead th {
     position: sticky;
     top: 0;
-
-    z-index: 10;
-
-    background: #fff;
-
-    text-align: left;
-    font-size: 10.5px;
-    letter-spacing: .04em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-    font-weight: 600;
-
+    z-index: 1;
     padding: 9px 12px;
-
+    background: var(--branco);
     border-bottom: 1px solid #ECE3E7;
-
+    color: var(--cinza-texto);
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-align: left;
+    text-transform: uppercase;
     white-space: nowrap;
 }
 
-/* Corpo */
-.dinamic-table tbody td {
-    padding: 10px;
-    font-size: 13px;
-
+.dynamic-table tbody td {
+    padding: 10px 12px;
     border-bottom: 1px solid #ECE3E7;
-
     color: #2E1B27;
+    font-size: 13px;
     vertical-align: middle;
 }
 
-.dinamic-table tbody tr:last-child td {
+.dynamic-table tbody tr:last-child td {
     border-bottom: none;
 }
 
-.dinamic-table tbody tr:hover {
+.dynamic-table tbody tr:hover {
     background: #FBF6F8;
 }
-/* ---------- Coluna(s) de ação (Editar / Excluir) ---------- */
-/* th.acoes-tabela fica sem rótulo — só reserva o espaço da coluna */
-.dinamic-table th.acoes-tabela {
+
+.dynamic-table td.dynamic-table__empty {
+    padding: 28px 12px;
+    color: var(--cinza-texto);
+    text-align: center;
+}
+
+.dynamic-table tbody tr:has(.dynamic-table__empty):hover {
+    background: transparent;
+}
+
+/* Colunas de ação (Editar / Excluir) */
+.dynamic-table .dynamic-table__actions {
     width: 1%;
+    text-align: center;
     white-space: nowrap;
 }
 
-.dinamic-table td.acoes-tabela {
-    width: 1%;
-    white-space: nowrap;
-    text-align: center;
-    font-weight: 600;
-    font-size: 12.5px;
+.dynamic-table__action {
+    padding: 4px 6px;
+    border: none;
+    border-radius: 4px;
+    background: none;
     color: var(--vermelho-renovai);
+    font-size: 12.5px;
+    font-weight: 600;
     cursor: pointer;
     transition: color .15s ease;
 }
 
-.dinamic-table td.acoes-tabela:hover {
+.dynamic-table__action:hover {
     color: var(--vinho-renovai);
     text-decoration: underline;
 }
 
-/* ---------- Responsivo ---------- */
+.dynamic-table__action:focus-visible {
+    outline: 2px solid var(--vermelho-renovai);
+    outline-offset: 1px;
+}
+
+/* Texto só para leitores de tela */
+.dynamic-table .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
 @media (max-width: 640px) {
-    .dinamic-table {
-        padding: 16px 14px;
+    .dynamic-table {
+        padding: 0 14px 8px;
     }
 }
