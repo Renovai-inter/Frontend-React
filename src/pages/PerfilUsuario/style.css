@@ -1,0 +1,93 @@
+.perfil {
+    padding: 0px 24px 32px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.perfil__estado {
+    padding: 32px;
+    color: var(--cinza-texto);
+}
+
+.perfil__estado--erro {
+    color: #d32f2f;
+}
+
+/* Foto, nome e e-mail, com o botão de editar à direita */
+.perfil__topo {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.perfil__foto {
+    width: 100px;
+    height: 100px;
+    flex: none;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--vinho-renovai);
+    color: var(--bege-renovai);
+    font-size: 2.6rem;
+    font-weight: 700;
+    border: 3px solid var(--vinho-renovai);
+}
+
+.perfil__foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.perfil__identidade {
+    flex: 1;
+    min-width: 0;
+}
+
+.perfil__nome {
+    font-size: 1.25rem;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.perfil__subtitulo {
+    margin-top: 2px;
+    font-size: 0.9rem;
+    color: var(--cinza-texto);
+    overflow-wrap: anywhere;
+}
+
+/* Campos em duas colunas: rótulo acima de uma caixa cinza */
+.perfil__campos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 32px;
+}
+
+.perfil__rotulo {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.perfil__valor {
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    border-radius: 8px;
+    background: var(--branco);
+    color: #444;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 800px) {
+    .perfil__campos {
+        grid-template-columns: 1fr;
+    }
+}

@@ -7,11 +7,13 @@ import { lerSessao } from '../../utils/armazenamentoSessao'
 import { buscarPorId, type UsuarioResponse } from '../../services/usuarioService'
 
 function Aside() {
+    const tamanhoTela = window.innerWidth;
+
     const navigate = useNavigate();
     const [usuario, setUsuario] = useState<UsuarioResponse | null>(null);
     const [saindo, setSaindo] = useState(false);
     const email = lerSessao("renovai_email") ?? "";
-    const [retraido, setRetraido] = useState(() => localStorage.getItem("renovai_aside_retraido") === "true");
+    const [retraido, setRetraido] = useState(() => tamanhoTela > 768 ? localStorage.getItem("renovai_aside_retraido") === "true" : localStorage.getItem("renovai_aside_retraido") === "false");
 
     function alternarAside() {
         setRetraido((atual) => {
