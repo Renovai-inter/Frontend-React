@@ -1,8 +1,8 @@
 .botao {
-    padding: 12px 24px;
-    border-radius: 10px;
+    padding: 8px 18px;
+    border-radius: 8px;
     border: 2px solid transparent;
-    font-size: 1rem;
+    font-size: 0.875rem;
     font-weight: 700;
     cursor: pointer;
     transition: background-color 0.2s, color 0.2s, border-color 0.2s;
