@@ -1,0 +1,135 @@
+.formulario-edicao__overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.55);
+}
+
+.formulario-edicao {
+    width: 100%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 28px;
+    border-radius: 16px;
+    background: var(--branco);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+.formulario-edicao__titulo {
+    margin-bottom: 20px;
+    font-size: 1.35rem;
+    color: var(--vinho-renovai);
+}
+
+.formulario-edicao__form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.formulario-edicao__campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.formulario-edicao__campo label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--cinza-texto);
+}
+
+.formulario-edicao__campo input {
+    padding: 11px 14px;
+    border: 1.5px solid #d9d4d6;
+    border-radius: 10px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.formulario-edicao__campo input:focus {
+    border-color: var(--vermelho-renovai);
+}
+
+.formulario-edicao__campo input[aria-invalid="true"] {
+    border-color: #d32f2f;
+}
+
+.formulario-edicao__erro,
+.formulario-edicao__erro-geral {
+    font-size: 0.8rem;
+    color: #d32f2f;
+}
+
+.formulario-edicao__acoes {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.formulario-edicao__rotulo {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--cinza-texto);
+}
+
+.formulario-edicao__imagem {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.formulario-edicao__previa {
+    width: 80px;
+    height: 80px;
+    flex: none;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bege-renovai);
+    color: var(--cinza-texto);
+    font-size: 0.75rem;
+}
+
+.formulario-edicao__previa img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.formulario-edicao__imagem-acoes {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* O input fica oculto; o <label> estilizado como botão o aciona */
+.formulario-edicao__arquivo {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+}
+
+.formulario-edicao__imagem-acoes label {
+    cursor: pointer;
+}
+
+.formulario-edicao__remover {
+    background: none;
+    border: none;
+    color: var(--cinza-texto);
+    font-size: 0.85rem;
+    text-decoration: underline;
+    cursor: pointer;
+}

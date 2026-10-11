@@ -1,0 +1,17 @@
+.header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+}
+.header__acoes {
+    flex: none;
+}
+.content h1{
+    color: var(--vinho-fonte-renovai)
+}
+.content p{
+    color: var(--cinza-texto);
+    font-size: 14px;
+    font-weight: 500;
+}

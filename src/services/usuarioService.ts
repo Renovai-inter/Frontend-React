@@ -8,6 +8,16 @@ export interface UsuarioRequest {
     dataNascimento?: string;
     imagemUrl?: string;
 }
+// Na atualização cpf, email e senha são opcionais: só são trocados quando enviados.
+export interface UsuarioAtualizarRequest {
+    nome: string;
+    cpf?: string;
+    email?: string;
+    senha?: string;
+    dataNascimento?: string;
+    imagemUrl?: string;
+}
+
 export interface UsuarioCadastroRequest {
     email: string;
     senha: string;
@@ -17,6 +27,7 @@ export interface UsuarioResponse {
     usuarioId: string;
     nome: string;
     cpf: string;
+    email: string;
     dataNascimento: string;
     imagemUrl: string;
     ultimoAcesso: string;
@@ -79,7 +90,7 @@ export async function completarCadastro(
 }
 
 // PUT /usuarios/{id}
-export async function atualizar(id: string, data: UsuarioRequest): Promise<UsuarioResponse> {
+export async function atualizar(id: string, data: UsuarioAtualizarRequest): Promise<UsuarioResponse> {
     const response = await api.put<UsuarioResponse>(`/usuarios/${id}`, data);
     return response.data;
 }
