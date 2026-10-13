@@ -10,6 +10,8 @@ export interface DynamicTableColumn<T> {
 
 export interface DynamicTableProps<T> {
     titulo?: string
+    /** Conteúdo alinhado à direita do título (ex.: link "Ver todas"). */
+    acaoTitulo?: ReactNode
     columns: DynamicTableColumn<T>[]
     data: T[]
     /** Mostra a coluna "Excluir". Também é exibida automaticamente se `onDelete` for informado. */
@@ -31,6 +33,7 @@ function formatarCelula(valor: unknown): ReactNode {
 
 function DynamicTable<T>({
     titulo,
+    acaoTitulo,
     columns,
     data,
     isDeletable = false,
@@ -47,7 +50,12 @@ function DynamicTable<T>({
 
     return (
         <section className="dynamic-table-container">
-            {titulo && <h3 className="dynamic-table__title">{titulo}</h3>}
+            {(titulo || acaoTitulo) && (
+                <div className="dynamic-table__header">
+                    {titulo && <h3 className="dynamic-table__title">{titulo}</h3>}
+                    {acaoTitulo}
+                </div>
+            )}
 
             <div className={titulo ? "dynamic-table" : "dynamic-table dynamic-table--no-title"}>
                 <table>

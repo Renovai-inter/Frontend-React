@@ -2,10 +2,12 @@ import type { CardProps } from "../../types/CardProps/CardProps.tsx"
 import "./style.css"
 
 function formatarNumero(valor: number | string) {
-    return typeof valor === "number" ? valor.toLocaleString("pt-BR") : valor
+    return typeof valor === "number"
+        ? valor.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+        : valor
 }
 
-function Card({ title, bigNumber, labelBigNumber, labelInfo, icon, className }: CardProps) {
+function Card({ title, bigNumber, subtitle, labelBigNumber, icon, className }: CardProps) {
     return (
         <article className={className ? `card ${className}` : "card"}>
             <header className="card__header">
@@ -24,7 +26,7 @@ function Card({ title, bigNumber, labelBigNumber, labelInfo, icon, className }: 
                 )}
             </div>
 
-            {labelInfo && <p className="card__info">{labelInfo}</p>}
+            {subtitle && <p className="card__subtitle">{subtitle}</p>}
         </article>
     )
 }
