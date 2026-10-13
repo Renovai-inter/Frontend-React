@@ -1,0 +1,22 @@
+.acao-rapida {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background-color: var(--branco);
+    color: var(--vinho-renovai);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.acao-rapida:hover {
+    border-color: var(--vinho-renovai);
+    background-color: var(--bege-renovai);
+}
+
+.acao-rapida:focus-visible {
+    outline: 2px solid var(--vermelho-renovai);
+    outline-offset: 2px;
+}
