@@ -4,8 +4,9 @@ import Botao from "../../components/Botao"
 import Header from "../../components/Header"
 import FormularioEdicao from "../../components/FormularioEdicao"
 import type { CampoFormulario, ValoresFormulario } from "../../types/FormularioEdicao/FormularioEdicaoProps"
-import { atualizar, buscarPorId, type UsuarioResponse } from "../../services/usuarioService"
+import { atualizarPerfil, buscarPorId, type UsuarioResponse } from "../../services/usuarioService"
 import { lerSessao } from "../../utils/armazenamentoSessao"
+import { notificarPerfilAtualizado } from "../../utils/eventosPerfil"
 import { isCpfValido, mascaraCpf } from "../../utils/validators"
 
 // Campos do usuário que podem ser alterados nesta página
@@ -72,13 +73,14 @@ function PerfilUsuario() {
     async function salvar(valores: ValoresFormulario) {
         if (!usuarioId || !usuario) return
 
-        const atualizado = await atualizar(usuarioId, {
+        const atualizado = await atualizarPerfil(usuarioId, {
             nome: valores.nome,
             cpf: valores.cpf,
             dataNascimento: valores.dataNascimento || undefined,
             imagemUrl: valores.imagemUrl, // "" remove a foto
         })
-        setUsuario(atualizado)
+        setUsuario({ ...usuario, ...atualizado })
+        notificarPerfilAtualizado(atualizado)
     }
 
     if (carregando) return <p className="perfil__estado">Carregando...</p>

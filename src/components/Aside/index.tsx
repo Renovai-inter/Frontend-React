@@ -4,6 +4,7 @@ import './style.css'
 import Nome from '../../assets/nome_renovai_aside.svg'
 import { encerrarSessao } from '../../utils/sessao'
 import { lerSessao } from '../../utils/armazenamentoSessao'
+import { aoPerfilAtualizado } from '../../utils/eventosPerfil'
 import { buscarPorId, type UsuarioResponse } from '../../services/usuarioService'
 
 function Aside() {
@@ -35,8 +36,14 @@ function Aside() {
                 // mantém o fallback (e-mail salvo no login) se a busca falhar
             });
 
+        // Perfil editado na página /perfil: reflete aqui sem nova chamada à API
+        const cancelarInscricao = aoPerfilAtualizado((dados) => {
+            setUsuario((atual) => (atual ? { ...atual, ...dados } : atual));
+        });
+
         return () => {
             cancelado = true;
+            cancelarInscricao();
         };
     }, []);
 
