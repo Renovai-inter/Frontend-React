@@ -5,7 +5,7 @@ import axios from 'axios'
 import Nome from '../../assets/nome_renovai.svg'
 import type { CadastroLocationState } from "../../types/Cadastro/CadastroCredenciais";
 import { isCnpjValido, mascaraCep, mascaraCnpj } from "../../utils/validators";
-import { removerSessao, salvarSessao } from "../../utils/armazenamentoSessao";
+import { salvarSessao } from "../../utils/armazenamentoSessao";
 import { cadastrarCooperativa, login, type CadastroCooperativaResponse } from "../../services/authService";
 
 interface FormCooperativa {
@@ -99,7 +99,7 @@ function CadastroCooperativa() {
   const cadastrado = useRef<CadastroCooperativaResponse | null>(null);
 
   // Sem os dados da tela 1 não há como cadastrar: volta para a primeira etapa.
-  if (!credenciais) {
+  if (!credenciais?.nomeResponsavel || !credenciais.cpfResponsavel) {
     return <Navigate to="/cadastro-usuario" replace />;
   }
 
@@ -136,6 +136,8 @@ function CadastroCooperativa() {
           email: credenciais.email,
           cnpj: form.cnpj,
           senha: credenciais.senha,
+          nomeResponsavel: credenciais.nomeResponsavel,
+          cpfResponsavel: credenciais.cpfResponsavel,
           endereco: {
             cep: form.cep,
             logradouro: form.logradouro.trim(),
@@ -155,16 +157,21 @@ function CadastroCooperativa() {
       salvarSessao("renovai_email", response.email);
       salvarSessao("renovai_userId", response.usuarioId);
       salvarSessao("renovai_cooperativaId", cadastrado.current.cooperativaId);
-      // O administrador é um perfil institucional: não há registro de funcionário.
-      removerSessao("renovai_funcionarioId");
+      // O responsável também é funcionário (cargo Admin): o vínculo vem na resposta do cadastro.
+      salvarSessao("renovai_funcionarioId", cadastrado.current.funcionarioId);
 
       navigate("/home", { replace: true });
     } catch (err) {
       let detalhe = "Tente novamente.";
       if (axios.isAxiosError(err)) {
+        const dados = err.response?.data;
+        // A API devolve "mensagem"; erros de validação (400) trazem os detalhes por campo em "campos".
+        const campos = dados?.campos ? Object.values<string>(dados.campos).join(" ") : "";
         detalhe =
-          err.response?.data?.message ??
-          err.response?.data?.erro ??
+          campos ||
+          dados?.mensagem ||
+          dados?.message ||
+          dados?.erro ||
           (err.response ? "Verifique os dados informados." : "Não foi possível conectar ao servidor.");
       } else if (err instanceof Error) {
         detalhe = err.message;

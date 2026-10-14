@@ -3,9 +3,11 @@ import { useState, type ChangeEvent, type FormEvent } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Nome from '../../assets/nome_renovai.svg'
 import type { CadastroLocationState } from "../../types/Cadastro/CadastroCredenciais";
-import { isEmailValido } from "../../utils/validators";
+import { isCpfValido, isEmailValido, mascaraCpf } from "../../utils/validators";
 
 interface FormUsuario {
+  nomeResponsavel: string;
+  cpfResponsavel: string;
   email: string;
   senha: string;
   confirmarSenha: string;
@@ -15,6 +17,12 @@ type Erros = Partial<Record<keyof FormUsuario, string>>;
 
 function validar(form: FormUsuario): Erros {
   const erros: Erros = {};
+
+  if (!form.nomeResponsavel.trim()) erros.nomeResponsavel = "Nome do responsável é obrigatório.";
+  else if (form.nomeResponsavel.trim().length > 255) erros.nomeResponsavel = "Nome deve ter no máximo 255 caracteres.";
+
+  if (!form.cpfResponsavel) erros.cpfResponsavel = "CPF é obrigatório.";
+  else if (!isCpfValido(form.cpfResponsavel)) erros.cpfResponsavel = "CPF inválido (use 000.000.000-00).";
 
   if (!form.email.trim()) erros.email = "E-mail é obrigatório.";
   else if (!isEmailValido(form.email.trim())) erros.email = "E-mail inválido.";
@@ -37,6 +45,8 @@ function CadastroUsuario() {
   const salvo = (location.state as CadastroLocationState | null)?.credenciais;
 
   const [form, setForm] = useState<FormUsuario>({
+    nomeResponsavel: salvo?.nomeResponsavel ?? "",
+    cpfResponsavel: salvo?.cpfResponsavel ?? "",
     email: salvo?.email ?? "",
     senha: salvo?.senha ?? "",
     confirmarSenha: salvo?.senha ?? "",
@@ -45,7 +55,9 @@ function CadastroUsuario() {
 
   const handleChange = (campo: keyof FormUsuario) =>
     (event: ChangeEvent<HTMLInputElement>) => {
-      setForm((atual) => ({ ...atual, [campo]: event.target.value }));
+      const bruto = event.target.value;
+      const valor = campo === "cpfResponsavel" ? mascaraCpf(bruto) : bruto;
+      setForm((atual) => ({ ...atual, [campo]: valor }));
       setErros((atual) => ({ ...atual, [campo]: undefined }));
     };
 
@@ -58,7 +70,14 @@ function CadastroUsuario() {
 
     // Não chama a API: apenas guarda os dados e segue para a tela da cooperativa.
     navigate("/cadastro-cooperativa", {
-      state: { credenciais: { email: form.email.trim(), senha: form.senha } },
+      state: {
+        credenciais: {
+          nomeResponsavel: form.nomeResponsavel.trim(),
+          cpfResponsavel: form.cpfResponsavel,
+          email: form.email.trim(),
+          senha: form.senha,
+        },
+      },
     });
   };
 
@@ -70,6 +89,39 @@ function CadastroUsuario() {
           <p>Etapa 1 de 2 · Crie o acesso de administrador da cooperativa.</p>
         </div>
         <form className="cadastro-usuario__form" onSubmit={handleSubmit} noValidate>
+          <div className="cadastro-usuario__field">
+            <label htmlFor="nomeResponsavel"> Nome do responsável </label>
+            <input
+              id="nomeResponsavel"
+              type="text"
+              placeholder="Digite seu nome completo"
+              value={form.nomeResponsavel}
+              onChange={handleChange("nomeResponsavel")}
+              aria-invalid={!!erros.nomeResponsavel}
+              autoComplete="name"
+            />
+            {erros.nomeResponsavel && (
+              <span className="cadastro-usuario__erro">{erros.nomeResponsavel}</span>
+            )}
+          </div>
+
+          <div className="cadastro-usuario__field">
+            <label htmlFor="cpfResponsavel"> CPF </label>
+            <input
+              id="cpfResponsavel"
+              type="text"
+              inputMode="numeric"
+              placeholder="000.000.000-00"
+              maxLength={14}
+              value={form.cpfResponsavel}
+              onChange={handleChange("cpfResponsavel")}
+              aria-invalid={!!erros.cpfResponsavel}
+            />
+            {erros.cpfResponsavel && (
+              <span className="cadastro-usuario__erro">{erros.cpfResponsavel}</span>
+            )}
+          </div>
+
           <div className="cadastro-usuario__field">
             <label htmlFor="email"> E-mail </label>
             <input

@@ -35,13 +35,16 @@ const COLUNAS_COLETAS: DynamicTableColumn<LinhaColeta>[] = [
 
 interface Resumo {
     nomeCooperativa: string
-    coletasNoMes: number
-    estoqueDisponivelKg: number
-    cooperadosAtivos: number
-    triagensPendentes: number
-    ultimasColetas: LinhaColeta[]
+    coletasNoMes: number | null
+    estoqueDisponivelKg: number | null
+    cooperadosAtivos: number | null
+    triagensPendentes: number | null
+    ultimasColetas: LinhaColeta[] | null
     estoquePorMaterial: { rotulo: string; valor: number }[]
 }
+
+// O responsável pela cooperativa é funcionário com cargo "Admin" e não entra na contagem de cooperados
+const ehAdministrador = (cargo?: string) => cargo?.trim().toUpperCase() === "ADMIN"
 
 function ehDoMesAtual(data: string): boolean {
     const d = new Date(data)
@@ -65,7 +68,7 @@ function Home() {
         }
 
         let cancelado = false
-        Promise.all([
+        Promise.allSettled([
             buscarCooperativa(cooperativaId),
             listarColetas(cooperativaId),
             listarEstoque(cooperativaId),
@@ -76,34 +79,62 @@ function Home() {
             .then(([cooperativa, coletas, estoque, disponiveis, triagens, ativos]) => {
                 if (cancelado) return
 
+                // Uma chamada que falha (ex.: 403) não derruba a tela: só aquele bloco fica indisponível
+                const resultados = [cooperativa, coletas, estoque, disponiveis, triagens, ativos]
+                if (resultados.every((r) => r.status === "rejected")) {
+                    setErro("Não foi possível carregar o resumo da cooperativa.")
+                    return
+                }
+
                 // A coleta não traz o material; ele vem da triagem ligada a ela
                 const materialPorColeta = new Map<string, string>()
-                triagens.forEach((t) => {
-                    if (!materialPorColeta.has(t.coletaId)) materialPorColeta.set(t.coletaId, t.materialCategoria)
-                })
+                if (triagens.status === "fulfilled") {
+                    triagens.value.forEach((t) => {
+                        if (!materialPorColeta.has(t.coletaId)) materialPorColeta.set(t.coletaId, t.materialCategoria)
+                    })
+                }
 
-                const ordenadas: ColetaResponse[] = [...coletas].sort(
-                    (a, b) => new Date(b.dataColeta).getTime() - new Date(a.dataColeta).getTime()
-                )
+                const ordenadas: ColetaResponse[] | null =
+                    coletas.status === "fulfilled"
+                        ? [...coletas.value].sort(
+                            (a, b) => new Date(b.dataColeta).getTime() - new Date(a.dataColeta).getTime()
+                        )
+                        : null
 
                 const porMaterial = new Map<string, number>()
-                estoque.forEach((e) => {
-                    porMaterial.set(e.materialCategoria, (porMaterial.get(e.materialCategoria) ?? 0) + e.quantidadeKg)
-                })
+                if (estoque.status === "fulfilled") {
+                    estoque.value.forEach((e) => {
+                        porMaterial.set(e.materialCategoria, (porMaterial.get(e.materialCategoria) ?? 0) + e.quantidadeKg)
+                    })
+                }
 
                 setResumo({
-                    nomeCooperativa: cooperativa.nome,
-                    coletasNoMes: coletas.filter((c) => ehDoMesAtual(c.dataColeta)).length,
-                    estoqueDisponivelKg: disponiveis.reduce((soma, e) => soma + e.quantidadeKg, 0),
-                    cooperadosAtivos: ativos.length,
-                    triagensPendentes: triagens.filter((t) => STATUS_TRIAGEM_PENDENTE.includes(t.statusAtual)).length,
-                    ultimasColetas: ordenadas.slice(0, QUANTIDADE_ULTIMAS_COLETAS).map((c) => ({
-                        id: c.coletaId.slice(0, 8),
-                        cooperado: c.cooperadoNome,
-                        material: materialPorColeta.get(c.coletaId) ?? "—",
-                        peso: `${c.quantidadeKg.toLocaleString("pt-BR")}kg`,
-                        status: c.statusAtual,
-                    })),
+                    nomeCooperativa: cooperativa.status === "fulfilled" ? cooperativa.value.nome : "",
+                    coletasNoMes:
+                        coletas.status === "fulfilled"
+                            ? coletas.value.filter((c) => ehDoMesAtual(c.dataColeta)).length
+                            : null,
+                    estoqueDisponivelKg:
+                        disponiveis.status === "fulfilled"
+                            ? disponiveis.value.reduce((soma, e) => soma + e.quantidadeKg, 0)
+                            : null,
+                    cooperadosAtivos:
+                        ativos.status === "fulfilled"
+                            ? ativos.value.filter((f) => !ehAdministrador(f.cargo)).length
+                            : null,
+                    triagensPendentes:
+                        triagens.status === "fulfilled"
+                            ? triagens.value.filter((t) => STATUS_TRIAGEM_PENDENTE.includes(t.statusAtual)).length
+                            : null,
+                    ultimasColetas: ordenadas
+                        ? ordenadas.slice(0, QUANTIDADE_ULTIMAS_COLETAS).map((c) => ({
+                            id: c.coletaId.slice(0, 8),
+                            cooperado: c.cooperadoNome,
+                            material: materialPorColeta.get(c.coletaId) ?? "—",
+                            peso: `${c.quantidadeKg.toLocaleString("pt-BR")}kg`,
+                            status: c.statusAtual,
+                        }))
+                        : null,
                     estoquePorMaterial: [...porMaterial].map(([rotulo, valor]) => ({ rotulo, valor })),
                 })
             })
@@ -124,17 +155,24 @@ function Home() {
 
     return (
         <div className="home-page">
-            <Header titulo="Visão geral" subtitulo={`Resumo da Cooperativa ${resumo.nomeCooperativa}`} />
+            <Header
+                titulo="Visão geral"
+                subtitulo={resumo.nomeCooperativa ? `Resumo da Cooperativa ${resumo.nomeCooperativa}` : "Resumo da cooperativa"}
+            />
 
             <section className="home-page__cards">
-                <Card title="Coletas no mês" bigNumber={resumo.coletasNoMes} subtitle="atualizado agora" />
+                <Card title="Coletas no mês" bigNumber={resumo.coletasNoMes ?? "—"} subtitle="atualizado agora" />
                 <Card
                     title="Estoque total"
-                    bigNumber={`${resumo.estoqueDisponivelKg.toLocaleString("pt-BR")} kg`}
+                    bigNumber={
+                        resumo.estoqueDisponivelKg === null
+                            ? "—"
+                            : `${resumo.estoqueDisponivelKg.toLocaleString("pt-BR")} kg`
+                    }
                     subtitle="disponível para venda"
                 />
-                <Card title="Cooperados ativos" bigNumber={resumo.cooperadosAtivos} subtitle="na cooperativa" />
-                <Card title="Triagens pendentes" bigNumber={resumo.triagensPendentes} subtitle="aguardando separação" />
+                <Card title="Cooperados ativos" bigNumber={resumo.cooperadosAtivos ?? "—"} subtitle="na cooperativa" />
+                <Card title="Triagens pendentes" bigNumber={resumo.triagensPendentes ?? "—"} subtitle="aguardando separação" />
             </section>
 
             <section>
@@ -153,9 +191,9 @@ function Home() {
                     titulo="Últimas coletas"
                     acaoTitulo={<Link className="home-page__ver-todas" to="/coletas">Ver todas</Link>}
                     columns={COLUNAS_COLETAS}
-                    data={resumo.ultimasColetas}
+                    data={resumo.ultimasColetas ?? []}
                     rowKey={(linha) => linha.id}
-                    emptyMessage="Nenhuma coleta registrada."
+                    emptyMessage={resumo.ultimasColetas ? "Nenhuma coleta registrada." : "Coletas indisponíveis no momento."}
                 />
                 <GraficoBarras
                     titulo="Estoque por Material"
