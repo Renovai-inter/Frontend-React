@@ -17,20 +17,24 @@ api.interceptors.request.use((config) => {
     return config;
 });
 
-// Com o usuário logado, erros 401/403/404/5xx (ou sem resposta do servidor) levam para a página de erro.
-// Rotas /auth/* ficam de fora: login, cadastro etc. tratam o próprio erro no formulário.
+// Com o usuário logado, só 401 (sessão inválida) e falha de conexão levam para a página de erro.
+// 403/404/5xx de uma chamada isolada não derrubam a navegação: quem chamou trata o erro (ex.: bloco
+// indisponível na Home). Rotas /auth/* ficam de fora: login, cadastro etc. tratam o próprio erro no formulário.
 api.interceptors.response.use(
     (response) => response,
-    (error: AxiosError<{ message?: string }>) => {
+    (error: AxiosError<{ mensagem?: string; message?: string }>) => {
         const status = error.response?.status;
         const logado = !!lerSessao("renovai_token");
         const rotaDeAuth = error.config?.url?.startsWith("/auth/");
         const cancelada = error.code === "ERR_CANCELED";
-        const deveRedirecionar =
-            status === undefined || status === 401 || status === 403 || status === 404 || status >= 500;
+        const deveRedirecionar = status === undefined || status === 401;
 
         if (logado && !rotaDeAuth && !cancelada && deveRedirecionar) {
-            redirecionarParaErro({ status, mensagem: error.response?.data?.message });
+            redirecionarParaErro({
+                status,
+                // A API devolve "mensagem" (GlobalExceptionHandler)
+                mensagem: error.response?.data?.mensagem ?? error.response?.data?.message,
+            });
         }
         return Promise.reject(error);
     }

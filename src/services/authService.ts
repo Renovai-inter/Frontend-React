@@ -32,6 +32,8 @@ export interface EnderecoCadastroRequest {
 }
 
 export interface CadastroCooperativaRequest {
+    nomeResponsavel: string;
+    cpfResponsavel: string;
     nome: string;
     descricao?: string;
     numeroCooperados?: number;
@@ -50,6 +52,8 @@ export interface CadastroCooperativaResponse {
     enderecoId: string;
     email: string;
     role: string;
+    usuarioId: string;
+    funcionarioId: string;
 }
 
 // POST /auth/login
@@ -74,7 +78,8 @@ export async function redefinirSenha(data: RedefinirSenhaRequest): Promise<void>
 }
 
 // POST /auth/cadastro-cooperativa (público)
-// Cria cooperativa, endereço e o administrador (perfil) em uma única transação.
+// Cria cooperativa, endereço, perfil institucional e o responsável (usuário + funcionário com cargo Admin)
+// em uma única transação.
 // Depois do cadastro, faça login com e-mail e senha.
 export async function cadastrarCooperativa(
     data: CadastroCooperativaRequest

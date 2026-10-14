@@ -1,5 +1,7 @@
 
 export interface CadastroCredenciais {
+    nomeResponsavel: string;
+    cpfResponsavel: string;
     email: string;
     senha: string;
 }
