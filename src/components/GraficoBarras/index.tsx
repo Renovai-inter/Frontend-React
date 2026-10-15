@@ -1,5 +1,6 @@
 import type { GraficoBarrasProps } from "../../types/GraficoBarrasProps/GraficoBarrasProps"
 import "./style.css"
+import { formatarDecimal } from "../../utils/formatadores"
 
 function GraficoBarras({
     titulo,
@@ -11,7 +12,7 @@ function GraficoBarras({
 }: GraficoBarrasProps) {
     const maior = Math.max(...dados.map((d) => d.valor), 0)
     const total = dados.reduce((soma, d) => soma + d.valor, 0)
-    const formatar = (valor: number) => `${valor.toLocaleString("pt-BR")}${unidade}`
+    const formatar = (valor: number) => `${formatarDecimal(valor)}${unidade}`
 
     return (
         <article className={className ? `grafico-barras ${className}` : "grafico-barras"}>

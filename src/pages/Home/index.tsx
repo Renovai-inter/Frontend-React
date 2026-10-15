@@ -7,6 +7,7 @@ import AcaoRapida from "../../components/AcaoRapida"
 import DynamicTable, { type DynamicTableColumn } from "../../components/DynamicTable"
 import GraficoBarras from "../../components/GraficoBarras"
 import { lerSessao } from "../../utils/armazenamentoSessao"
+import { formatarDecimal } from "../../utils/formatadores"
 import { buscarPorId as buscarCooperativa } from "../../services/cooperativaService"
 import { listarPorCooperativa as listarColetas, type ColetaResponse } from "../../services/coletaService"
 import { listarPorCooperativa as listarEstoque, listarDisponiveisPorCooperativa } from "../../services/estoqueService"
@@ -131,7 +132,7 @@ function Home() {
                             id: c.coletaId.slice(0, 8),
                             cooperado: c.cooperadoNome,
                             material: materialPorColeta.get(c.coletaId) ?? "—",
-                            peso: `${c.quantidadeKg.toLocaleString("pt-BR")}kg`,
+                            peso: `${formatarDecimal(c.quantidadeKg)}kg`,
                             status: c.statusAtual,
                         }))
                         : null,
@@ -167,7 +168,7 @@ function Home() {
                     bigNumber={
                         resumo.estoqueDisponivelKg === null
                             ? "—"
-                            : `${resumo.estoqueDisponivelKg.toLocaleString("pt-BR")} kg`
+                            : `${formatarDecimal(resumo.estoqueDisponivelKg)} kg`
                     }
                     subtitle="disponível para venda"
                 />

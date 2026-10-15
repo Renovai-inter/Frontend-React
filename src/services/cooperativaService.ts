@@ -19,6 +19,7 @@ export interface CooperativaResponse {
     imagemUrl: string;
     contatoPreferencial: string;
     cidade: string;
+    enderecoId: string | null;
 }
 
 export interface EstoqueResponse {
