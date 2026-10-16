@@ -10,11 +10,7 @@ import {
     type CooperativaRequest,
     type CooperativaResponse,
 } from "../../services/cooperativaService"
-import {
-    atualizar as atualizarEndereco,
-    buscarPorId as buscarEndereco,
-    type EnderecoResponse,
-} from "../../services/enderecoService"
+import { atualizar as atualizarEndereco } from "../../services/enderecoService"
 import { lerSessao } from "../../utils/armazenamentoSessao"
 import { mascaraCep } from "../../utils/validators"
 
@@ -55,7 +51,6 @@ function Cooperativa() {
     const cooperativaId = lerSessao("renovai_cooperativaId")
 
     const [cooperativa, setCooperativa] = useState<CooperativaResponse | null>(null)
-    const [endereco, setEndereco] = useState<EnderecoResponse | null>(null)
     const [carregando, setCarregando] = useState(true)
     const [erro, setErro] = useState<string | null>(null)
     const [editando, setEditando] = useState<"cooperativa" | "endereco" | null>(null)
@@ -69,11 +64,8 @@ function Cooperativa() {
 
         let cancelado = false
         buscarCooperativa(cooperativaId)
-            .then(async (dados) => {
-                const dadosEndereco = dados.enderecoId ? await buscarEndereco(dados.enderecoId) : null
-                if (cancelado) return
-                setCooperativa(dados)
-                setEndereco(dadosEndereco)
+            .then((dados) => {
+                if (!cancelado) setCooperativa(dados)
             })
             .catch(() => {
                 if (!cancelado) setErro("Não foi possível carregar os dados da cooperativa.")
@@ -98,14 +90,13 @@ function Cooperativa() {
             imagemUrl: valores.imagemUrl, // "" remove a imagem
             contatoPreferencial: valores.contatoPreferencial as Contato,
         })
-        // A cidade vem do endereço, então preserva o enderecoId já carregado
-        setCooperativa({ ...cooperativa, ...atualizada, enderecoId: cooperativa.enderecoId })
+        setCooperativa(atualizada)
     }
 
     async function salvarEndereco(valores: ValoresFormulario) {
-        if (!cooperativa?.enderecoId) return
+        if (!cooperativa?.endereco) return
 
-        const atualizado = await atualizarEndereco(cooperativa.enderecoId, {
+        const atualizado = await atualizarEndereco(cooperativa.endereco.enderecoId, {
             cep: valores.cep,
             logradouro: valores.logradouro,
             numero: valores.numero,
@@ -113,8 +104,7 @@ function Cooperativa() {
             bairro: valores.bairro,
             cidade: valores.cidade,
         })
-        setEndereco(atualizado)
-        setCooperativa({ ...cooperativa, cidade: atualizado.cidade })
+        setCooperativa({ ...cooperativa, cidade: atualizado.cidade, endereco: atualizado })
     }
 
     if (carregando) return <p className="cooperativa__estado">Carregando...</p>
@@ -127,6 +117,8 @@ function Cooperativa() {
         { rotulo: "Número de cooperados", valor: String(cooperativa.numeroCooperados ?? "") },
         { rotulo: "Descrição", valor: cooperativa.descricao },
     ]
+
+    const { endereco } = cooperativa
 
     const camposEndereco: { rotulo: string; valor: string }[] = [
         { rotulo: "CEP", valor: endereco?.cep ?? "" },
@@ -164,10 +156,10 @@ function Cooperativa() {
 
             <section className="cooperativa__secao">
                 <h2 className="cooperativa__secao-titulo">Endereço</h2>
-                {cooperativa.enderecoId && <Botao onClick={() => setEditando("endereco")}>Editar endereço</Botao>}
+                {endereco && <Botao onClick={() => setEditando("endereco")}>Editar endereço</Botao>}
             </section>
 
-            {cooperativa.enderecoId ? (
+            {endereco ? (
                 <div className="cooperativa__campos">
                     {camposEndereco.map(({ rotulo, valor }) => (
                         <div className="cooperativa__campo" key={rotulo}>

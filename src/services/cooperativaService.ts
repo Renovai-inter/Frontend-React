@@ -1,4 +1,5 @@
 import api from "./api";
+import type { EnderecoResponse } from "./enderecoService";
 
 export interface CooperativaRequest {
     nome: string;
@@ -19,7 +20,7 @@ export interface CooperativaResponse {
     imagemUrl: string;
     contatoPreferencial: string;
     cidade: string;
-    enderecoId: string | null;
+    endereco: EnderecoResponse | null;
 }
 
 export interface EstoqueResponse {

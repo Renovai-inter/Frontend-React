@@ -14,13 +14,10 @@ export interface DynamicTableProps<T> {
     acaoTitulo?: ReactNode
     columns: DynamicTableColumn<T>[]
     data: T[]
-    /** Mostra a coluna "Excluir". Também é exibida automaticamente se `onDelete` for informado. */
     isDeletable?: boolean
-    /** Mostra a coluna "Editar". Também é exibida automaticamente se `onEdit` for informado. */
     isEditable?: boolean
     onEdit?: (row: T) => void
     onDelete?: (row: T) => void
-    /** Define a chave única da linha (ex.: row => row.id). Por padrão usa o índice. */
     rowKey?: (row: T, index: number) => string | number
     emptyMessage?: string
 }

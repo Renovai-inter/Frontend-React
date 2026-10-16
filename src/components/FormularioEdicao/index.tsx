@@ -154,6 +154,30 @@ function Dialog({
                                 </div>
                             )
                         }
+                        if (campo.tipo === "selecao") {
+                            return (
+                                <div className="formulario-edicao__campo" key={campo.nome}>
+                                    <label htmlFor={id}>{campo.rotulo}</label>
+                                    <select
+                                        id={id}
+                                        value={valores[campo.nome]}
+                                        onChange={(event) => {
+                                            const valor = event.target.value
+                                            setValores((atual) => ({ ...atual, [campo.nome]: valor }))
+                                            setErros((atual) => ({ ...atual, [campo.nome]: undefined }))
+                                        }}
+                                        aria-invalid={!!erros[campo.nome]}
+                                    >
+                                        {campo.opcoes?.map((opcao) => (
+                                            <option key={opcao.valor} value={opcao.valor}>{opcao.rotulo}</option>
+                                        ))}
+                                    </select>
+                                    {erros[campo.nome] && (
+                                        <span className="formulario-edicao__erro">{erros[campo.nome]}</span>
+                                    )}
+                                </div>
+                            )
+                        }
                         return (
                             <div className="formulario-edicao__campo" key={campo.nome}>
                                 <label htmlFor={id}>{campo.rotulo}</label>
@@ -189,14 +213,7 @@ function Dialog({
         </div>
     )
 }
-
-/**
- * Dialog de edição reutilizável: cada página informa quais campos podem ser
- * atualizados e o que fazer ao salvar. Os campos nascem preenchidos com os
- * dados existentes (ou em branco, se ainda não houver).
- */
 function FormularioEdicao({ aberto, ...props }: FormularioEdicaoProps) {
-    // Montado só quando aberto: cada abertura recomeça com os valores atuais.
     if (!aberto) return null
     return <Dialog {...props} />
 }
