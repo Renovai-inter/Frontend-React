@@ -10,7 +10,12 @@ import { lerSessao } from "../../utils/armazenamentoSessao"
 import { formatarDecimal } from "../../utils/formatadores"
 import { buscarPorId as buscarCooperativa } from "../../services/cooperativaService"
 import { listarPorCooperativa as listarColetas, type ColetaResponse } from "../../services/coletaService"
-import { listarPorCooperativa as listarEstoque, listarDisponiveisPorCooperativa } from "../../services/estoqueService"
+import {
+    listarPorCooperativa as listarEstoque,
+    listarDisponiveisPorCooperativa,
+    type EstoqueResponse,
+} from "../../services/estoqueService"
+import { listar as listarMateriais } from "../../services/materialService"
 import { listarPorCooperativa as listarTriagens } from "../../services/triagemService"
 import { listarPorCooperativaEStatus as listarFuncionarios } from "../../services/funcionarioService"
 
@@ -76,12 +81,13 @@ function Home() {
             listarDisponiveisPorCooperativa(cooperativaId),
             listarTriagens(cooperativaId),
             listarFuncionarios(cooperativaId, "ATIVO"),
+            listarMateriais(),
         ])
-            .then(([cooperativa, coletas, estoque, disponiveis, triagens, ativos]) => {
+            .then(([cooperativa, coletas, estoque, disponiveis, triagens, ativos, materiais]) => {
                 if (cancelado) return
 
                 // Uma chamada que falha (ex.: 403) não derruba a tela: só aquele bloco fica indisponível
-                const resultados = [cooperativa, coletas, estoque, disponiveis, triagens, ativos]
+                const resultados = [cooperativa, coletas, estoque, disponiveis, triagens, ativos, materiais]
                 if (resultados.every((r) => r.status === "rejected")) {
                     setErro("Não foi possível carregar o resumo da cooperativa.")
                     return
@@ -102,12 +108,22 @@ function Home() {
                         )
                         : null
 
-                const porMaterial = new Map<string, number>()
-                if (estoque.status === "fulfilled") {
-                    estoque.value.forEach((e) => {
-                        porMaterial.set(e.materialCategoria, (porMaterial.get(e.materialCategoria) ?? 0) + e.quantidadeKg)
-                    })
+                // Estoque disponível = com quantidade > 0 e material marcado como disponível (mesma regra da
+                // página de Estoque). Se o cadastro de materiais não carregar, usa a lista de disponíveis da API.
+                let estoqueDisponivel: EstoqueResponse[] | null = null
+                if (estoque.status === "fulfilled" && materiais.status === "fulfilled") {
+                    const disponivelPorId = new Map(materiais.value.map((m) => [m.materialId, m.estaDisponivel]))
+                    estoqueDisponivel = estoque.value.filter(
+                        (e) => e.quantidadeKg > 0 && (disponivelPorId.get(e.materialId) ?? true)
+                    )
+                } else if (disponiveis.status === "fulfilled") {
+                    estoqueDisponivel = disponiveis.value
                 }
+
+                const porMaterial = new Map<string, number>()
+                estoqueDisponivel?.forEach((e) => {
+                    porMaterial.set(e.materialCategoria, (porMaterial.get(e.materialCategoria) ?? 0) + e.quantidadeKg)
+                })
 
                 setResumo({
                     nomeCooperativa: cooperativa.status === "fulfilled" ? cooperativa.value.nome : "",
@@ -115,10 +131,9 @@ function Home() {
                         coletas.status === "fulfilled"
                             ? coletas.value.filter((c) => ehDoMesAtual(c.dataColeta)).length
                             : null,
-                    estoqueDisponivelKg:
-                        disponiveis.status === "fulfilled"
-                            ? disponiveis.value.reduce((soma, e) => soma + e.quantidadeKg, 0)
-                            : null,
+                    estoqueDisponivelKg: estoqueDisponivel
+                        ? estoqueDisponivel.reduce((soma, e) => soma + e.quantidadeKg, 0)
+                        : null,
                     cooperadosAtivos:
                         ativos.status === "fulfilled"
                             ? ativos.value.filter((f) => !ehAdministrador(f.cargo)).length
@@ -197,7 +212,7 @@ function Home() {
                     emptyMessage={resumo.ultimasColetas ? "Nenhuma coleta registrada." : "Coletas indisponíveis no momento."}
                 />
                 <GraficoBarras
-                    titulo="Estoque por Material"
+                    titulo="Estoque por Material Disponível"
                     subtitulo="Quantidade em estoque"
                     rotuloTotal="Total em estoque"
                     dados={resumo.estoquePorMaterial}

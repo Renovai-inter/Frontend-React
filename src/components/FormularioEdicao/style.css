@@ -44,7 +44,8 @@
     color: var(--cinza-texto);
 }
 
-.formulario-edicao__campo input {
+.formulario-edicao__campo input,
+.formulario-edicao__campo select {
     padding: 11px 14px;
     border: 1.5px solid #d9d4d6;
     border-radius: 10px;
@@ -53,7 +54,12 @@
     transition: border-color 0.2s;
 }
 
-.formulario-edicao__campo input:focus {
+.formulario-edicao__campo select {
+    background: var(--branco);
+}
+
+.formulario-edicao__campo input:focus,
+.formulario-edicao__campo select:focus {
     border-color: var(--vermelho-renovai);
 }
 
