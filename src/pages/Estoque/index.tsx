@@ -274,6 +274,7 @@ function Estoque() {
         if (!categoria) {
             categoria = await criarCategoria({ nomeCategoria: valores.nome })
             setCategorias((atual) => [...atual, categoria!])
+            console.log('categoria criada', categoria)
         }
 
         let material: MaterialResponse
@@ -284,6 +285,8 @@ function Estoque() {
                 precoSugerido: valores.precoSugerido ? paraNumero(valores.precoSugerido) : undefined,
                 estaDisponivel: quantidadeKg > 0,
             })
+            console.log('material criado', material)
+
         } catch (err) {
             if (categoriaCriada) await desfazerCategoria(categoria.categoriaId)
             throw err
@@ -291,7 +294,21 @@ function Estoque() {
 
         let estoque: EstoqueResponse
         try {
-            estoque = await criarEstoque({ cooperativaId, materialId: material.materialId, quantidadeKg })
+            // O backend pode já ter criado o estoque junto com o material: nesse caso só ajusta a quantidade
+            const existentes = await listarEstoque(cooperativaId)
+            const existente = existentes.find((e) => e.materialId === material.materialId)
+            if (existente) {
+                estoque =
+                    quantidadeKg === existente.quantidadeKg
+                        ? existente
+                        : await atualizarQuantidade(existente.estoqueId, {
+                            novaQuantidadeKg: quantidadeKg,
+                            motivo: "Quantidade inicial",
+                        })
+            } else {
+                estoque = await criarEstoque({ cooperativaId, materialId: material.materialId, quantidadeKg })
+            }
+            console.log('estoque criado', estoque)
         } catch (err) {
             // Evita deixar material ou categoria órfãos, sem registro de estoque
             await deletarMaterial(material.materialId).catch(() => undefined)
