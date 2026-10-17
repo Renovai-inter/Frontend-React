@@ -1,0 +1,34 @@
+.abas {
+    display: inline-flex;
+    gap: 4px;
+    padding: 6px;
+    border-radius: 12px;
+    background: #EDE6E9;
+}
+
+.abas__aba {
+    padding: 8px 22px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--cinza-texto);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color .15s ease, color .15s ease;
+}
+
+.abas__aba:hover:not(.abas__aba--ativa) {
+    color: var(--vinho-renovai);
+}
+
+.abas__aba--ativa {
+    background: var(--branco);
+    color: var(--vinho-renovai);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .08);
+}
+
+.abas__aba:focus-visible {
+    outline: 2px solid var(--vermelho-renovai);
+    outline-offset: 1px;
+}

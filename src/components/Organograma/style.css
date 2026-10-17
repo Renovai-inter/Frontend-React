@@ -1,0 +1,157 @@
+.organograma {
+    --org-linha: #E3D9DE;
+    --org-vao: 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: max-content;
+    margin: 0 auto;
+}
+
+.organograma__raiz {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 266px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    background: var(--vinho-renovai);
+    color: var(--branco);
+    text-align: center;
+}
+
+.organograma__raiz strong {
+    font-size: 15px;
+}
+
+.organograma__raiz > span:last-child {
+    color: rgba(255, 255, 255, .75);
+    font-size: 12.5px;
+}
+
+.organograma__raiz-icone {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 6px;
+    overflow: hidden;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .18);
+    color: var(--verde-claro-renovai);
+}
+
+.organograma__raiz-icone img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.organograma__nivel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.organograma__linha-vertical {
+    width: 1px;
+    height: 34px;
+    background: var(--org-linha);
+}
+
+.organograma__rotulo {
+    margin: 4px 0 var(--org-vao);
+    color: #9a8b93;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.organograma__pessoas {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+}
+
+/* Conectores: a barra horizontal é feita por metades em cada item */
+.organograma__pessoas li {
+    position: relative;
+    padding: var(--org-vao) 15px 0;
+}
+
+.organograma__pessoas li::before,
+.organograma__pessoas li::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 50%;
+    border-top: 1px solid var(--org-linha);
+}
+
+.organograma__pessoas li::before { left: 0; }
+.organograma__pessoas li::after { right: 0; }
+
+.organograma__pessoas li:first-child::before,
+.organograma__pessoas li:last-child::after {
+    border-top: none;
+}
+
+/* Com um só item não há barra horizontal, só a descida */
+.organograma__pessoas li:only-child::before,
+.organograma__pessoas li:only-child::after {
+    display: none;
+}
+
+.organograma__pessoa {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    width: 188px;
+    padding: 16px 12px;
+    border: 1px solid var(--org-linha);
+    border-radius: 14px;
+    background: var(--branco);
+    color: #2E1B27;
+    text-align: center;
+}
+
+.organograma__pessoa::before {
+    content: "";
+    position: absolute;
+    top: calc(var(--org-vao) * -1);
+    left: 50%;
+    height: var(--org-vao);
+    border-left: 1px solid var(--org-linha);
+}
+
+.organograma__pessoa strong {
+    font-size: 14px;
+}
+
+.organograma__pessoa > span:last-child {
+    color: #9a8b93;
+    font-size: 12px;
+}
+
+.organograma__pessoa--inativa {
+    opacity: .5;
+}
+
+.organograma__avatar {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    margin-bottom: 6px;
+    border-radius: 50%;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.organograma__avatar--gestor { background: #F6D9E5; color: var(--vermelho-renovai); }
+.organograma__avatar--cooperado { background: #DFEEDF; color: var(--verde-base-renovai); }
+.organograma__avatar--motorista { background: #F1F4DA; color: #6f7f2a; }
