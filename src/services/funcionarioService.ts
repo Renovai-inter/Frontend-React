@@ -21,6 +21,7 @@ export interface FuncionarioResponse {
 export interface PreCadastroRequest {
     nome: string;
     cpf: string;
+    email: string;
     senhaTemporaria: string;
     cargoId?: string;
     cooperativaId: string;
