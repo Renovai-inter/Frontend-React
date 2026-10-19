@@ -1,0 +1,79 @@
+.coletas {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    min-width: 0;
+    padding-right: 30px;
+    padding-bottom: 30px;
+}
+
+.coletas__estado {
+    padding: 40px 0;
+    color: var(--cinza-texto);
+}
+
+.coletas__estado--erro {
+    color: var(--vermelho-renovai);
+}
+
+.coletas__materiais-botao {
+    padding: 4px 12px;
+    border: 1.5px solid var(--vermelho-renovai);
+    border-radius: 6px;
+    background: none;
+    color: var(--vermelho-renovai);
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+}
+
+.coletas__materiais-botao:hover {
+    background: var(--vermelho-renovai);
+    color: var(--branco);
+}
+
+.coletas__materiais-botao:focus-visible {
+    outline: 2px solid var(--vermelho-renovai);
+    outline-offset: 2px;
+}
+
+.coletas__popup-vazio {
+    margin-bottom: 8px;
+    color: var(--cinza-texto);
+}
+
+.coletas__materiais-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.coletas__material {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: var(--bege-renovai);
+    color: #2E1B27;
+    font-size: 0.9rem;
+}
+
+.coletas__material strong {
+    color: var(--vinho-renovai);
+}
+
+.coletas__informativo {
+    display: flex;
+    gap: 20px;
+}
+
+@media (max-width: 640px) {
+    .coletas {
+        padding-right: 16px;
+    }
+}
