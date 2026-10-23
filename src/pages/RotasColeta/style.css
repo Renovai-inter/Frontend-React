@@ -1,0 +1,262 @@
+.rotas {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    min-width: 0;
+    padding-right: 30px;
+    padding-bottom: 30px;
+}
+
+.rotas__estado {
+    padding: 40px 0;
+    color: var(--cinza-texto);
+}
+
+.rotas__estado--erro {
+    color: var(--vermelho-renovai);
+}
+
+.rotas__informativo {
+    display: flex;
+    gap: 20px;
+}
+
+.rotas__conteudo {
+    display: grid;
+    grid-template-columns: minmax(260px, 1fr) minmax(0, 2fr);
+    gap: 20px;
+    align-items: start;
+}
+
+.rotas__painel {
+    padding: 24px;
+    border-radius: 16px;
+    background: var(--branco);
+    box-shadow: 0 1px 4px rgba(88, 33, 54, 0.1);
+}
+
+.rotas__painel-titulo {
+    margin: 0;
+    color: var(--vinho-renovai);
+    font-size: 1.25rem;
+}
+
+.rotas__painel-titulo--pequeno {
+    margin-bottom: 16px;
+    font-size: 1rem;
+}
+
+.rotas__vazio {
+    margin: 0;
+    color: var(--cinza-texto);
+    font-size: 0.9rem;
+}
+
+/* Lista de rotas */
+.rotas__itens {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.rotas__item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+    padding: 14px;
+    border: 1.5px solid #ece6e9;
+    border-radius: 10px;
+    background: var(--branco);
+    color: #2e1b27;
+    font-family: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.rotas__item:hover {
+    border-color: var(--vermelho-renovai);
+}
+
+.rotas__item:focus-visible {
+    outline: 2px solid var(--vermelho-renovai);
+    outline-offset: 2px;
+}
+
+.rotas__item--ativo {
+    border-color: var(--vermelho-renovai);
+    background: #fdf1f5;
+}
+
+.rotas__item-topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.rotas__item-paradas {
+    color: var(--cinza-texto);
+    font-size: 0.8125rem;
+}
+
+.rotas__selo {
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: #e3f2e1;
+    color: var(--verde-base-renovai);
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.rotas__selo--inativa {
+    background: var(--bege-renovai);
+    color: var(--cinza-texto);
+}
+
+/* Detalhe da rota */
+.rotas__detalhe-resumo {
+    margin: 2px 0 18px;
+    color: var(--cinza-texto);
+    font-size: 0.8125rem;
+}
+
+.rotas__acoes {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+}
+
+.rotas__link {
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--vermelho-renovai);
+    font-family: inherit;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.rotas__link:hover {
+    text-decoration: underline;
+}
+
+.rotas__link:focus-visible {
+    outline: 2px solid var(--vermelho-renovai);
+    outline-offset: 2px;
+}
+
+/* Paradas: linha do tempo numerada */
+.rotas__paradas {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.rotas__parada {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-bottom: 18px;
+}
+
+.rotas__parada:last-child {
+    padding-bottom: 0;
+}
+
+/* Linha que liga uma parada à seguinte */
+.rotas__parada:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    top: 30px;
+    bottom: 0;
+    left: 14px;
+    width: 2px;
+    background: #ddd5d9;
+}
+
+.rotas__numero {
+    z-index: 1;
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--vinho-renovai);
+    color: var(--branco);
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.rotas__parada-info {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.rotas__parada-nome {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    color: #2e1b27;
+}
+
+.rotas__tipo {
+    padding: 1px 10px;
+    border-radius: 999px;
+    background: #f4f1c8;
+    color: #5f5a14;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.rotas__parada-endereco {
+    color: var(--cinza-texto);
+    font-size: 0.8125rem;
+}
+
+/* Confirmação de exclusão */
+.rotas__confirmacao {
+    max-width: 420px;
+}
+
+.rotas__confirmacao-texto {
+    margin-bottom: 8px;
+    color: #2e1b27;
+}
+
+@media (max-width: 900px) {
+    .rotas__informativo {
+        flex-direction: column;
+    }
+
+    .rotas__conteudo {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .rotas {
+        padding-right: 16px;
+    }
+
+    .rotas__painel {
+        padding: 16px;
+    }
+}
