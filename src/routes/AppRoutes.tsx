@@ -12,6 +12,7 @@ import Coletas from "../pages/Coletas";
 import Triagens from "../pages/Triagens";
 import Rateios from "../pages/Rateios";
 import RotasColeta from "../pages/RotasColeta";
+import RedefinirSenha from "../pages/RedefinirSenha";
 import CadastroUsuario from "../pages/CadastroUsuario";
 import CadastroCooperativa from "../pages/CadastroCooperativa";
 import Pedidos from "../pages/Pedidos";
@@ -37,7 +38,8 @@ function AppRoutes() {
             <RegistraNavegacao />
             <Routes>
                 <Route path="/login" element={<Login />} />
-                <Route path="/cadastro-usuario" element={<CadastroUsuario />} />
+                <Route path="/redefinir-senha" element={<RedefinirSenha />} />
+                <Route path="/cadastro-usuario"element={<CadastroUsuario />} />
                 <Route path="/cadastro-cooperativa" element={<CadastroCooperativa />} />
                 
                 <Route element={<PrivateRoute />}>

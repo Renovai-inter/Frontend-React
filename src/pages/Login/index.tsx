@@ -84,7 +84,7 @@ function Login() {
             />
           </div>
           <div className='login__utils'>
-            <button type="button">Esqueci a senha</button>
+            <button type="button" onClick={() => navigate("/redefinir-senha", { state: { email } })}>Esqueci a senha</button>
             <button type="button" onClick={() => navigate("/cadastro-usuario")}>Não possui login? Cadastre-se</button>
           </div>
 
