@@ -54,9 +54,6 @@ function Login() {
       setLoading(false);
     }
   }
-  function toggleSenha() {
-    setMostrarSenha(!mostrarSenha);
-  }
 
   return (
     <div className="login">
