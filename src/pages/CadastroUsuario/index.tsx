@@ -2,6 +2,7 @@ import './style.css'
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Nome from '../../assets/nome_renovai.svg'
+import SenhaInput from "../../components/SenhaInput";
 import type { CadastroLocationState } from "../../types/Cadastro/CadastroCredenciais";
 import { isCpfValido, isEmailValido, mascaraCpf } from "../../utils/validators";
 
@@ -138,9 +139,8 @@ function CadastroUsuario() {
 
           <div className="cadastro-usuario__field">
             <label htmlFor="senha"> Senha </label>
-            <input
+            <SenhaInput
               id="senha"
-              type="password"
               placeholder="Mínimo 6 caracteres"
               value={form.senha}
               onChange={handleChange("senha")}
@@ -152,9 +152,8 @@ function CadastroUsuario() {
 
           <div className="cadastro-usuario__field">
             <label htmlFor="confirmarSenha"> Confirmar senha </label>
-            <input
+            <SenhaInput
               id="confirmarSenha"
-              type="password"
               placeholder="Repita a senha"
               value={form.confirmarSenha}
               onChange={handleChange("confirmarSenha")}

@@ -6,6 +6,7 @@ import { login } from "../../services/authService";
 import { buscarPorUserId } from "../../services/funcionarioService";
 import axios from 'axios'
 import { removerSessao, salvarSessao } from "../../utils/armazenamentoSessao";
+import SenhaInput from '../../components/SenhaInput';
 
 function Login() {
 
@@ -74,14 +75,17 @@ function Login() {
           </div>
           <div className="login__field">
             <label htmlFor="senha"> Senha </label>
-            <input
+            <SenhaInput
               id="senha"
-              type="password"
               placeholder="Digite sua senha"
+              autoComplete="current-password"
               value={senha}
               onChange={(event) => setSenha(event.target.value)}
+              autoFocus
               required
             />
+
+
           </div>
           <div className='login__utils'>
             <button type="button" onClick={() => navigate("/redefinir-senha", { state: { email } })}>Esqueci a senha</button>

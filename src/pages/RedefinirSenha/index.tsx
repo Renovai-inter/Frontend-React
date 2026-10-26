@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import axios from "axios"
 import Nome from "../../assets/nome_renovai.svg"
+import SenhaInput from "../../components/SenhaInput"
 import { esqueciSenha, redefinirSenha, verificarCodigo } from "../../services/authService"
 
 type Etapa = "email" | "codigo" | "senha" | "concluido"
@@ -202,9 +203,8 @@ function RedefinirSenha() {
                     <form className="login__form" onSubmit={salvarSenha}>
                         <div className="login__field">
                             <label htmlFor="novaSenha">Nova senha</label>
-                            <input
+                            <SenhaInput
                                 id="novaSenha"
-                                type="password"
                                 placeholder="Digite a nova senha"
                                 autoComplete="new-password"
                                 value={novaSenha}
@@ -215,9 +215,8 @@ function RedefinirSenha() {
                         </div>
                         <div className="login__field">
                             <label htmlFor="confirmacao">Confirmar nova senha</label>
-                            <input
+                            <SenhaInput
                                 id="confirmacao"
-                                type="password"
                                 placeholder="Repita a nova senha"
                                 autoComplete="new-password"
                                 value={confirmacao}
