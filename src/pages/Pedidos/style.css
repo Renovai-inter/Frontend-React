@@ -1,0 +1,179 @@
+.pedidos {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    min-width: 0;
+    padding-right: 30px;
+    padding-bottom: 30px;
+}
+
+.pedidos__estado {
+    padding: 40px 0;
+    color: var(--cinza-texto);
+}
+
+.pedidos__estado--erro {
+    color: var(--vermelho-renovai);
+}
+
+.pedidos__informativo {
+    display: flex;
+    gap: 20px;
+}
+
+.pedidos__status {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12.5px;
+    font-weight: 600;
+}
+
+.pedidos__status--concluido {
+    background: #e3f1e5;
+    color: #2f6b36;
+}
+
+.pedidos__status--andamento {
+    background: var(--bege-renovai);
+    color: var(--vinho-renovai);
+}
+
+.pedidos__status--recusado {
+    background: #f6dcdc;
+    color: #8a1f1f;
+}
+
+.pedidos__chat-botao {
+    padding: 4px 12px;
+    border: 1.5px solid var(--vermelho-renovai);
+    border-radius: 6px;
+    background: none;
+    color: var(--vermelho-renovai);
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+}
+
+.pedidos__chat-botao:hover {
+    background: var(--vermelho-renovai);
+    color: var(--branco);
+}
+
+.pedidos__chat-botao:focus-visible {
+    outline: 2px solid var(--vermelho-renovai);
+    outline-offset: 2px;
+}
+
+.pedidos__chat {
+    width: min(560px, 92vw);
+}
+
+.pedidos__chat-resumo {
+    margin: 0 0 10px;
+    color: var(--cinza-texto);
+    font-size: 0.85rem;
+}
+
+.pedidos__chat-legenda {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.pedidos__chat-legenda-item::before {
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 6px;
+    border-radius: 50%;
+}
+
+.pedidos__chat-legenda-item--empresa::before {
+    background: var(--bege-renovai);
+    border: 1px solid var(--vinho-renovai);
+}
+
+.pedidos__chat-legenda-item--cooperativa::before {
+    background: var(--vinho-renovai);
+}
+
+.pedidos__chat-mensagens {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 50vh;
+    overflow-y: auto;
+    padding: 12px;
+    border-radius: 12px;
+    background: #faf6f6;
+}
+
+.pedidos__chat-vazio {
+    margin: 0;
+    color: var(--cinza-texto);
+    text-align: center;
+}
+
+.pedidos__mensagem {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-width: 80%;
+    padding: 10px 14px;
+    border-radius: 14px;
+}
+
+.pedidos__mensagem--empresa {
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+    background: var(--bege-renovai);
+    color: var(--vinho-renovai);
+}
+
+.pedidos__mensagem--cooperativa {
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+    background: var(--vinho-renovai);
+    color: var(--branco);
+}
+
+.pedidos__mensagem-autor {
+    font-size: 0.72rem;
+    font-weight: 700;
+    opacity: .85;
+}
+
+.pedidos__mensagem-texto {
+    margin: 0;
+    font-size: 0.9rem;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+
+.pedidos__mensagem-data {
+    align-self: flex-end;
+    font-size: 0.7rem;
+    opacity: .75;
+}
+
+.pedidos__chat-aviso {
+    margin: 12px 0 0;
+    color: var(--cinza-texto);
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
+@media (max-width: 640px) {
+    .pedidos {
+        padding-right: 16px;
+    }
+
+    .pedidos__informativo {
+        flex-direction: column;
+    }
+}
