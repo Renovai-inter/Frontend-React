@@ -6,6 +6,7 @@ import { login } from "../../services/authService";
 import { buscarPorUserId } from "../../services/funcionarioService";
 import axios from 'axios'
 import { removerSessao, salvarSessao } from "../../utils/armazenamentoSessao";
+import SenhaInput from '../../components/SenhaInput';
 
 function Login() {
 
@@ -13,6 +14,7 @@ function Login() {
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [mostrarSenha, setMostrarSenha] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -52,6 +54,9 @@ function Login() {
       setLoading(false);
     }
   }
+  function toggleSenha() {
+    setMostrarSenha(!mostrarSenha);
+  }
 
   return (
     <div className="login">
@@ -74,14 +79,17 @@ function Login() {
           </div>
           <div className="login__field">
             <label htmlFor="senha"> Senha </label>
-            <input
+            <SenhaInput
               id="senha"
-              type="password"
               placeholder="Digite sua senha"
+              autoComplete="current-password"
               value={senha}
               onChange={(event) => setSenha(event.target.value)}
+              autoFocus
               required
             />
+
+
           </div>
           <div className='login__utils'>
             <button type="button" onClick={() => navigate("/redefinir-senha", { state: { email } })}>Esqueci a senha</button>
