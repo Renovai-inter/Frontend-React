@@ -96,6 +96,15 @@
     text-decoration: underline;
     color: var(--vinho-renovai);
 }
+.login__sucesso {
+    margin: 0;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: #e3f2e1;
+    color: var(--verde-base-renovai);
+    font-size: 0.875rem;
+}
+
 .nome__img {
     -webkit-user-select: none;
     -moz-user-select: none;

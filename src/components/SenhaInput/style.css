@@ -1,0 +1,26 @@
+.senha-input {
+    position: relative;
+}
+
+.senha-input .senha-input__campo {
+    padding-right: 48px;
+}
+
+.senha-input__toggle {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: none;
+    background: none;
+}
+.senha-input__toggle svg {
+    color: var(--cinza-texto);
+}

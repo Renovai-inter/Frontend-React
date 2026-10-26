@@ -17,9 +17,16 @@ export interface EsqueciSenhaRequest {
     email: string;
 }
 
+export interface VerificarCodigoRequest {
+    email: string;
+    codigo: string;
+}
+
 export interface RedefinirSenhaRequest {
+    // Com email: código de 6 dígitos enviado por e-mail. Sem email: token antigo de redefinição.
     token: string;
     novaSenha: string;
+    email?: string;
 }
 
 export interface EnderecoCadastroRequest {
@@ -67,12 +74,20 @@ export async function logout(): Promise<void> {
     await api.post<void>("/auth/logout");
 }
 
-// POST /auth/esqueci-senha 
+// POST /auth/esqueci-senha
+// 204: código gerado e e-mail enviado. 404: não existe conta com o e-mail.
+// 422: envio de e-mail não configurado ou falhou no servidor.
+// Timeout maior: o servidor (Render gratuito) pode acordar de uma pausa e o envio pelo Apps Script leva alguns segundos.
 export async function esqueciSenha(data: EsqueciSenhaRequest): Promise<void> {
-    await api.post<void>("/auth/esqueci-senha", data);
+    await api.post<void>("/auth/esqueci-senha", data, { timeout: 60000 });
 }
 
-// POST /auth/redefinir-senha 
+// POST /auth/verificar-codigo (confere o código de 6 dígitos sem gastá-lo)
+export async function verificarCodigo(data: VerificarCodigoRequest): Promise<void> {
+    await api.post<void>("/auth/verificar-codigo", data);
+}
+
+// POST /auth/redefinir-senha
 export async function redefinirSenha(data: RedefinirSenhaRequest): Promise<void> {
     await api.post<void>("/auth/redefinir-senha", data);
 }

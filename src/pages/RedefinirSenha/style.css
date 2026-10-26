@@ -1,0 +1,40 @@
+.redefinir__nota {
+    margin: 0;
+    color: var(--cinza-texto);
+    font-size: 0.9rem;
+}
+
+.login__field input.redefinir__codigo {
+    font-size: 1.5rem;
+    letter-spacing: 0.5em;
+    text-align: center;
+}
+
+.redefinir__links {
+    display: flex;
+    justify-content: space-between;
+}
+
+.redefinir__links button,
+.redefinir__voltar {
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--cinza-texto);
+    font-family: inherit;
+    font-size: 0.9rem;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.redefinir__links button:hover:not(:disabled),
+.redefinir__voltar:hover {
+    color: var(--vinho-renovai);
+    text-decoration: underline;
+}
+
+.redefinir__links button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
