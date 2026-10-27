@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import './style.css'
 import Nome from '../../assets/nome_renovai_aside.svg'
-import { encerrarSessao } from '../../utils/sessao'
+import { useAuth } from '../../hooks/useAuth'
 import { lerSessao } from '../../utils/armazenamentoSessao'
+import { lerPreferencias, salvarPreferencias } from '../../utils/armazenamentoLocal'
 import { aoPerfilAtualizado } from '../../utils/eventosPerfil'
 import { buscarPorId, type UsuarioResponse } from '../../services/usuarioService'
 
@@ -11,14 +12,18 @@ function Aside() {
     const tamanhoTela = window.innerWidth;
 
     const navigate = useNavigate();
+    const { sair } = useAuth();
     const [usuario, setUsuario] = useState<UsuarioResponse | null>(null);
     const [saindo, setSaindo] = useState(false);
     const email = lerSessao("renovai_email") ?? "";
-    const [retraido, setRetraido] = useState(() => tamanhoTela > 768 ? localStorage.getItem("renovai_aside_retraido") === "true" : localStorage.getItem("renovai_aside_retraido") === "false");
+    const [retraido, setRetraido] = useState(() => {
+        const { asideRetraido } = lerPreferencias();
+        return tamanhoTela > 768 ? asideRetraido === true : asideRetraido === false;
+    });
 
     function alternarAside() {
         setRetraido((atual) => {
-            localStorage.setItem("renovai_aside_retraido", String(!atual));
+            salvarPreferencias({ asideRetraido: !atual });
             return !atual;
         });
     }
@@ -49,7 +54,7 @@ function Aside() {
 
     async function handleSignOut() {
         setSaindo(true);
-        await encerrarSessao();
+        await sair();
         navigate("/login", { replace: true });
     }
 

@@ -1,57 +1,28 @@
 import './style.css'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Nome from '../../assets/nome_renovai.svg'
-import { login } from "../../services/authService";
-import { buscarPorUserId } from "../../services/funcionarioService";
-import axios from 'axios'
-import { removerSessao, salvarSessao } from "../../utils/armazenamentoSessao";
 import SenhaInput from '../../components/SenhaInput';
+import { useAuth } from "../../hooks/useAuth";
 
 function Login() {
 
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-  const [erro, setErro] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { entrar, status, erro, limparErro } = useAuth();
+  const loading = status === "autenticando";
+
+  // Erro de uma tentativa anterior não deve aparecer ao voltar para a tela
+  useEffect(() => {
+    limparErro();
+  }, [limparErro]);
 
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setLoading(true);
-    setErro(null);
-
-    try {
-      const response = await login({ email, senha });
-      salvarSessao("renovai_token", response.token);
-      salvarSessao("renovai_role", response.role);
-      salvarSessao("renovai_email", response.email);
-      salvarSessao("renovai_userId", response.usuarioId);
-
-      // O token já está salvo, então a chamada autenticada abaixo funciona.
-      try {
-        const funcionario = await buscarPorUserId(response.usuarioId);
-        salvarSessao("renovai_cooperativaId", funcionario.cooperativaId);
-        salvarSessao("renovai_funcionarioId", funcionario.funcionarioId);
-      } catch {
-        removerSessao("renovai_cooperativaId");
-        removerSessao("renovai_funcionarioId");
-      }
-
-      navigate("/home");
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        const mensagem =
-          err.response?.data?.message ??
-          err.response?.data?.erro ??
-          "E-mail ou senha inválidos. ";
-        setErro(mensagem);
-      } else {
-        setErro("Não foi possível conectar ao servidor. Tente novamente.");
-      }
-    } finally {
-      setLoading(false);
-    }
+    // E-mail é normalizado; a senha vai exatamente como digitada (nunca é alterada)
+    const sucesso = await entrar(email.trim(), senha);
+    if (sucesso) navigate("/home");
   }
 
   return (
@@ -92,7 +63,7 @@ function Login() {
             <button type="button" onClick={() => navigate("/cadastro-usuario")}>Não possui login? Cadastre-se</button>
           </div>
 
-          {erro && <p className="login__erro">{erro}</p>}
+          {erro && <p className="login__erro" role="alert">{erro}</p>}
 
           <button className='login__send' type="submit" disabled={loading}>
             {loading ? "Entrando..." : "Entrar"}

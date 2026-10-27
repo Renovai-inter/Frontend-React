@@ -1,24 +1,27 @@
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 
-import Login from "../pages/Login";
 import PrivateRoute from "./PrivateRoute";
-import Cooperativa from "../pages/Cooperativa";
-import Layout from "../pages/Layout";
-import Home from "../pages/Home";
-import Funcionarios from "../pages/Funcionarios";
-import Estoque from "../pages/Estoque";
-import Coletas from "../pages/Coletas";
-import Triagens from "../pages/Triagens";
-import Rateios from "../pages/Rateios";
-import RotasColeta from "../pages/RotasColeta";
-import RedefinirSenha from "../pages/RedefinirSenha";
-import CadastroUsuario from "../pages/CadastroUsuario";
-import CadastroCooperativa from "../pages/CadastroCooperativa";
-import Pedidos from "../pages/Pedidos";
-import PerfilUsuario from "../pages/PerfilUsuario";
-import ErrorPage from "../pages/Error";
+import PaginaCarregando from "../components/PaginaCarregando";
 import { registrarNavegacao } from "../utils/erroNavegacao";
+
+// Cada página vira um chunk separado: o navegador só baixa o código da tela que o usuário abre.
+const Login = lazy(() => import("../pages/Login"));
+const Cooperativa = lazy(() => import("../pages/Cooperativa"));
+const Layout = lazy(() => import("../pages/Layout"));
+const Home = lazy(() => import("../pages/Home"));
+const Funcionarios = lazy(() => import("../pages/Funcionarios"));
+const Estoque = lazy(() => import("../pages/Estoque"));
+const Coletas = lazy(() => import("../pages/Coletas"));
+const Triagens = lazy(() => import("../pages/Triagens"));
+const Rateios = lazy(() => import("../pages/Rateios"));
+const RotasColeta = lazy(() => import("../pages/RotasColeta"));
+const RedefinirSenha = lazy(() => import("../pages/RedefinirSenha"));
+const CadastroUsuario = lazy(() => import("../pages/CadastroUsuario"));
+const CadastroCooperativa = lazy(() => import("../pages/CadastroCooperativa"));
+const Pedidos = lazy(() => import("../pages/Pedidos"));
+const PerfilUsuario = lazy(() => import("../pages/PerfilUsuario"));
+const ErrorPage = lazy(() => import("../pages/Error"));
 
 // Disponibiliza o navigate para o interceptor do axios, que roda fora do React
 function RegistraNavegacao() {
@@ -36,6 +39,7 @@ function AppRoutes() {
     return (
         <BrowserRouter>
             <RegistraNavegacao />
+            <Suspense fallback={<PaginaCarregando />}>
             <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/redefinir-senha" element={<RedefinirSenha />} />
@@ -53,6 +57,7 @@ function AppRoutes() {
                         <Route path="rateios" element={<Rateios />} />
                         <Route path="rotas-coleta" element={<RotasColeta />} />
                         <Route path="pedidos" element={<Pedidos />} />
+                        <Route path="pedidos/:negociacaoId" element={<Pedidos />} />
                         <Route path="perfil" element={<PerfilUsuario />}/>
                     </Route>
                     <Route path="/error" element={<ErrorPage />} />
@@ -64,6 +69,7 @@ function AppRoutes() {
                 />
 
             </Routes>
+            </Suspense>
         </BrowserRouter>
     );
 }

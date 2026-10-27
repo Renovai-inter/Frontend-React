@@ -53,8 +53,11 @@ export async function listarPorColeta(coletaId: string): Promise<TriagemResponse
 }
 
 // GET /triagens/por-cooperativa/{cooperativaId}
-export async function listarPorCooperativa(cooperativaId: string): Promise<TriagemResponse[]> {
-    const response = await api.get<TriagemResponse[]>(`/triagens/por-cooperativa/${cooperativaId}`);
+export async function listarPorCooperativa(
+    cooperativaId: string,
+    signal?: AbortSignal
+): Promise<TriagemResponse[]> {
+    const response = await api.get<TriagemResponse[]>(`/triagens/por-cooperativa/${cooperativaId}`, { signal });
     return response.data;
 }
 

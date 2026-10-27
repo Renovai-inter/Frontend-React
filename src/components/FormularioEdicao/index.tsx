@@ -3,6 +3,7 @@ import { useEffect, useId, useState, type ChangeEvent, type FormEvent } from "re
 import axios from "axios"
 import Botao from "../Botao"
 import { arquivoParaDataUrl } from "../../utils/imagem"
+import { sanitizarTexto } from "../../utils/sanitizar"
 import type {
     CampoFormulario,
     FormularioEdicaoProps,
@@ -88,7 +89,11 @@ function Dialog({
         setErroGeral(null)
         try {
             const limpos = Object.fromEntries(
-                Object.entries(valores).map(([chave, valor]) => [chave, valor.trim()])
+                // Imagem (data URL em base64) passa direto; os demais campos de texto são sanitizados
+                Object.entries(valores).map(([chave, valor]) => [
+                    chave,
+                    valor.startsWith("data:image/") ? valor.trim() : sanitizarTexto(valor),
+                ])
             )
             await onSalvar(limpos)
             onFechar()

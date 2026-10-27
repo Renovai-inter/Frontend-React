@@ -5,7 +5,8 @@ import axios from 'axios'
 import Nome from '../../assets/nome_renovai.svg'
 import type { CadastroLocationState } from "../../types/Cadastro/CadastroCredenciais";
 import { isCnpjValido, mascaraCep, mascaraCnpj } from "../../utils/validators";
-import { salvarSessao } from "../../utils/armazenamentoSessao";
+import { sanitizarTexto } from "../../utils/sanitizar";
+import { useAuth } from "../../hooks/useAuth";
 import { cadastrarCooperativa, login, type CadastroCooperativaResponse } from "../../services/authService";
 
 interface FormCooperativa {
@@ -73,6 +74,7 @@ function validar(form: FormCooperativa): Erros {
 function CadastroCooperativa() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { iniciarSessao } = useAuth();
   const credenciais = (location.state as CadastroLocationState | null)?.credenciais;
 
   const [form, setForm] = useState<FormCooperativa>({
@@ -127,11 +129,11 @@ function CadastroCooperativa() {
       if (!cadastrado.current) {
         setEtapa("Cadastrando...");
         cadastrado.current = await cadastrarCooperativa({
-          nome: form.nome.trim(),
-          descricao: form.descricao.trim() || undefined,
+          nome: sanitizarTexto(form.nome),
+          descricao: sanitizarTexto(form.descricao) || undefined,
           numeroCooperados: form.numeroCooperados ? Number(form.numeroCooperados) : undefined,
-          horarioFuncionamento: form.horarioFuncionamento.trim() || undefined,
-          imagemUrl: form.imagemUrl.trim() || undefined,
+          horarioFuncionamento: sanitizarTexto(form.horarioFuncionamento) || undefined,
+          imagemUrl: sanitizarTexto(form.imagemUrl) || undefined,
           contatoPreferencial: form.contatoPreferencial,
           email: credenciais.email,
           cnpj: form.cnpj,
@@ -140,11 +142,11 @@ function CadastroCooperativa() {
           cpfResponsavel: credenciais.cpfResponsavel,
           endereco: {
             cep: form.cep,
-            logradouro: form.logradouro.trim(),
-            numero: form.numero.trim(),
-            complemento: form.complemento.trim() || undefined,
-            bairro: form.bairro.trim(),
-            cidade: form.cidade.trim(),
+            logradouro: sanitizarTexto(form.logradouro),
+            numero: sanitizarTexto(form.numero),
+            complemento: sanitizarTexto(form.complemento) || undefined,
+            bairro: sanitizarTexto(form.bairro),
+            cidade: sanitizarTexto(form.cidade),
           },
         });
       }
@@ -152,13 +154,15 @@ function CadastroCooperativa() {
       passo = "entrar na conta";
       setEtapa("Entrando...");
       const response = await login({ email: credenciais.email, senha: credenciais.senha });
-      salvarSessao("renovai_token", response.token);
-      salvarSessao("renovai_role", response.role);
-      salvarSessao("renovai_email", response.email);
-      salvarSessao("renovai_userId", response.usuarioId);
-      salvarSessao("renovai_cooperativaId", cadastrado.current.cooperativaId);
       // O responsável também é funcionário (cargo Admin): o vínculo vem na resposta do cadastro.
-      salvarSessao("renovai_funcionarioId", cadastrado.current.funcionarioId);
+      iniciarSessao({
+        token: response.token,
+        role: response.role,
+        email: response.email,
+        usuarioId: response.usuarioId,
+        cooperativaId: cadastrado.current.cooperativaId,
+        funcionarioId: cadastrado.current.funcionarioId,
+      });
 
       navigate("/home", { replace: true });
     } catch (err) {

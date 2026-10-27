@@ -1,12 +1,13 @@
 import "./style.css"
 import "../../components/FormularioEdicao/style.css"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import Header from "../../components/Header"
 import Botao from "../../components/Botao"
 import Card from "../../components/Card"
 import DynamicTable, { type DynamicTableColumn } from "../../components/DynamicTable"
 import { lerSessao } from "../../utils/armazenamentoSessao"
 import { formatarDecimal } from "../../utils/formatadores"
+import { useApi } from "../../hooks/useApi"
 import { listarPorCooperativa as listarTriagens, type TriagemResponse } from "../../services/triagemService"
 
 interface LinhaTriagem {
@@ -24,50 +25,38 @@ const formatarData = (data: string) => (data ? new Date(data).toLocaleDateString
 
 function Triagens() {
     const cooperativaId = lerSessao("renovai_cooperativaId")
-
-    const [linhas, setLinhas] = useState<LinhaTriagem[]>([])
-    const [carregando, setCarregando] = useState(true)
-    const [erro, setErro] = useState<string | null>(null)
     const [verCooperados, setVerCooperados] = useState<LinhaTriagem | null>(null)
 
-    useEffect(() => {
-        if (!cooperativaId) {
-            setErro("Sessão sem cooperativa identificada. Faça login novamente.")
-            setCarregando(false)
-            return
-        }
+    // useCallback: o useApi refaz a chamada sempre que a função muda; com a identidade presa ao
+    // cooperativaId, a busca só roda de novo quando a cooperativa muda (e não a cada render).
+    const buscarTriagens = useCallback(
+        (signal: AbortSignal) => listarTriagens(cooperativaId as string, signal),
+        [cooperativaId]
+    )
+    const { dados: triagens, loading: carregando, erro: erroApi } = useApi<TriagemResponse[]>(
+        cooperativaId ? buscarTriagens : null,
+        "Não foi possível carregar as triagens."
+    )
+    const erro = cooperativaId ? erroApi : "Sessão sem cooperativa identificada. Faça login novamente."
 
-        let cancelado = false
-        listarTriagens(cooperativaId)
-            .then((triagens: TriagemResponse[]) => {
-                if (cancelado) return
-                const ordenadas = [...triagens].sort(
-                    (a, b) => new Date(b.dataTriagem).getTime() - new Date(a.dataTriagem).getTime()
-                )
-                setLinhas(
-                    ordenadas.map((t) => ({
-                        triagemId: t.triagemId,
-                        material: t.materialCategoria,
-                        equipe: t.equipeNome,
-                        status: t.statusAtual,
-                        quantidadeKg: t.quantidadeKg,
-                        rejeitoKg: t.quantidadeRejeitoKg ?? 0,
-                        dataTriagem: t.dataTriagem,
-                        cooperados: t.cooperadosNomes ?? [],
-                    }))
-                )
-            })
-            .catch(() => {
-                if (!cancelado) setErro("Não foi possível carregar as triagens.")
-            })
-            .finally(() => {
-                if (!cancelado) setCarregando(false)
-            })
-
-        return () => {
-            cancelado = true
-        }
-    }, [cooperativaId])
+    // useMemo: ordenar e mapear a lista é o trabalho mais caro da página; só refaz quando `triagens` muda
+    // (abrir/fechar o popup de cooperados re-renderiza a página sem recalcular a lista).
+    const linhas = useMemo<LinhaTriagem[]>(
+        () =>
+            [...(triagens ?? [])]
+                .sort((a, b) => new Date(b.dataTriagem).getTime() - new Date(a.dataTriagem).getTime())
+                .map((t) => ({
+                    triagemId: t.triagemId,
+                    material: t.materialCategoria,
+                    equipe: t.equipeNome,
+                    status: t.statusAtual,
+                    quantidadeKg: t.quantidadeKg,
+                    rejeitoKg: t.quantidadeRejeitoKg ?? 0,
+                    dataTriagem: t.dataTriagem,
+                    cooperados: t.cooperadosNomes ?? [],
+                })),
+        [triagens]
+    )
 
     // Esc fecha o popup de cooperados
     useEffect(() => {
@@ -109,8 +98,8 @@ function Triagens() {
         },
     ]
 
-    if (carregando) return <p className="triagens__estado">Carregando...</p>
-    if (erro) return <p className="triagens__estado triagens__estado--erro">{erro}</p>
+    if (carregando) return <p className="triagens__estado" role="status">Carregando...</p>
+    if (erro) return <p className="triagens__estado triagens__estado--erro" role="alert">{erro}</p>
 
     const totalTriagens = linhas.length
     const totalTriadoKg = linhas.reduce((soma, l) => soma + l.quantidadeKg, 0)

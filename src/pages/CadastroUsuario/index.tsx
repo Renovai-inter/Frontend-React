@@ -5,6 +5,7 @@ import Nome from '../../assets/nome_renovai.svg'
 import SenhaInput from "../../components/SenhaInput";
 import type { CadastroLocationState } from "../../types/Cadastro/CadastroCredenciais";
 import { isCpfValido, isEmailValido, mascaraCpf } from "../../utils/validators";
+import { sanitizarTexto } from "../../utils/sanitizar";
 
 interface FormUsuario {
   nomeResponsavel: string;
@@ -73,9 +74,9 @@ function CadastroUsuario() {
     navigate("/cadastro-cooperativa", {
       state: {
         credenciais: {
-          nomeResponsavel: form.nomeResponsavel.trim(),
+          nomeResponsavel: sanitizarTexto(form.nomeResponsavel),
           cpfResponsavel: form.cpfResponsavel,
-          email: form.email.trim(),
+          email: sanitizarTexto(form.email),
           senha: form.senha,
         },
       },
