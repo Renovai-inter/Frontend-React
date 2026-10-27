@@ -64,7 +64,7 @@
 
 @media (max-width: 640px) {
     .funcionarios {
-        padding-right: 16px;
+        padding-right: 0;
     }
 
     .funcionarios__painel {

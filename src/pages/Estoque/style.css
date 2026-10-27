@@ -70,7 +70,7 @@
 
 @media (max-width: 640px) {
     .estoque {
-        padding-right: 16px;
+        padding-right: 0;
     }
 
     .estoque__cards > * {

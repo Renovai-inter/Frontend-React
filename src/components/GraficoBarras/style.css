@@ -99,3 +99,18 @@
     color: var(--vinho-renovai);
     font-weight: 500;
 }
+
+@media (max-width: 480px) {
+    .grafico-barras {
+        padding: 14px;
+    }
+
+    .grafico-barras__titulo {
+        font-size: 17px;
+    }
+
+    .grafico-barras__total {
+        flex-wrap: wrap;
+        gap: 4px 12px;
+    }
+}

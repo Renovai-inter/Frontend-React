@@ -170,7 +170,7 @@
 
 @media (max-width: 640px) {
     .pedidos {
-        padding-right: 16px;
+        padding-right: 0;
     }
 
     .pedidos__informativo {

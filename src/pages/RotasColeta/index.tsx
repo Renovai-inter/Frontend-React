@@ -203,11 +203,10 @@ function RotasColeta() {
     return (
         <div className="rotas">
             <Toast mensagem={toast.mensagem} chave={toast.chave} onFechar={toast.fechar} />
-            <Header
-                titulo="Rotas de Coleta"
-                subtitulo="Organize os trajetos e as paradas de cada rota da cooperativa"
-                acoes={<Botao onClick={() => setCriandoRota(true)}>+ Nova rota</Botao>}
-            />
+            <section className="rotas__head">
+                <Header titulo="Rotas de Coleta"subtitulo="Organize os trajetos e as paradas de cada rota da cooperativa" />
+                <Botao onClick={() => setCriandoRota(true)}>Nova rota</Botao>
+            </section>
 
             <div className="rotas__informativo">
                 <Card title="Rotas ativas" bigNumber={`${totalAtivas}`} subtitle="disponíveis para vincular a coletas" />
@@ -270,7 +269,7 @@ function RotasColeta() {
                                 <Botao variante="secundario" onClick={() => setEditandoRota(true)}>
                                     Editar rota
                                 </Botao>
-                                <Botao onClick={() => setAdicionandoParada(true)}>+ Adicionar parada</Botao>
+                                <Botao onClick={() => setAdicionandoParada(true)}>Adicionar parada</Botao>
                             </div>
 
                             {erroAcao && !excluindo && <p className="formulario-edicao__erro-geral">{erroAcao}</p>}

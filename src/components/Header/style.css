@@ -2,16 +2,28 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
+    flex-wrap: wrap;
     gap: 16px;
 }
 .header__acoes {
     flex: none;
 }
 .content h1{
-    color: var(--vinho-fonte-renovai)
+    color: var(--vinho-fonte-renovai);
+    font-size: clamp(1.5rem, 5vw, 2rem);
 }
 .content p{
     color: var(--cinza-texto);
     font-size: 14px;
     font-weight: 500;
+}
+
+@media (max-width: 640px) {
+    .header__acoes {
+        flex: 1 1 100%;
+    }
+
+    .header__acoes .botao {
+        width: 100%;
+    }
 }

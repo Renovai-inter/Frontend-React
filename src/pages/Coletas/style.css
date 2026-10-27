@@ -74,6 +74,9 @@
 
 @media (max-width: 640px) {
     .coletas {
-        padding-right: 16px;
+        padding-right: 0;
+    }
+    .coletas__informativo {
+        flex-direction: column;
     }
 }

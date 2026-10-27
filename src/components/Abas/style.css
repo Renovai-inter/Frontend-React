@@ -32,3 +32,15 @@
     outline: 2px solid var(--vermelho-renovai);
     outline-offset: 1px;
 }
+
+@media (max-width: 480px) {
+    .abas {
+        display: flex;
+        width: 100%;
+    }
+
+    .abas__aba {
+        flex: 1;
+        padding: 8px 12px;
+    }
+}

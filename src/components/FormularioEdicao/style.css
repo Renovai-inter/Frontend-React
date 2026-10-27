@@ -139,3 +139,22 @@
     text-decoration: underline;
     cursor: pointer;
 }
+
+@media (max-width: 480px) {
+    .formulario-edicao {
+        padding: 20px 16px;
+        max-height: 95vh;
+    }
+
+    .formulario-edicao__imagem {
+        flex-wrap: wrap;
+    }
+
+    .formulario-edicao__acoes {
+        flex-direction: column-reverse;
+    }
+
+    .formulario-edicao__acoes .botao {
+        width: 100%;
+    }
+}

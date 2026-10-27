@@ -68,6 +68,9 @@
 
 @media (max-width: 640px) {
     .triagens {
-        padding-right: 16px;
+        padding-right: 0;
+    }
+    .triagens__informativo {
+        flex-direction: column;
     }
 }

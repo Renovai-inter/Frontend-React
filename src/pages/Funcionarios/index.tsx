@@ -202,7 +202,7 @@ function Funcionarios() {
                 <Header
                     titulo="Gestores e cooperados"
                     subtitulo={`Pessoas com acesso à ${cooperativa?.nome ?? "cooperativa"}`}
-                    acoes={<Botao onClick={() => setAdicionando(true)}>+ Adicionar funcionário</Botao>}
+                    acoes={<Botao onClick={() => setAdicionando(true)}>Adicionar funcionário</Botao>}
                 />
             </section>
 

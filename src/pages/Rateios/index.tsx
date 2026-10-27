@@ -350,7 +350,7 @@ function Rateios() {
                             <thead>
                                 <tr>
                                     <th scope="col">Cooperado</th>
-                                    <th scope="col">Peso no mês</th>
+                                    <th scope="col" className="rateios__peso">Peso no mês</th>
                                     <th scope="col">%</th>
                                     <th scope="col">Valor</th>
                                 </tr>
@@ -395,7 +395,8 @@ function Rateios() {
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colSpan={2}>Total</td>
+                                    <td>Total</td>
+                                    <td className="rateios__peso" />
                                     <td className={somaValida ? "" : "rateios__soma--invalida"}>{formatarDecimal(somaPercentuais)}%</td>
                                     <td className="rateios__valor">{formatarMoeda((totalLiquido * somaPercentuais) / 100)}</td>
                                 </tr>

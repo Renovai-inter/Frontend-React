@@ -43,3 +43,23 @@
     gap: 16px;
     margin-top: 20px;
 }
+
+@media (max-width: 480px) {
+    .error-page {
+        padding: 20px 16px;
+    }
+
+    .error-page__status {
+        font-size: 3rem;
+    }
+
+    .error-page__titulo {
+        font-size: 1.4rem;
+    }
+
+    .error-page__acoes {
+        flex-direction: column;
+        align-self: stretch;
+        gap: 10px;
+    }
+}

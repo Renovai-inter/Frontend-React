@@ -4,7 +4,7 @@
     width: 100%;
     min-width: 0;
     height: fit-content;
-    padding: 24px;
+    padding: clamp(14px, 3vw, 24px);
     border: 1px solid #e5e7eb;
     border-radius: 12px;
     background-color: var(--branco);
@@ -16,12 +16,14 @@
     align-items: center;
     justify-content: space-between;
     column-gap: 12px;
-    margin-bottom: 12px;
+    margin-bottom: clamp(8px, 2vw, 12px);
 }
 
 .card__title {
     color: var(--cinza-texto);
-    font-size: 14px;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    font-size: clamp(12px, 2.4vw, 14px);
     font-weight: 500;
     letter-spacing: 0.02em;
     text-transform: uppercase;
@@ -54,19 +56,22 @@
 
 .card__big-number {
     color: var(--vinho-fonte-renovai);
-    font-size: 36px;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    font-size: clamp(24px, 6vw, 36px);
     font-weight: 600;
     line-height: 1;
 }
 
 .card__big-number-label {
-    font-size: 16px;
+    font-size: clamp(13px, 3vw, 16px);
     font-weight: 500;
     line-height: 1;
 }
 
 .card__subtitle {
     color: var(--verde-claro-renovai);
-    font-size: 12px;
+    font-size: clamp(11px, 2.4vw, 12px);
     font-weight: 500;
+    overflow-wrap: anywhere;
 }
