@@ -7,14 +7,13 @@ import type { CampoFormulario, ValoresFormulario } from "../../types/FormularioE
 import {
     atualizar as atualizarCooperativa,
     buscarPorId as buscarCooperativa,
-    type CooperativaRequest,
     type CooperativaResponse,
 } from "../../services/cooperativaService"
 import { atualizar as atualizarEndereco } from "../../services/enderecoService"
 import { lerSessao } from "../../utils/armazenamentoSessao"
 import { mascaraCep } from "../../utils/validators"
+import type { Contato } from "../../types/Cooperativa/CooperativaTypes"
 
-type Contato = NonNullable<CooperativaRequest["contatoPreferencial"]>
 const CONTATOS: Contato[] = ["WHATSAPP", "TELEFONE", "EMAIL"]
 
 const CAMPOS_COOPERATIVA: CampoFormulario[] = [

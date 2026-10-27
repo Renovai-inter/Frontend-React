@@ -9,11 +9,10 @@ import type {
     FormularioEdicaoProps,
     ValoresFormulario,
 } from "../../types/FormularioEdicao/FormularioEdicaoProps"
+import type { ErrosFormulario } from "../../types/FormularioEdicao/FormularioEdicaoProps"
 
-type Erros = Record<string, string | undefined>
-
-function validarCampos(campos: CampoFormulario[], valores: ValoresFormulario): Erros {
-    const erros: Erros = {}
+function validarCampos(campos: CampoFormulario[], valores: ValoresFormulario): ErrosFormulario {
+    const erros: ErrosFormulario = {}
     for (const campo of campos) {
         const valor = valores[campo.nome].trim()
         if (!valor) {
@@ -45,7 +44,7 @@ function Dialog({
     const [valores, setValores] = useState<ValoresFormulario>(() =>
         Object.fromEntries(campos.map((c) => [c.nome, valoresIniciais[c.nome] ?? ""]))
     )
-    const [erros, setErros] = useState<Erros>({})
+    const [erros, setErros] = useState<ErrosFormulario>({})
     const [erroGeral, setErroGeral] = useState<string | null>(null)
     const [salvando, setSalvando] = useState(false)
 

@@ -4,7 +4,8 @@ import axios from "axios"
 import Header from "../../components/Header"
 import Card from "../../components/Card"
 import Botao from "../../components/Botao"
-import DynamicTable, { type DynamicTableColumn } from "../../components/DynamicTable"
+import DynamicTable from "../../components/DynamicTable"
+import type { DynamicTableColumn } from "../../types/DynamicTableProps/DynamicTableProps"
 import FormularioEdicao from "../../components/FormularioEdicao"
 import type { CampoFormulario, ValoresFormulario } from "../../types/FormularioEdicao/FormularioEdicaoProps"
 import { lerSessao } from "../../utils/armazenamentoSessao"
@@ -28,17 +29,7 @@ import {
     listar as listarCategorias,
     type CategoriaMaterialResponse,
 } from "../../services/categoriaMaterialService"
-
-interface LinhaEstoque {
-    estoqueId: string
-    materialId: string
-    material: string
-    quantidadeKg: number
-    precoSugerido: number | null
-    valorTotal: number | null
-    disponivel: boolean
-    atualizadoEm: string
-}
+import type { LinhaEstoque } from "../../types/Estoque/EstoqueTypes"
 
 const COLUNAS_ESTOQUE: DynamicTableColumn<LinhaEstoque>[] = [
     { key: "material", label: "Material" },

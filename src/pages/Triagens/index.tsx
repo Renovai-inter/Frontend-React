@@ -4,22 +4,13 @@ import { useCallback, useEffect, useMemo, useState } from "react"
 import Header from "../../components/Header"
 import Botao from "../../components/Botao"
 import Card from "../../components/Card"
-import DynamicTable, { type DynamicTableColumn } from "../../components/DynamicTable"
+import DynamicTable from "../../components/DynamicTable"
+import type { DynamicTableColumn } from "../../types/DynamicTableProps/DynamicTableProps"
 import { lerSessao } from "../../utils/armazenamentoSessao"
 import { formatarDecimal } from "../../utils/formatadores"
 import { useApi } from "../../hooks/useApi"
 import { listarPorCooperativa as listarTriagens, type TriagemResponse } from "../../services/triagemService"
-
-interface LinhaTriagem {
-    triagemId: string
-    material: string
-    equipe: string
-    status: string
-    quantidadeKg: number
-    rejeitoKg: number
-    dataTriagem: string
-    cooperados: string[]
-}
+import type { LinhaTriagem } from "../../types/Triagens/TriagensTypes"
 
 const formatarData = (data: string) => (data ? new Date(data).toLocaleDateString("pt-BR") : "—")
 

@@ -8,27 +8,10 @@ import { isCnpjValido, mascaraCep, mascaraCnpj } from "../../utils/validators";
 import { sanitizarTexto } from "../../utils/sanitizar";
 import { useAuth } from "../../hooks/useAuth";
 import { cadastrarCooperativa, login, type CadastroCooperativaResponse } from "../../services/authService";
+import type { FormCooperativa, ErrosFormCooperativa } from "../../types/CadastroCooperativa/CadastroCooperativaTypes";
 
-interface FormCooperativa {
-  nome: string;
-  descricao: string;
-  numeroCooperados: string;
-  horarioFuncionamento: string;
-  contatoPreferencial: "" | "WHATSAPP" | "TELEFONE" | "EMAIL";
-  cnpj: string;
-  imagemUrl: string;
-  cep: string;
-  logradouro: string;
-  numero: string;
-  complemento: string;
-  bairro: string;
-  cidade: string;
-}
-
-type Erros = Partial<Record<keyof FormCooperativa, string>>;
-
-function validar(form: FormCooperativa): Erros {
-  const erros: Erros = {};
+function validar(form: FormCooperativa): ErrosFormCooperativa {
+  const erros: ErrosFormCooperativa = {};
 
   if (!form.nome.trim()) erros.nome = "Nome da cooperativa é obrigatório.";
   else if (form.nome.trim().length > 255) erros.nome = "Nome deve ter no máximo 255 caracteres.";
@@ -92,7 +75,7 @@ function CadastroCooperativa() {
     bairro: "",
     cidade: "",
   });
-  const [erros, setErros] = useState<Erros>({});
+  const [erros, setErros] = useState<ErrosFormCooperativa>({});
   const [erro, setErro] = useState<string | null>(null);
   const [etapa, setEtapa] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);

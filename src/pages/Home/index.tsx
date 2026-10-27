@@ -4,7 +4,8 @@ import { Link, useNavigate } from "react-router-dom"
 import Header from "../../components/Header"
 import Card from "../../components/Card"
 import AcaoRapida from "../../components/AcaoRapida"
-import DynamicTable, { type DynamicTableColumn } from "../../components/DynamicTable"
+import DynamicTable from "../../components/DynamicTable"
+import type { DynamicTableColumn } from "../../types/DynamicTableProps/DynamicTableProps"
 import GraficoBarras from "../../components/GraficoBarras"
 import { lerSessao } from "../../utils/armazenamentoSessao"
 import { formatarDecimal } from "../../utils/formatadores"
@@ -18,18 +19,11 @@ import {
 import { listar as listarMateriais } from "../../services/materialService"
 import { listarPorCooperativa as listarTriagens } from "../../services/triagemService"
 import { listarPorCooperativaEStatus as listarFuncionarios } from "../../services/funcionarioService"
+import type { LinhaColeta, Resumo } from "../../types/Home/HomeTypes"
 
 // Mesmos status que o back-end considera "em aberto" para triagem
 const STATUS_TRIAGEM_PENDENTE = ["PENDENTE", "EM_ANDAMENTO", "Em triagem"]
 const QUANTIDADE_ULTIMAS_COLETAS = 5
-
-interface LinhaColeta {
-    id: string
-    cooperado: string
-    material: string
-    peso: string
-    status: string
-}
 
 const COLUNAS_COLETAS: DynamicTableColumn<LinhaColeta>[] = [
     { key: "id", label: "ID" },
@@ -38,16 +32,6 @@ const COLUNAS_COLETAS: DynamicTableColumn<LinhaColeta>[] = [
     { key: "peso", label: "Peso" },
     { key: "status", label: "Status" },
 ]
-
-interface Resumo {
-    nomeCooperativa: string
-    coletasNoMes: number | null
-    estoqueDisponivelKg: number | null
-    cooperadosAtivos: number | null
-    triagensPendentes: number | null
-    ultimasColetas: LinhaColeta[] | null
-    estoquePorMaterial: { rotulo: string; valor: number }[]
-}
 
 // O responsável pela cooperativa é funcionário com cargo "Admin" e não entra na contagem de cooperados
 const ehAdministrador = (cargo?: string) => cargo?.trim().toUpperCase() === "ADMIN"

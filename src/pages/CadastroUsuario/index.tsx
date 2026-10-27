@@ -6,19 +6,10 @@ import SenhaInput from "../../components/SenhaInput";
 import type { CadastroLocationState } from "../../types/Cadastro/CadastroCredenciais";
 import { isCpfValido, isEmailValido, mascaraCpf } from "../../utils/validators";
 import { sanitizarTexto } from "../../utils/sanitizar";
+import type { FormUsuario, ErrosFormUsuario } from "../../types/CadastroUsuario/CadastroUsuarioTypes";
 
-interface FormUsuario {
-  nomeResponsavel: string;
-  cpfResponsavel: string;
-  email: string;
-  senha: string;
-  confirmarSenha: string;
-}
-
-type Erros = Partial<Record<keyof FormUsuario, string>>;
-
-function validar(form: FormUsuario): Erros {
-  const erros: Erros = {};
+function validar(form: FormUsuario): ErrosFormUsuario {
+  const erros: ErrosFormUsuario = {};
 
   if (!form.nomeResponsavel.trim()) erros.nomeResponsavel = "Nome do responsável é obrigatório.";
   else if (form.nomeResponsavel.trim().length > 255) erros.nomeResponsavel = "Nome deve ter no máximo 255 caracteres.";
@@ -53,7 +44,7 @@ function CadastroUsuario() {
     senha: salvo?.senha ?? "",
     confirmarSenha: salvo?.senha ?? "",
   });
-  const [erros, setErros] = useState<Erros>({});
+  const [erros, setErros] = useState<ErrosFormUsuario>({});
 
   const handleChange = (campo: keyof FormUsuario) =>
     (event: ChangeEvent<HTMLInputElement>) => {

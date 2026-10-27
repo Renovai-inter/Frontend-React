@@ -5,7 +5,8 @@ import { useNavigate, useParams } from "react-router-dom"
 import Header from "../../components/Header"
 import Botao from "../../components/Botao"
 import Card from "../../components/Card"
-import DynamicTable, { type DynamicTableColumn } from "../../components/DynamicTable"
+import DynamicTable from "../../components/DynamicTable"
+import type { DynamicTableColumn } from "../../types/DynamicTableProps/DynamicTableProps"
 import { lerSessao } from "../../utils/armazenamentoSessao"
 import {
     listarPorCooperativa as listarNegociacoes,
@@ -14,33 +15,7 @@ import {
     type NegociacaoMensagemResponse,
 } from "../../services/negociacaoService"
 import { buscarPorId as buscarPerfil } from "../../services/perfilService"
-
-interface LinhaPedido {
-    negociacaoId: string
-    pedidoId: string
-    empresa: string
-    status: string
-    valorTotal: number
-    dataInicio: string
-    dataFechamento: string
-    itens: string
-}
-
-interface MensagemChat {
-    mensagemId: string
-    autor: "empresa" | "cooperativa"
-    remetente: string
-    texto: string
-    tipo: string
-    dataEnvio: string
-}
-
-interface EstadoChat {
-    pedido: LinhaPedido | null
-    mensagens: MensagemChat[]
-    carregando: boolean
-    erro: string | null
-}
+import type { LinhaPedido, MensagemChat, EstadoChat } from "../../types/Pedidos/PedidosTypes"
 
 const CHAT_FECHADO: EstadoChat = { pedido: null, mensagens: [], carregando: false, erro: null }
 

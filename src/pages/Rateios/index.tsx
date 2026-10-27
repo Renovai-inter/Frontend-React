@@ -4,7 +4,8 @@ import { useCallback, useEffect, useMemo, useState } from "react"
 import Header from "../../components/Header"
 import Botao from "../../components/Botao"
 import Card from "../../components/Card"
-import DynamicTable, { type DynamicTableColumn } from "../../components/DynamicTable"
+import DynamicTable from "../../components/DynamicTable"
+import type { DynamicTableColumn } from "../../types/DynamicTableProps/DynamicTableProps"
 import { lerSessao } from "../../utils/armazenamentoSessao"
 import { formatarDecimal } from "../../utils/formatadores"
 import {
@@ -19,14 +20,7 @@ import { listarPorCooperativa as listarFuncionarios } from "../../services/funci
 import { listarPorCooperativa as listarColetas } from "../../services/coletaService"
 import { listarLancamentosPorMes, type LancamentoDespesaResponse } from "../../services/despesaService"
 import { calcularTotalAcumulado, calcularTotalLiquido } from "../../services/functionEProceduresService"
-
-type TipoRateio = "GERAL" | "PROPORCIONAL"
-
-interface Participante {
-    funcionarioId: string
-    nome: string
-    kg: number
-}
+import type { TipoRateio, Participante } from "../../types/Rateios/RateiosTypes"
 
 const ROTULO_TIPO: Record<TipoRateio, string> = {
     GERAL: "Geral (partes iguais)",

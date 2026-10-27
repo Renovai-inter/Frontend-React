@@ -4,7 +4,8 @@ import Header from "../../components/Header"
 import Botao from "../../components/Botao"
 import Abas from "../../components/Abas"
 import Organograma from "../../components/Organograma"
-import DynamicTable, { type DynamicTableColumn } from "../../components/DynamicTable"
+import DynamicTable from "../../components/DynamicTable"
+import type { DynamicTableColumn } from "../../types/DynamicTableProps/DynamicTableProps"
 import FormularioEdicao from "../../components/FormularioEdicao"
 import type { CampoFormulario, ValoresFormulario } from "../../types/FormularioEdicao/FormularioEdicaoProps"
 import type { PessoaOrganograma } from "../../types/OrganogramaProps/OrganogramaProps"
@@ -20,9 +21,7 @@ import {
     reativar,
     type FuncionarioResponse,
 } from "../../services/funcionarioService"
-
-type Visao = "organograma" | "lista"
-type Status = FuncionarioResponse["statusFuncionario"]
+import type { Visao, Status } from "../../types/Funcionarios/FuncionariosTypes"
 
 const ROTULO_STATUS: Record<Status, string> = {
     ATIVO: "Ativo",

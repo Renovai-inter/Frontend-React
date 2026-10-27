@@ -25,3 +25,5 @@ export interface FormularioEdicaoProps {
     onFechar: () => void
     textoSalvar?: string
 }
+
+export type ErrosFormulario = Record<string, string | undefined>
