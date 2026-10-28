@@ -1,6 +1,7 @@
 import { Suspense } from 'react'
 import { Outlet } from 'react-router-dom'
 import Aside from '../../components/Aside'
+import ChatBot from '../../components/ChatBot'
 import PaginaCarregando from '../../components/PaginaCarregando'
 import './style.css'
 
@@ -15,6 +16,7 @@ function Layout() {
           <Outlet />
         </Suspense>
       </main>
+      <ChatBot />
     </div>
   )
 }
