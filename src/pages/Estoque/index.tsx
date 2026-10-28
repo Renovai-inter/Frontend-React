@@ -4,7 +4,8 @@ import axios from "axios"
 import Header from "../../components/Header"
 import Card from "../../components/Card"
 import Botao from "../../components/Botao"
-import DynamicTable, { type DynamicTableColumn } from "../../components/DynamicTable"
+import DynamicTable from "../../components/DynamicTable"
+import type { DynamicTableColumn } from "../../types/DynamicTableProps/DynamicTableProps"
 import FormularioEdicao from "../../components/FormularioEdicao"
 import type { CampoFormulario, ValoresFormulario } from "../../types/FormularioEdicao/FormularioEdicaoProps"
 import { lerSessao } from "../../utils/armazenamentoSessao"
@@ -28,17 +29,9 @@ import {
     listar as listarCategorias,
     type CategoriaMaterialResponse,
 } from "../../services/categoriaMaterialService"
-
-interface LinhaEstoque {
-    estoqueId: string
-    materialId: string
-    material: string
-    quantidadeKg: number
-    precoSugerido: number | null
-    valorTotal: number | null
-    disponivel: boolean
-    atualizadoEm: string
-}
+import type { LinhaEstoque } from "../../types/Estoque/EstoqueTypes"
+import Toast from "../../components/Toast"
+import { useToast } from "../../hooks/useToast"
 
 const COLUNAS_ESTOQUE: DynamicTableColumn<LinhaEstoque>[] = [
     { key: "material", label: "Material" },
@@ -169,6 +162,7 @@ function mensagemDeErro(err: unknown): string {
 }
 
 function Estoque() {
+    const toast = useToast()
     const cooperativaId = lerSessao("renovai_cooperativaId")
 
     const [linhas, setLinhas] = useState<LinhaEstoque[]>([])
@@ -212,6 +206,9 @@ function Estoque() {
     }, [cooperativaId])
 
     // Grava a nova quantidade e a disponibilidade do material (sem quantidade, nunca fica disponível)
+    // useCallback: a função é usada pela edição e pela exclusão e lê `materiais`; com a dependência
+    // declarada ela só é recriada quando a lista de materiais muda, e não a cada render da página
+    // (que acontece sempre que um popup abre/fecha ou um campo do formulário muda).
     const aplicarQuantidade = useCallback(
         async (linha: LinhaEstoque, novaQuantidadeKg: number, quererDisponivel: boolean, motivo: string) => {
             const atualizado = await atualizarQuantidade(linha.estoqueId, { novaQuantidadeKg, motivo })
@@ -256,6 +253,7 @@ function Estoque() {
             valores.disponibilidade === "disponivel",
             "Ajuste manual pela tela de estoque"
         )
+        toast.mostrar(`Estoque de ${editando.material} atualizado.`)
     }
 
     async function desfazerCategoria(categoriaId: string) {
@@ -318,6 +316,7 @@ function Estoque() {
 
         setMateriais((atual) => [...atual, material])
         setLinhas((atual) => [...atual, ...montarLinhas([estoque], [material])])
+        toast.mostrar("Material adicionado ao estoque.")
     }
 
     async function confirmarExclusao() {
@@ -327,6 +326,7 @@ function Estoque() {
         try {
             await aplicarQuantidade(excluindo, 0, false, "Material removido do estoque")
             setExcluindo(null)
+            toast.mostrar(`${excluindo.material} removido do estoque.`)
         } catch (err) {
             setErroExclusao(mensagemDeErro(err))
         } finally {
@@ -362,6 +362,7 @@ function Estoque() {
 
     return (
         <div className="estoque">
+            <Toast mensagem={toast.mensagem} chave={toast.chave} onFechar={toast.fechar} />
             <section className="estoque__head">
                 <Header titulo="Estoque" subtitulo="Gerencie os produtos em estoque" />
                 <Botao onClick={() => setAdicionando(true)}>Adicionar material</Botao>

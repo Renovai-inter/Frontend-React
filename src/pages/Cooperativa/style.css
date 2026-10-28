@@ -64,6 +64,7 @@
 
 .cooperativa__secao {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: 20px;
@@ -110,5 +111,26 @@
 @media (max-width: 800px) {
     .cooperativa__campos {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .cooperativa {
+        padding-right: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .cooperativa__topo {
+        flex-wrap: wrap;
+        text-align: center;
+    }
+
+    .cooperativa__identidade {
+        flex: 1 1 100%;
+    }
+
+    .cooperativa__campos {
+        gap: 18px;
     }
 }

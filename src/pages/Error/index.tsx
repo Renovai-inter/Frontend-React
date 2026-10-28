@@ -2,14 +2,10 @@ import { useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import Botao from "../../components/Botao"
 import type { ErroInfo } from "../../utils/erroNavegacao"
-import { encerrarSessao } from "../../utils/sessao"
+import { useAuth } from "../../hooks/useAuth"
 import "./style.css"
 import NimoChorando from "../../assets/nimo_chorando.png"
-
-interface TextoErro {
-    titulo: string
-    descricao: string
-}
+import type { TextoErro } from "../../types/Error/ErrorTypes"
 
 const TEXTOS_POR_STATUS: Record<number, TextoErro> = {
     401: {
@@ -49,6 +45,7 @@ function obterTexto({ status, mensagem }: ErroInfo): TextoErro {
 
 function ErrorPage() {
     const navigate = useNavigate()
+    const { sair } = useAuth()
     const location = useLocation()
     const [saindo, setSaindo] = useState(false)
 
@@ -57,7 +54,7 @@ function ErrorPage() {
 
     async function handleSair() {
         setSaindo(true)
-        await encerrarSessao()
+        await sair()
         navigate("/login", { replace: true })
     }
 

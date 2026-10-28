@@ -4,7 +4,8 @@ import Header from "../../components/Header"
 import Botao from "../../components/Botao"
 import Abas from "../../components/Abas"
 import Organograma from "../../components/Organograma"
-import DynamicTable, { type DynamicTableColumn } from "../../components/DynamicTable"
+import DynamicTable from "../../components/DynamicTable"
+import type { DynamicTableColumn } from "../../types/DynamicTableProps/DynamicTableProps"
 import FormularioEdicao from "../../components/FormularioEdicao"
 import type { CampoFormulario, ValoresFormulario } from "../../types/FormularioEdicao/FormularioEdicaoProps"
 import type { PessoaOrganograma } from "../../types/OrganogramaProps/OrganogramaProps"
@@ -20,9 +21,9 @@ import {
     reativar,
     type FuncionarioResponse,
 } from "../../services/funcionarioService"
-
-type Visao = "organograma" | "lista"
-type Status = FuncionarioResponse["statusFuncionario"]
+import type { Visao, Status } from "../../types/Funcionarios/FuncionariosTypes"
+import Toast from "../../components/Toast"
+import { useToast } from "../../hooks/useToast"
 
 const ROTULO_STATUS: Record<Status, string> = {
     ATIVO: "Ativo",
@@ -113,6 +114,7 @@ function paraPessoa(f: FuncionarioResponse): PessoaOrganograma {
 }
 
 function Funcionarios() {
+    const toast = useToast()
     const cooperativaId = lerSessao("renovai_cooperativaId")
 
     const [visao, setVisao] = useState<Visao>("organograma")
@@ -152,6 +154,8 @@ function Funcionarios() {
         }
     }, [cooperativaId])
 
+    // useMemo: converter e separar a lista inteira em gestores/equipe só precisa refazer quando `funcionarios`
+    // muda; trocar de aba ou abrir o popup re-renderiza a página sem recalcular o organograma.
     const { gestores, equipe } = useMemo(() => {
         const pessoas = funcionarios.map(paraPessoa)
         return {
@@ -171,6 +175,7 @@ function Funcionarios() {
         const acao = novo === "ATIVO" ? reativar : novo === "AFASTADO" ? afastar : desativar
         const atualizado = await acao(editando.funcionarioId)
         setFuncionarios((atual) => atual.map((f) => (f.funcionarioId === atualizado.funcionarioId ? atualizado : f)))
+        toast.mostrar(`Status de ${atualizado.usuarioNome} atualizado.`)
     }
 
     async function salvarNovo(valores: ValoresFormulario) {
@@ -184,6 +189,7 @@ function Funcionarios() {
             cooperativaId,
         })
         setFuncionarios((atual) => [...atual, criado])
+        toast.mostrar("Funcionário adicionado com sucesso.")
     }
 
     if (carregando) return <p className="funcionarios__estado">Carregando...</p>
@@ -191,11 +197,12 @@ function Funcionarios() {
 
     return (
         <div className="funcionarios">
+            <Toast mensagem={toast.mensagem} chave={toast.chave} onFechar={toast.fechar} />
             <section className="funcionarios__head">
                 <Header
                     titulo="Gestores e cooperados"
                     subtitulo={`Pessoas com acesso à ${cooperativa?.nome ?? "cooperativa"}`}
-                    acoes={<Botao onClick={() => setAdicionando(true)}>+ Adicionar funcionário</Botao>}
+                    acoes={<Botao onClick={() => setAdicionando(true)}>Adicionar funcionário</Botao>}
                 />
             </section>
 

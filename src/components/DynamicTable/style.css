@@ -127,4 +127,9 @@
     .dynamic-table {
         padding: 0 14px 8px;
     }
+
+    .dynamic-table__header {
+        flex-wrap: wrap;
+        padding: 0 14px 8px 0;
+    }
 }

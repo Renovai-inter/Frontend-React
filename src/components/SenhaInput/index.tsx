@@ -1,7 +1,6 @@
 import "./style.css"
-import { useState, type InputHTMLAttributes } from "react"
-
-type SenhaInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type">
+import { useState } from "react"
+import type { SenhaInputProps } from "../../types/SenhaInputProps/SenhaInputProps"
 
 function SenhaInput(props: SenhaInputProps) {
   const [mostrar, setMostrar] = useState(false)

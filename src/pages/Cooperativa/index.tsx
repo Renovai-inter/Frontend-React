@@ -7,14 +7,15 @@ import type { CampoFormulario, ValoresFormulario } from "../../types/FormularioE
 import {
     atualizar as atualizarCooperativa,
     buscarPorId as buscarCooperativa,
-    type CooperativaRequest,
     type CooperativaResponse,
 } from "../../services/cooperativaService"
 import { atualizar as atualizarEndereco } from "../../services/enderecoService"
 import { lerSessao } from "../../utils/armazenamentoSessao"
 import { mascaraCep } from "../../utils/validators"
+import type { Contato } from "../../types/Cooperativa/CooperativaTypes"
+import Toast from "../../components/Toast"
+import { useToast } from "../../hooks/useToast"
 
-type Contato = NonNullable<CooperativaRequest["contatoPreferencial"]>
 const CONTATOS: Contato[] = ["WHATSAPP", "TELEFONE", "EMAIL"]
 
 const CAMPOS_COOPERATIVA: CampoFormulario[] = [
@@ -48,6 +49,7 @@ const CAMPOS_ENDERECO: CampoFormulario[] = [
 ]
 
 function Cooperativa() {
+    const toast = useToast()
     const cooperativaId = lerSessao("renovai_cooperativaId")
 
     const [cooperativa, setCooperativa] = useState<CooperativaResponse | null>(null)
@@ -91,6 +93,7 @@ function Cooperativa() {
             contatoPreferencial: valores.contatoPreferencial as Contato,
         })
         setCooperativa(atualizada)
+        toast.mostrar("Dados da cooperativa atualizados.")
     }
 
     async function salvarEndereco(valores: ValoresFormulario) {
@@ -105,6 +108,7 @@ function Cooperativa() {
             cidade: valores.cidade,
         })
         setCooperativa({ ...cooperativa, cidade: atualizado.cidade, endereco: atualizado })
+        toast.mostrar("Endereço atualizado.")
     }
 
     if (carregando) return <p className="cooperativa__estado">Carregando...</p>
@@ -131,6 +135,7 @@ function Cooperativa() {
 
     return (
         <div className="cooperativa">
+            <Toast mensagem={toast.mensagem} chave={toast.chave} onFechar={toast.fechar} />
             <Header titulo="Minha cooperativa" subtitulo="Gerencie os dados e o endereço da cooperativa" />
 
             <section className="cooperativa__topo">

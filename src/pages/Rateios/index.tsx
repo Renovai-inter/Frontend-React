@@ -4,7 +4,8 @@ import { useCallback, useEffect, useMemo, useState } from "react"
 import Header from "../../components/Header"
 import Botao from "../../components/Botao"
 import Card from "../../components/Card"
-import DynamicTable, { type DynamicTableColumn } from "../../components/DynamicTable"
+import DynamicTable from "../../components/DynamicTable"
+import type { DynamicTableColumn } from "../../types/DynamicTableProps/DynamicTableProps"
 import { lerSessao } from "../../utils/armazenamentoSessao"
 import { formatarDecimal } from "../../utils/formatadores"
 import {
@@ -19,14 +20,9 @@ import { listarPorCooperativa as listarFuncionarios } from "../../services/funci
 import { listarPorCooperativa as listarColetas } from "../../services/coletaService"
 import { listarLancamentosPorMes, type LancamentoDespesaResponse } from "../../services/despesaService"
 import { calcularTotalAcumulado, calcularTotalLiquido } from "../../services/functionEProceduresService"
-
-type TipoRateio = "GERAL" | "PROPORCIONAL"
-
-interface Participante {
-    funcionarioId: string
-    nome: string
-    kg: number
-}
+import type { TipoRateio, Participante } from "../../types/Rateios/RateiosTypes"
+import Toast from "../../components/Toast"
+import { useToast } from "../../hooks/useToast"
 
 const ROTULO_TIPO: Record<TipoRateio, string> = {
     GERAL: "Geral (partes iguais)",
@@ -82,8 +78,11 @@ function calcularPercentuais(participantes: Participante[], tipo: TipoRateio): R
 }
 
 function Rateios() {
+    const toast = useToast()
     const cooperativaId = lerSessao("renovai_cooperativaId")
     const gestorId = lerSessao("renovai_funcionarioId")
+    // useMemo: `periodo` é dependência de `carregar` (useCallback) e do useEffect que busca os dados.
+    // Sem o useMemo, um novo objeto seria criado a cada render e as 6 chamadas à API refeitas em loop.
     const periodo = useMemo(() => periodoDoMes(new Date()), [])
 
     const [historico, setHistorico] = useState<RateioListaResponse[]>([])
@@ -104,6 +103,8 @@ function Rateios() {
     const [carregandoDetalhe, setCarregandoDetalhe] = useState(false)
     const [erroDetalhe, setErroDetalhe] = useState<string | null>(null)
 
+    // useCallback: é chamada no useEffect inicial e de novo após fechar o rateio. A identidade estável
+    // (só muda com cooperativaId ou periodo) evita que o useEffect rode a cada render e refaça as consultas.
     const carregar = useCallback(
         async (cancelado: () => boolean = () => false) => {
             if (!cooperativaId) {
@@ -230,6 +231,7 @@ function Rateios() {
             if (tipo === "GERAL") await executarRateioGeral(dados)
             else await executarRateioProporcional(dados)
             await carregar()
+            toast.mostrar(`Rateio de ${periodo.rotulo} fechado com sucesso.`)
         } catch {
             setErroFechamento("Não foi possível fechar o rateio. Tente novamente.")
         } finally {
@@ -268,6 +270,7 @@ function Rateios() {
 
     return (
         <div className="rateios">
+            <Toast mensagem={toast.mensagem} chave={toast.chave} onFechar={toast.fechar} />
             <Header titulo="Rateios" subtitulo="Acompanhe e feche os rateios da cooperativa" />
 
             <div className="rateios__informativo">
@@ -347,7 +350,7 @@ function Rateios() {
                             <thead>
                                 <tr>
                                     <th scope="col">Cooperado</th>
-                                    <th scope="col">Peso no mês</th>
+                                    <th scope="col" className="rateios__peso">Peso no mês</th>
                                     <th scope="col">%</th>
                                     <th scope="col">Valor</th>
                                 </tr>
@@ -392,7 +395,8 @@ function Rateios() {
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colSpan={2}>Total</td>
+                                    <td>Total</td>
+                                    <td className="rateios__peso" />
                                     <td className={somaValida ? "" : "rateios__soma--invalida"}>{formatarDecimal(somaPercentuais)}%</td>
                                     <td className="rateios__valor">{formatarMoeda((totalLiquido * somaPercentuais) / 100)}</td>
                                 </tr>

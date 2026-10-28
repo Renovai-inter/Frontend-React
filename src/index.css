@@ -24,3 +24,8 @@ body {
     width: 100%;
     background-color: var(--bege-renovai);
 }
+@media (max-width: 640px) {
+    body {
+        align-items: center;
+    }
+}

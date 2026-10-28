@@ -1,24 +1,48 @@
 import { useEffect, useState } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import './style.css'
 import Nome from '../../assets/nome_renovai_aside.svg'
-import { encerrarSessao } from '../../utils/sessao'
+import { useAuth } from '../../hooks/useAuth'
 import { lerSessao } from '../../utils/armazenamentoSessao'
+import { lerPreferencias, salvarPreferencias } from '../../utils/armazenamentoLocal'
 import { aoPerfilAtualizado } from '../../utils/eventosPerfil'
 import { buscarPorId, type UsuarioResponse } from '../../services/usuarioService'
 
-function Aside() {
-    const tamanhoTela = window.innerWidth;
+const CONSULTA_MOBILE = "(max-width: 768px)";
 
+function Aside() {
     const navigate = useNavigate();
+    const { pathname } = useLocation();
+    const { sair } = useAuth();
     const [usuario, setUsuario] = useState<UsuarioResponse | null>(null);
     const [saindo, setSaindo] = useState(false);
     const email = lerSessao("renovai_email") ?? "";
-    const [retraido, setRetraido] = useState(() => tamanhoTela > 768 ? localStorage.getItem("renovai_aside_retraido") === "true" : localStorage.getItem("renovai_aside_retraido") === "false");
+    const [mobile, setMobile] = useState(() => window.matchMedia(CONSULTA_MOBILE).matches);
+    // No mobile o menu sempre começa recolhido; no desktop vale a preferência salva
+    const [retraido, setRetraido] = useState(() =>
+        window.matchMedia(CONSULTA_MOBILE).matches || lerPreferencias().asideRetraido === true
+    );
+
+    // Ao entrar na largura mobile recolhe o menu; ao voltar ao desktop restaura a preferência
+    useEffect(() => {
+        const consulta = window.matchMedia(CONSULTA_MOBILE);
+        function aoMudarLargura(e: MediaQueryListEvent) {
+            setMobile(e.matches);
+            setRetraido(e.matches || lerPreferencias().asideRetraido === true);
+        }
+        consulta.addEventListener("change", aoMudarLargura);
+        return () => consulta.removeEventListener("change", aoMudarLargura);
+    }, []);
+
+    // Navegou para outra página: fecha o menu sobreposto
+    useEffect(() => {
+        if (mobile) setRetraido(true);
+    }, [pathname, mobile]);
 
     function alternarAside() {
         setRetraido((atual) => {
-            localStorage.setItem("renovai_aside_retraido", String(!atual));
+            // No mobile o estado é temporário e não sobrescreve a preferência do desktop
+            if (!mobile) salvarPreferencias({ asideRetraido: !atual });
             return !atual;
         });
     }
@@ -49,7 +73,7 @@ function Aside() {
 
     async function handleSignOut() {
         setSaindo(true);
-        await encerrarSessao();
+        await sair();
         navigate("/login", { replace: true });
     }
 
@@ -57,8 +81,14 @@ function Aside() {
     const inicial = usuario?.nome?.trim().charAt(0).toUpperCase() ?? "";
 
 
+    const classes = [retraido ? "retraido" : "", mobile ? "mobile" : ""].filter(Boolean).join(" ");
+
     return (
-        <aside className={retraido ? "retraido" : ""}>
+        <>
+        {mobile && !retraido && (
+            <div className="aside__fundo" onClick={alternarAside} aria-hidden="true" />
+        )}
+        <aside className={classes}>
             <div>
                 <button
                     type="button"
@@ -139,6 +169,7 @@ function Aside() {
                 </button>
             </div>
         </aside>
+        </>
     )
 }
 export default Aside

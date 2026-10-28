@@ -1,10 +1,12 @@
 import "./style.css"
 import "../../components/FormularioEdicao/style.css"
 import { useEffect, useState } from "react"
+import { useNavigate, useParams } from "react-router-dom"
 import Header from "../../components/Header"
 import Botao from "../../components/Botao"
 import Card from "../../components/Card"
-import DynamicTable, { type DynamicTableColumn } from "../../components/DynamicTable"
+import DynamicTable from "../../components/DynamicTable"
+import type { DynamicTableColumn } from "../../types/DynamicTableProps/DynamicTableProps"
 import { lerSessao } from "../../utils/armazenamentoSessao"
 import {
     listarPorCooperativa as listarNegociacoes,
@@ -13,33 +15,7 @@ import {
     type NegociacaoMensagemResponse,
 } from "../../services/negociacaoService"
 import { buscarPorId as buscarPerfil } from "../../services/perfilService"
-
-interface LinhaPedido {
-    negociacaoId: string
-    pedidoId: string
-    empresa: string
-    status: string
-    valorTotal: number
-    dataInicio: string
-    dataFechamento: string
-    itens: string
-}
-
-interface MensagemChat {
-    mensagemId: string
-    autor: "empresa" | "cooperativa"
-    remetente: string
-    texto: string
-    tipo: string
-    dataEnvio: string
-}
-
-interface EstadoChat {
-    pedido: LinhaPedido | null
-    mensagens: MensagemChat[]
-    carregando: boolean
-    erro: string | null
-}
+import type { LinhaPedido, MensagemChat, EstadoChat } from "../../types/Pedidos/PedidosTypes"
 
 const CHAT_FECHADO: EstadoChat = { pedido: null, mensagens: [], carregando: false, erro: null }
 
@@ -92,6 +68,11 @@ function Pedidos() {
     const [erro, setErro] = useState<string | null>(null)
     const [chat, setChat] = useState<EstadoChat>(CHAT_FECHADO)
 
+    // O chat é controlado pela URL: /pedidos/:negociacaoId abre a negociação, /pedidos fecha.
+    const { negociacaoId } = useParams<{ negociacaoId: string }>()
+    const navigate = useNavigate()
+    const fecharChat = () => navigate("/pedidos")
+
     useEffect(() => {
         if (!cooperativaId) {
             setErro("Sessão sem cooperativa identificada. Faça login novamente.")
@@ -136,36 +117,55 @@ function Pedidos() {
     useEffect(() => {
         if (!chatAberto) return
         function aoTeclar(event: KeyboardEvent) {
-            if (event.key === "Escape") setChat(CHAT_FECHADO)
+            if (event.key === "Escape") navigate("/pedidos")
         }
         document.addEventListener("keydown", aoTeclar)
         return () => document.removeEventListener("keydown", aoTeclar)
-    }, [chatAberto])
+    }, [chatAberto, navigate])
 
-    async function abrirChat(pedido: LinhaPedido) {
-        setChat({ pedido, mensagens: [], carregando: true, erro: null })
-        const aindaAberto = (atual: EstadoChat) => atual.pedido?.negociacaoId === pedido.negociacaoId
-
-        try {
-            const recebidas = await listarMensagens(pedido.negociacaoId)
-            const autores = await identificarAutores(recebidas, emailSessao)
-            const mensagens: MensagemChat[] = recebidas.map((m) => ({
-                mensagemId: m.mensagemId,
-                autor: autores.get(m.remetenteId) ?? "empresa",
-                remetente: m.remetenteNome,
-                texto: m.mensagem,
-                tipo: m.tipoMensagem,
-                dataEnvio: m.dataEnvio,
-            }))
-            setChat((atual) => (aindaAberto(atual) ? { ...atual, mensagens, carregando: false } : atual))
-        } catch {
-            setChat((atual) =>
-                aindaAberto(atual)
-                    ? { ...atual, carregando: false, erro: "Não foi possível carregar as mensagens." }
-                    : atual
-            )
+    // Sincroniza o chat com o parâmetro da rota. A verificação de presença é feita aqui:
+    // sem parâmetro o chat fica fechado; com parâmetro que não existe na lista, vai para a página 404.
+    useEffect(() => {
+        if (!negociacaoId) {
+            setChat(CHAT_FECHADO)
+            return
         }
-    }
+        if (carregando || erro) return // espera a lista chegar
+
+        const pedido = linhas.find((l) => l.negociacaoId === negociacaoId)
+        if (!pedido) {
+            navigate("/error", { replace: true, state: { status: 404, mensagem: "Negociação não encontrada." } })
+            return
+        }
+
+        let cancelado = false
+        setChat({ pedido, mensagens: [], carregando: true, erro: null })
+
+        async function carregarMensagens() {
+            try {
+                const recebidas = await listarMensagens(pedido!.negociacaoId)
+                const autores = await identificarAutores(recebidas, emailSessao)
+                if (cancelado) return
+                const mensagens: MensagemChat[] = recebidas.map((m) => ({
+                    mensagemId: m.mensagemId,
+                    autor: autores.get(m.remetenteId) ?? "empresa",
+                    remetente: m.remetenteNome,
+                    texto: m.mensagem,
+                    tipo: m.tipoMensagem,
+                    dataEnvio: m.dataEnvio,
+                }))
+                setChat((atual) => ({ ...atual, mensagens, carregando: false }))
+            } catch {
+                if (cancelado) return
+                setChat((atual) => ({ ...atual, carregando: false, erro: "Não foi possível carregar as mensagens." }))
+            }
+        }
+        void carregarMensagens()
+
+        return () => {
+            cancelado = true
+        }
+    }, [negociacaoId, carregando, erro, linhas, emailSessao, navigate])
 
     const colunas: DynamicTableColumn<LinhaPedido>[] = [
         { key: "empresa", label: "Empresa" },
@@ -194,7 +194,7 @@ function Pedidos() {
             key: "negociacaoId",
             label: "Negociação",
             render: (l) => (
-                <button type="button" className="pedidos__chat-botao" onClick={() => abrirChat(l)}>
+                <button type="button" className="pedidos__chat-botao" onClick={() => navigate(`/pedidos/${l.negociacaoId}`)}>
                     Ver chat
                 </button>
             ),
@@ -230,7 +230,7 @@ function Pedidos() {
                 <div
                     className="formulario-edicao__overlay"
                     onMouseDown={(event) => {
-                        if (event.target === event.currentTarget) setChat(CHAT_FECHADO)
+                        if (event.target === event.currentTarget) fecharChat()
                     }}
                 >
                     <div
@@ -277,7 +277,7 @@ function Pedidos() {
                         <p className="pedidos__chat-aviso">Histórico da negociação do pedido da empresa {chat.pedido.empresa}</p>
 
                         <div className="formulario-edicao__acoes">
-                            <Botao onClick={() => setChat(CHAT_FECHADO)}>Fechar</Botao>
+                            <Botao onClick={fecharChat}>Fechar</Botao>
                         </div>
                     </div>
                 </div>

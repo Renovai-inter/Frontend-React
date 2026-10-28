@@ -1,10 +1,10 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { lerSessao } from "../utils/armazenamentoSessao";
+import { useAuth } from "../hooks/useAuth";
 
 function PrivateRoute() {
-    const token = lerSessao("renovai_token");
+    const { autenticado } = useAuth();
 
-    return token ? <Outlet /> : <Navigate to="/login" replace />;
+    return autenticado ? <Outlet /> : <Navigate to="/login" replace />;
 }
 
 export default PrivateRoute;

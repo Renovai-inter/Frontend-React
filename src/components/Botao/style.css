@@ -32,3 +32,9 @@
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+@media (max-width: 480px) {
+    .botao {
+        padding: 10px 14px;
+    }
+}

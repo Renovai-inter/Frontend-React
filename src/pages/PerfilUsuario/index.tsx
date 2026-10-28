@@ -8,6 +8,8 @@ import { atualizarPerfil, buscarPorId, type UsuarioResponse } from "../../servic
 import { lerSessao } from "../../utils/armazenamentoSessao"
 import { notificarPerfilAtualizado } from "../../utils/eventosPerfil"
 import { isCpfValido, mascaraCpf } from "../../utils/validators"
+import Toast from "../../components/Toast"
+import { useToast } from "../../hooks/useToast"
 
 // Campos do usuário que podem ser alterados nesta página
 const CAMPOS_USUARIO: CampoFormulario[] = [
@@ -38,6 +40,7 @@ function formatarDataHora(data?: string | null): string {
 }
 
 function PerfilUsuario() {
+    const toast = useToast()
     const email = lerSessao("renovai_email")
     const usuarioId = lerSessao("renovai_userId")
 
@@ -81,6 +84,7 @@ function PerfilUsuario() {
         })
         setUsuario({ ...usuario, ...atualizado })
         notificarPerfilAtualizado(atualizado)
+        toast.mostrar("Perfil atualizado com sucesso.")
     }
 
     if (carregando) return <p className="perfil__estado">Carregando...</p>
@@ -99,6 +103,7 @@ function PerfilUsuario() {
 
     return (
         <div className="perfil">
+            <Toast mensagem={toast.mensagem} chave={toast.chave} onFechar={toast.fechar} />
             <Header titulo="Meu perfil" subtitulo="Gerencie seus dados pessoais e de acesso" />
 
             <section className="perfil__topo">

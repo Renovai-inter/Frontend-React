@@ -6,7 +6,13 @@
     padding-right: 30px;
     padding-bottom: 30px;
 }
-
+.rotas__head{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+}
 .rotas__estado {
     padding: 40px 0;
     color: var(--cinza-texto);
@@ -253,7 +259,7 @@
 
 @media (max-width: 640px) {
     .rotas {
-        padding-right: 16px;
+        padding-right: 0;
     }
 
     .rotas__painel {

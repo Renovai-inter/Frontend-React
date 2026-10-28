@@ -3,6 +3,7 @@
     flex-direction: column;
     gap: 28px;
     min-width: 0;
+    max-width: 100%;
     padding-right: 30px;
     padding-bottom: 30px;
 }
@@ -14,6 +15,11 @@
 
 .rateios__estado--erro {
     color: var(--vermelho-renovai);
+}
+
+.rateios > * {
+    min-width: 0;
+    max-width: 100%;
 }
 
 .rateios__informativo {
@@ -183,6 +189,11 @@
     font-weight: 600;
     cursor: pointer;
     text-decoration: underline;
+}
+
+.rateios__distribuicao {
+    min-width: 0;
+    overflow-x: auto;
 }
 
 .rateios__tabela {
@@ -366,18 +377,57 @@
 
 @media (max-width: 640px) {
     .rateios {
-        padding-right: 16px;
+        padding-right: 0;
     }
 
     .rateios__aberto {
         padding: 16px;
     }
 
-    .rateios__mini-barra {
+    .rateios__aberto-topo {
+        flex-wrap: wrap;
+    }
+
+    .rateios__acumulado-linha {
+        flex-wrap: wrap;
+        gap: 4px 12px;
+    }
+
+    .rateios__acumulado-linha strong {
+        font-size: 1.25rem;
+    }
+
+    .rateios__mini-barra,
+    .rateios__peso {
         display: none;
     }
 
-    .rateios__peso {
+    .rateios__tabela th,
+    .rateios__tabela td {
+        padding: 10px 4px;
+    }
+
+    .rateios__tabela td:first-child {
+        overflow-wrap: anywhere;
+    }
+
+    .rateios__avatar {
+        width: 28px;
+        height: 28px;
+        flex: none;
+    }
+
+    .rateios__despesas-grade {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 400px) {
+    .rateios__pessoa .rateios__avatar {
         display: none;
+    }
+
+    .rateios__entrada--pequena {
+        width: 64px;
     }
 }

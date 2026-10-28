@@ -6,8 +6,7 @@ import axios from "axios"
 import Nome from "../../assets/nome_renovai.svg"
 import SenhaInput from "../../components/SenhaInput"
 import { esqueciSenha, redefinirSenha, verificarCodigo } from "../../services/authService"
-
-type Etapa = "email" | "codigo" | "senha" | "concluido"
+import type { Etapa } from "../../types/RedefinirSenha/RedefinirSenhaTypes"
 
 const TAMANHO_MINIMO = 6
 const REGEX_EMAIL = /^\S+@\S+\.\S+$/

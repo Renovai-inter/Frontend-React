@@ -155,3 +155,19 @@
 .organograma__avatar--gestor { background: #F6D9E5; color: var(--vermelho-renovai); }
 .organograma__avatar--cooperado { background: #DFEEDF; color: var(--verde-base-renovai); }
 .organograma__avatar--motorista { background: #F1F4DA; color: #6f7f2a; }
+
+@media (max-width: 480px) {
+    .organograma__raiz {
+        width: 220px;
+    }
+
+    .organograma__pessoas li {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .organograma__pessoa {
+        width: 148px;
+        padding: 14px 8px;
+    }
+}

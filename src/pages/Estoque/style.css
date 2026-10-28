@@ -11,6 +11,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
 }
 
 .estoque__estado {
@@ -70,7 +72,7 @@
 
 @media (max-width: 640px) {
     .estoque {
-        padding-right: 16px;
+        padding-right: 0;
     }
 
     .estoque__cards > * {

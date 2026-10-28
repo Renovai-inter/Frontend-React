@@ -18,6 +18,8 @@ import {
     type RotaResponse,
 } from "../../services/rotaService"
 import { criar as criarEndereco } from "../../services/enderecoService"
+import Toast from "../../components/Toast"
+import { useToast } from "../../hooks/useToast"
 
 const TIPOS_LOCAL = ["Comércio", "Condomínio", "Instituição", "Destino"]
 
@@ -52,6 +54,7 @@ const textoParadas = (quantidade: number) => `${quantidade} ${quantidade === 1 ?
 const ordenarParadas = (paradas: RotaEnderecoResponse[]) => [...paradas].sort((a, b) => a.ordem - b.ordem)
 
 function RotasColeta() {
+    const toast = useToast()
     const cooperativaId = lerSessao("renovai_cooperativaId")
 
     const [rotas, setRotas] = useState<RotaResponse[]>([])
@@ -123,6 +126,7 @@ function RotasColeta() {
         })
         setRotas((atual) => [...atual, { ...criada, enderecos: criada.enderecos ?? [] }])
         setSelecionadaId(criada.rotaId)
+        toast.mostrar("Rota criada com sucesso.")
     }
 
     async function salvarEdicaoRota(valores: ValoresFormulario) {
@@ -134,6 +138,7 @@ function RotasColeta() {
         })
         // A resposta do PUT pode não trazer as paradas; preserva as que já temos
         substituirRota({ ...atualizada, enderecos: atualizada.enderecos ?? selecionada.enderecos })
+        toast.mostrar("Rota atualizada.")
     }
 
     async function confirmarExclusao() {
@@ -146,6 +151,7 @@ function RotasColeta() {
             setRotas(restantes)
             setSelecionadaId(restantes[0]?.rotaId ?? null)
             setExcluindo(false)
+            toast.mostrar("Rota excluída.")
         } catch {
             setErroAcao("Não foi possível excluir a rota. Tente novamente.")
         } finally {
@@ -170,6 +176,7 @@ function RotasColeta() {
             ordem: proximaOrdem,
         })
         substituirRota({ ...selecionada, enderecos: [...selecionada.enderecos, parada] })
+        toast.mostrar("Parada adicionada.")
     }
 
     async function removerParada(parada: RotaEnderecoResponse) {
@@ -181,6 +188,7 @@ function RotasColeta() {
                 ...selecionada,
                 enderecos: selecionada.enderecos.filter((p) => p.rotaEnderecoId !== parada.rotaEnderecoId),
             })
+            toast.mostrar("Parada removida.")
         } catch {
             setErroAcao("Não foi possível remover a parada. Tente novamente.")
         }
@@ -194,11 +202,11 @@ function RotasColeta() {
 
     return (
         <div className="rotas">
-            <Header
-                titulo="Rotas de Coleta"
-                subtitulo="Organize os trajetos e as paradas de cada rota da cooperativa"
-                acoes={<Botao onClick={() => setCriandoRota(true)}>+ Nova rota</Botao>}
-            />
+            <Toast mensagem={toast.mensagem} chave={toast.chave} onFechar={toast.fechar} />
+            <section className="rotas__head">
+                <Header titulo="Rotas de Coleta"subtitulo="Organize os trajetos e as paradas de cada rota da cooperativa" />
+                <Botao onClick={() => setCriandoRota(true)}>Nova rota</Botao>
+            </section>
 
             <div className="rotas__informativo">
                 <Card title="Rotas ativas" bigNumber={`${totalAtivas}`} subtitle="disponíveis para vincular a coletas" />
@@ -261,7 +269,7 @@ function RotasColeta() {
                                 <Botao variante="secundario" onClick={() => setEditandoRota(true)}>
                                     Editar rota
                                 </Botao>
-                                <Botao onClick={() => setAdicionandoParada(true)}>+ Adicionar parada</Botao>
+                                <Botao onClick={() => setAdicionandoParada(true)}>Adicionar parada</Botao>
                             </div>
 
                             {erroAcao && !excluindo && <p className="formulario-edicao__erro-geral">{erroAcao}</p>}

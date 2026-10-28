@@ -3,16 +3,16 @@ import { useEffect, useId, useState, type ChangeEvent, type FormEvent } from "re
 import axios from "axios"
 import Botao from "../Botao"
 import { arquivoParaDataUrl } from "../../utils/imagem"
+import { sanitizarTexto } from "../../utils/sanitizar"
 import type {
     CampoFormulario,
     FormularioEdicaoProps,
     ValoresFormulario,
 } from "../../types/FormularioEdicao/FormularioEdicaoProps"
+import type { ErrosFormulario } from "../../types/FormularioEdicao/FormularioEdicaoProps"
 
-type Erros = Record<string, string | undefined>
-
-function validarCampos(campos: CampoFormulario[], valores: ValoresFormulario): Erros {
-    const erros: Erros = {}
+function validarCampos(campos: CampoFormulario[], valores: ValoresFormulario): ErrosFormulario {
+    const erros: ErrosFormulario = {}
     for (const campo of campos) {
         const valor = valores[campo.nome].trim()
         if (!valor) {
@@ -44,7 +44,7 @@ function Dialog({
     const [valores, setValores] = useState<ValoresFormulario>(() =>
         Object.fromEntries(campos.map((c) => [c.nome, valoresIniciais[c.nome] ?? ""]))
     )
-    const [erros, setErros] = useState<Erros>({})
+    const [erros, setErros] = useState<ErrosFormulario>({})
     const [erroGeral, setErroGeral] = useState<string | null>(null)
     const [salvando, setSalvando] = useState(false)
 
@@ -88,7 +88,11 @@ function Dialog({
         setErroGeral(null)
         try {
             const limpos = Object.fromEntries(
-                Object.entries(valores).map(([chave, valor]) => [chave, valor.trim()])
+                // Imagem (data URL em base64) passa direto; os demais campos de texto são sanitizados
+                Object.entries(valores).map(([chave, valor]) => [
+                    chave,
+                    valor.startsWith("data:image/") ? valor.trim() : sanitizarTexto(valor),
+                ])
             )
             await onSalvar(limpos)
             onFechar()

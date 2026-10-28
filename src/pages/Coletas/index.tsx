@@ -3,24 +3,15 @@ import "../../components/FormularioEdicao/style.css"
 import { useEffect, useState } from "react"
 import Header from "../../components/Header"
 import Botao from "../../components/Botao"
-import DynamicTable, { type DynamicTableColumn } from "../../components/DynamicTable"
+import DynamicTable from "../../components/DynamicTable"
+import type { DynamicTableColumn } from "../../types/DynamicTableProps/DynamicTableProps"
 import { lerSessao } from "../../utils/armazenamentoSessao"
 import { formatarDecimal } from "../../utils/formatadores"
 import { listarPorCooperativa as listarColetas } from "../../services/coletaService"
 import { listarPorCooperativa as listarRotas } from "../../services/rotaService"
 import { listarPorCooperativa as listarTriagens, type TriagemResponse } from "../../services/triagemService"
 import Card from "../../components/Card"
-
-interface LinhaColeta {
-    coletaId: string
-    cooperado: string
-    status: string
-    quantidadeKg: number
-    tipo: string
-    dataColeta: string
-    rota: string
-    materiais: TriagemResponse[]
-}
+import type { LinhaColeta } from "../../types/Coletas/ColetasTypes"
 
 const ROTULO_TIPO: Record<string, string> = {
     EXTERNA: "Externa",
