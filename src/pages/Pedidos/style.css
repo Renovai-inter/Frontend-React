@@ -78,7 +78,8 @@
 
 .pedidos__chat-legenda {
     display: flex;
-    gap: 14px;
+    flex-wrap: wrap;
+    gap: 6px 14px;
     margin-bottom: 10px;
     font-size: 0.8rem;
     font-weight: 600;
@@ -175,5 +176,13 @@
 
     .pedidos__informativo {
         flex-direction: column;
+    }
+
+    .pedidos__mensagem {
+        max-width: 92%;
+    }
+
+    .pedidos__chat-mensagens {
+        padding: 8px;
     }
 }

@@ -97,3 +97,19 @@
         padding-right: 0;
     }
 }
+
+@media (max-width: 480px) {
+    .perfil__topo {
+        flex-wrap: wrap;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .perfil__identidade {
+        flex: 1 1 100%;
+    }
+
+    .perfil__campos {
+        gap: 18px;
+    }
+}
