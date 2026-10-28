@@ -78,6 +78,12 @@
     align-items: center;
     color: var(--bege-renovai);
 }
+.login__nimo {
+    width: min(70%, 520px);
+    height: auto;
+    -webkit-user-select: none;
+    user-select: none;
+}
 .login__utils{
     display: flex;
     justify-content: space-between;

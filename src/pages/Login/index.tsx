@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Nome from '../../assets/nome_renovai.svg'
 import SenhaInput from '../../components/SenhaInput';
+import CabecaNimo from '../../assets/cabeca_nimo.png'
 import { useAuth } from "../../hooks/useAuth";
 
 function Login() {
@@ -71,7 +72,7 @@ function Login() {
         </form>
       </section>
       <section className="login__sidespace">
-
+        <img src={CabecaNimo} alt="Nimo, mascote da Renovai" className="login__nimo" />
       </section>
     </div>
   );
