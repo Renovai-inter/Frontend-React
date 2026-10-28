@@ -23,6 +23,7 @@ import { calcularTotalAcumulado, calcularTotalLiquido } from "../../services/fun
 import type { TipoRateio, Participante } from "../../types/Rateios/RateiosTypes"
 import Toast from "../../components/Toast"
 import { useToast } from "../../hooks/useToast"
+import { useFocoDialogo } from "../../hooks/useFocoDialogo"
 
 const ROTULO_TIPO: Record<TipoRateio, string> = {
     GERAL: "Geral (partes iguais)",
@@ -78,6 +79,7 @@ function calcularPercentuais(participantes: Participante[], tipo: TipoRateio): R
 }
 
 function Rateios() {
+    const refDialogo = useFocoDialogo()
     const toast = useToast()
     const cooperativaId = lerSessao("renovai_cooperativaId")
     const gestorId = lerSessao("renovai_funcionarioId")
@@ -265,8 +267,8 @@ function Rateios() {
         },
     ]
 
-    if (carregando) return <p className="rateios__estado">Carregando...</p>
-    if (erro) return <p className="rateios__estado rateios__estado--erro">{erro}</p>
+    if (carregando) return <p className="rateios__estado" role="status">Carregando...</p>
+    if (erro) return <p className="rateios__estado rateios__estado--erro" role="alert">{erro}</p>
 
     return (
         <div className="rateios">
@@ -404,7 +406,7 @@ function Rateios() {
                         </table>
                     )}
                     {!somaValida && participantes.length > 0 && (
-                        <p className="rateios__aviso rateios__aviso--erro">Os percentuais precisam somar 100% para fechar o rateio.</p>
+                        <p className="rateios__aviso rateios__aviso--erro" role="alert">Os percentuais precisam somar 100% para fechar o rateio.</p>
                     )}
                 </div>
 
@@ -431,7 +433,7 @@ function Rateios() {
                     </p>
                 )}
                 {jaFechadoNoMes && <p className="rateios__aviso">O rateio deste mês já foi realizado e consta no histórico abaixo.</p>}
-                {erroFechamento && <p className="rateios__aviso rateios__aviso--erro">{erroFechamento}</p>}
+                {erroFechamento && <p className="rateios__aviso rateios__aviso--erro" role="alert">{erroFechamento}</p>}
 
                 <Botao
                     className="rateios__fechar"
@@ -457,13 +459,13 @@ function Rateios() {
                         if (event.target === event.currentTarget) fecharDetalhe()
                     }}
                 >
-                    <div className="formulario-edicao rateios__popup" role="dialog" aria-modal="true" aria-labelledby="rateio-detalhe-titulo">
+                    <div className="formulario-edicao rateios__popup" ref={refDialogo} role="dialog" aria-modal="true" aria-labelledby="rateio-detalhe-titulo">
                         <h2 id="rateio-detalhe-titulo" className="formulario-edicao__titulo">
                             Distribuição do rateio
                         </h2>
 
                         {carregandoDetalhe && <p className="rateios__vazio">Carregando...</p>}
-                        {erroDetalhe && <p className="rateios__aviso rateios__aviso--erro">{erroDetalhe}</p>}
+                        {erroDetalhe && <p className="rateios__aviso rateios__aviso--erro" role="alert">{erroDetalhe}</p>}
                         {detalhe && (
                             <>
                                 <p className="rateios__vazio">

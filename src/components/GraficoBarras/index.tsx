@@ -17,7 +17,7 @@ function GraficoBarras({
     return (
         <article className={className ? `grafico-barras ${className}` : "grafico-barras"}>
             <header className="grafico-barras__header">
-                <h3 className="grafico-barras__titulo">{titulo}</h3>
+                <h2 className="grafico-barras__titulo">{titulo}</h2>
                 {subtitulo && <p className="grafico-barras__subtitulo">{subtitulo}</p>}
             </header>
 

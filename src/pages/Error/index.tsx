@@ -59,10 +59,10 @@ function ErrorPage() {
     }
 
     return (
-        <div className="error-page">
+        <main className="error-page">
             <div className="error-page__conteudo">
-                {/* Imagem do erro: adicionar o <img> aqui dentro depois */}
-                <img src={NimoChorando} alt="Nimo Chorando" className='error-page__imagem' />
+                {/* Ilustração decorativa: o título e a descrição abaixo já dizem tudo; alt vazio a esconde do leitor de tela */}
+                <img src={NimoChorando} alt="" className='error-page__imagem' />
 
 
                 {erro.status !== undefined && (
@@ -84,7 +84,7 @@ function ErrorPage() {
                     </Botao>
                 </div>
             </div>
-        </div>
+        </main>
     )
 }
 

@@ -1,7 +1,7 @@
 .home {
     display: flex;
 }
-main{
+.home > main {
     flex: 1 1 0;
     min-width: 0;
     margin-left: 30px;
@@ -10,7 +10,7 @@ main{
 
 /* O menu fica fixo sobre a página no mobile; abre espaço para o botão */
 @media (max-width: 768px) {
-    main {
+    .home > main {
         margin-left: 16px;
         margin-right: 16px;
         margin-top: 64px;

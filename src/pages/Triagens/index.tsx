@@ -11,10 +11,12 @@ import { formatarDecimal } from "../../utils/formatadores"
 import { useApi } from "../../hooks/useApi"
 import { listarPorCooperativa as listarTriagens, type TriagemResponse } from "../../services/triagemService"
 import type { LinhaTriagem } from "../../types/Triagens/TriagensTypes"
+import { useFocoDialogo } from "../../hooks/useFocoDialogo"
 
 const formatarData = (data: string) => (data ? new Date(data).toLocaleDateString("pt-BR") : "—")
 
 function Triagens() {
+    const refDialogo = useFocoDialogo()
     const cooperativaId = lerSessao("renovai_cooperativaId")
     const [verCooperados, setVerCooperados] = useState<LinhaTriagem | null>(null)
 
@@ -123,7 +125,7 @@ function Triagens() {
                 >
                     <div
                         className="formulario-edicao"
-                        role="dialog"
+                        ref={refDialogo} role="dialog"
                         aria-modal="true"
                         aria-labelledby="triagens-cooperados-titulo"
                     >

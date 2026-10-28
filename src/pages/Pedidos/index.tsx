@@ -16,6 +16,7 @@ import {
 } from "../../services/negociacaoService"
 import { buscarPorId as buscarPerfil } from "../../services/perfilService"
 import type { LinhaPedido, MensagemChat, EstadoChat } from "../../types/Pedidos/PedidosTypes"
+import { useFocoDialogo } from "../../hooks/useFocoDialogo"
 
 const CHAT_FECHADO: EstadoChat = { pedido: null, mensagens: [], carregando: false, erro: null }
 
@@ -60,6 +61,7 @@ async function identificarAutores(
 }
 
 function Pedidos() {
+    const refDialogo = useFocoDialogo()
     const cooperativaId = lerSessao("renovai_cooperativaId")
     const emailSessao = lerSessao("renovai_email")
 
@@ -201,7 +203,7 @@ function Pedidos() {
         },
     ]
 
-    if (carregando) return <p className="pedidos__estado">Carregando...</p>
+    if (carregando) return <p className="pedidos__estado" role="status">Carregando...</p>
     if (erro) return <p className="pedidos__estado pedidos__estado--erro" role="alert">{erro}</p>
 
     const totalPedidos = linhas.length
@@ -235,7 +237,7 @@ function Pedidos() {
                 >
                     <div
                         className="formulario-edicao pedidos__chat"
-                        role="dialog"
+                        ref={refDialogo} role="dialog"
                         aria-modal="true"
                         aria-labelledby="pedidos-chat-titulo"
                     >

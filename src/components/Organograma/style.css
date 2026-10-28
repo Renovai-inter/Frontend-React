@@ -22,12 +22,12 @@
 }
 
 .organograma__raiz strong {
-    font-size: 15px;
+    font-size: 0.9375rem;
 }
 
 .organograma__raiz > span:last-child {
     color: rgba(255, 255, 255, .75);
-    font-size: 12.5px;
+    font-size: 0.7812rem;
 }
 
 .organograma__raiz-icone {
@@ -62,8 +62,8 @@
 
 .organograma__rotulo {
     margin: 4px 0 var(--org-vao);
-    color: #9a8b93;
-    font-size: 11px;
+    color: #6b5f66;
+    font-size: 0.6875rem;
     font-weight: 700;
     letter-spacing: .08em;
     text-transform: uppercase;
@@ -129,16 +129,29 @@
 }
 
 .organograma__pessoa strong {
-    font-size: 14px;
+    font-size: 0.875rem;
 }
 
 .organograma__pessoa > span:last-child {
-    color: #9a8b93;
-    font-size: 12px;
+    color: #6b5f66;
+    font-size: 0.75rem;
 }
 
+/* Pessoa afastada/inativa: contorno tracejado + tons de cinza com contraste adequado (sem opacity) */
 .organograma__pessoa--inativa {
-    opacity: .5;
+    outline: 1px dashed var(--cinza-texto);
+    outline-offset: 4px;
+    border-radius: 8px;
+}
+
+.organograma__pessoa--inativa strong,
+.organograma__pessoa--inativa > span:last-child {
+    color: var(--cinza-texto);
+}
+
+.organograma__pessoa--inativa .organograma__avatar {
+    background: #e5e7eb;
+    color: #4b5563;
 }
 
 .organograma__avatar {
@@ -148,13 +161,13 @@
     height: 46px;
     margin-bottom: 6px;
     border-radius: 50%;
-    font-size: 15px;
+    font-size: 0.9375rem;
     font-weight: 700;
 }
 
-.organograma__avatar--gestor { background: #F6D9E5; color: var(--vermelho-renovai); }
-.organograma__avatar--cooperado { background: #DFEEDF; color: var(--verde-base-renovai); }
-.organograma__avatar--motorista { background: #F1F4DA; color: #6f7f2a; }
+.organograma__avatar--gestor { background: #F6D9E5; color: #8f2a52; }
+.organograma__avatar--cooperado { background: #DFEEDF; color: var(--verde-texto-renovai); }
+.organograma__avatar--motorista { background: #F1F4DA; color: #55601a; }
 
 @media (max-width: 480px) {
     .organograma__raiz {

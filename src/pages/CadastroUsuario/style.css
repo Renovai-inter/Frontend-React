@@ -59,7 +59,8 @@
 }
 
 .cadastro-usuario__field input:focus {
-    outline: none;
+    outline: 2px solid var(--vinho-renovai);
+    outline-offset: 1px;
     border-color: var(--vinho-renovai);
 }
 
@@ -68,7 +69,7 @@
 }
 
 .cadastro-usuario__erro {
-    color: var(--vermelho-renovai);
+    color: var(--vermelho-texto-renovai);
     font-size: 0.85rem;
 }
 
@@ -151,4 +152,10 @@
     .cadastro-usuario__row {
         grid-template-columns: 1fr;
     }
+}
+
+.cadastro-usuario__nota {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--cinza-texto);
 }

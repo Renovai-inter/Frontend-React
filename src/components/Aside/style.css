@@ -99,7 +99,7 @@ nav a {
     border-radius: 10px;
     color: var(--bege-renovai);
     text-decoration: none;
-    font-size: 14px;
+    font-size: 0.875rem;
     transition: background .15s ease, color .15s ease;
     cursor: pointer;
     font-weight: 400;
@@ -113,6 +113,12 @@ nav a:hover {
 nav a.selected {
     background: rgba(192, 71, 117, .40);
     color: var(--bege-renovai);
+}
+
+/* Fundo vinho: contorno claro e interno, pois o aside corta o overflow */
+aside :focus-visible {
+    outline: 2px solid var(--amarelo-renovai);
+    outline-offset: -2px;
 }
 
 svg {
@@ -161,7 +167,7 @@ svg {
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 15px;
+    font-size: 0.9375rem;
     flex: none;
     overflow: hidden;
 }
@@ -188,14 +194,14 @@ svg {
 }
 
 .user-row .txt .name {
-    font-size: 12.5px;
+    font-size: 0.7812rem;
     font-weight: 600;
     color: var(--bege-renovai);
 }
 
 .user-row .txt .email {
-    font-size: 10.5px;
-    color: rgba(255, 255, 255, .55);
+    font-size: 0.6562rem;
+    color: rgba(255, 255, 255, .85);
 }
 
 .signout {
@@ -207,7 +213,7 @@ svg {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 15px;
+    font-size: 0.9375rem;
     padding: 15px 12px;    
     text-decoration: none;
     cursor: pointer;

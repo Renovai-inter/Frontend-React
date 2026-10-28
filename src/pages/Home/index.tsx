@@ -150,8 +150,8 @@ function Home() {
         }
     }, [cooperativaId])
 
-    if (carregando) return <p className="home-page__estado">Carregando...</p>
-    if (erro || !resumo) return <p className="home-page__estado home-page__estado--erro">{erro}</p>
+    if (carregando) return <p className="home-page__estado" role="status">Carregando...</p>
+    if (erro || !resumo) return <p className="home-page__estado home-page__estado--erro" role="alert">{erro}</p>
 
     return (
         <div className="home-page">
