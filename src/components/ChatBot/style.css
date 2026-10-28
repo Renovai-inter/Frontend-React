@@ -85,7 +85,10 @@
 }
 
 .chatbot__fechar:hover {
-    color: var(--vinho-renovai);
+    background-color: var(--bege-renovai);
+    svg {
+        color: var(--vinho-renovai);
+    }
 }
 
 .chatbot__mensagens {
