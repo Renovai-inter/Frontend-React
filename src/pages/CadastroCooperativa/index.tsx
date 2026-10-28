@@ -171,18 +171,20 @@ function CadastroCooperativa() {
   };
 
   const campoErro = (campo: keyof FormCooperativa) =>
-    erros[campo] && <span className="cadastro-cooperativa__erro">{erros[campo]}</span>;
+    erros[campo] && <span className="cadastro-cooperativa__erro" id={`${campo}-erro`}>{erros[campo]}</span>;
 
   return (
-    <div className="cadastro-cooperativa">
+    <main className="cadastro-cooperativa">
       <section className="cadastro-cooperativa__container">
         <div className="cadastro-cooperativa__header">
           <img src={Nome} alt="Logo Renovai" className="nome__img" />
+          <h1 className="sr-only">Cadastro da cooperativa</h1>
           <p>Etapa 2 de 2 · Cadastre sua cooperativa.</p>
         </div>
         <form className="cadastro-cooperativa__form" onSubmit={handleCadastro} noValidate>
+          <p className="cadastro-cooperativa__nota"><span aria-hidden="true">*</span> Campos obrigatórios</p>
           <div className="cadastro-cooperativa__field">
-            <label htmlFor="nome"> Nome da cooperativa </label>
+            <label htmlFor="nome"> Nome da cooperativa <span aria-hidden="true"> *</span></label>
             <input
               id="nome"
               type="text"
@@ -190,12 +192,14 @@ function CadastroCooperativa() {
               value={form.nome}
               onChange={handleChange("nome")}
               aria-invalid={!!erros.nome}
+              aria-describedby={erros.nome ? "nome-erro" : undefined}
+              aria-required="true"
             />
             {campoErro("nome")}
           </div>
 
           <div className="cadastro-cooperativa__field">
-            <label htmlFor="cnpj"> CNPJ </label>
+            <label htmlFor="cnpj"> CNPJ <span aria-hidden="true"> *</span></label>
             <input
               id="cnpj"
               type="text"
@@ -205,6 +209,8 @@ function CadastroCooperativa() {
               value={form.cnpj}
               onChange={handleChange("cnpj")}
               aria-invalid={!!erros.cnpj}
+              aria-describedby={erros.cnpj ? "cnpj-erro" : undefined}
+              aria-required="true"
             />
             {campoErro("cnpj")}
           </div>
@@ -218,6 +224,7 @@ function CadastroCooperativa() {
               value={form.descricao}
               onChange={handleChange("descricao")}
               aria-invalid={!!erros.descricao}
+              aria-describedby={erros.descricao ? "descricao-erro" : undefined}
             />
             {campoErro("descricao")}
           </div>
@@ -234,6 +241,7 @@ function CadastroCooperativa() {
                 value={form.numeroCooperados}
                 onChange={handleChange("numeroCooperados")}
                 aria-invalid={!!erros.numeroCooperados}
+              aria-describedby={erros.numeroCooperados ? "numeroCooperados-erro" : undefined}
               />
               {campoErro("numeroCooperados")}
             </div>
@@ -244,6 +252,7 @@ function CadastroCooperativa() {
                 value={form.contatoPreferencial}
                 onChange={handleChange("contatoPreferencial")}
                 aria-invalid={!!erros.contatoPreferencial}
+              aria-describedby={erros.contatoPreferencial ? "contatoPreferencial-erro" : undefined}
               >
                 <option value="">Selecione</option>
                 <option value="WHATSAPP">WhatsApp</option>
@@ -264,6 +273,7 @@ function CadastroCooperativa() {
               value={form.horarioFuncionamento}
               onChange={handleChange("horarioFuncionamento")}
               aria-invalid={!!erros.horarioFuncionamento}
+              aria-describedby={erros.horarioFuncionamento ? "horarioFuncionamento-erro" : undefined}
             />
             {campoErro("horarioFuncionamento")}
           </div>
@@ -272,7 +282,7 @@ function CadastroCooperativa() {
 
           <div className="cadastro-cooperativa__row">
             <div className="cadastro-cooperativa__field">
-              <label htmlFor="cep"> CEP </label>
+              <label htmlFor="cep"> CEP <span aria-hidden="true"> *</span></label>
               <input
                 id="cep"
                 type="text"
@@ -282,12 +292,14 @@ function CadastroCooperativa() {
                 value={form.cep}
                 onChange={handleChange("cep")}
                 aria-invalid={!!erros.cep}
+              aria-describedby={erros.cep ? "cep-erro" : undefined}
+              aria-required="true"
                 autoComplete="postal-code"
               />
               {campoErro("cep")}
             </div>
             <div className="cadastro-cooperativa__field">
-              <label htmlFor="numero"> Número </label>
+              <label htmlFor="numero"> Número <span aria-hidden="true"> *</span></label>
               <input
                 id="numero"
                 type="text"
@@ -296,13 +308,15 @@ function CadastroCooperativa() {
                 value={form.numero}
                 onChange={handleChange("numero")}
                 aria-invalid={!!erros.numero}
+              aria-describedby={erros.numero ? "numero-erro" : undefined}
+              aria-required="true"
               />
               {campoErro("numero")}
             </div>
           </div>
 
           <div className="cadastro-cooperativa__field">
-            <label htmlFor="logradouro"> Logradouro </label>
+            <label htmlFor="logradouro"> Logradouro <span aria-hidden="true"> *</span></label>
             <input
               id="logradouro"
               type="text"
@@ -310,6 +324,8 @@ function CadastroCooperativa() {
               value={form.logradouro}
               onChange={handleChange("logradouro")}
               aria-invalid={!!erros.logradouro}
+              aria-describedby={erros.logradouro ? "logradouro-erro" : undefined}
+              aria-required="true"
               autoComplete="address-line1"
             />
             {campoErro("logradouro")}
@@ -324,13 +340,14 @@ function CadastroCooperativa() {
               value={form.complemento}
               onChange={handleChange("complemento")}
               aria-invalid={!!erros.complemento}
+              aria-describedby={erros.complemento ? "complemento-erro" : undefined}
             />
             {campoErro("complemento")}
           </div>
 
           <div className="cadastro-cooperativa__row">
             <div className="cadastro-cooperativa__field">
-              <label htmlFor="bairro"> Bairro </label>
+              <label htmlFor="bairro"> Bairro <span aria-hidden="true"> *</span></label>
               <input
                 id="bairro"
                 type="text"
@@ -338,11 +355,13 @@ function CadastroCooperativa() {
                 value={form.bairro}
                 onChange={handleChange("bairro")}
                 aria-invalid={!!erros.bairro}
+              aria-describedby={erros.bairro ? "bairro-erro" : undefined}
+              aria-required="true"
               />
               {campoErro("bairro")}
             </div>
             <div className="cadastro-cooperativa__field">
-              <label htmlFor="cidade"> Cidade </label>
+              <label htmlFor="cidade"> Cidade <span aria-hidden="true"> *</span></label>
               <input
                 id="cidade"
                 type="text"
@@ -350,6 +369,8 @@ function CadastroCooperativa() {
                 value={form.cidade}
                 onChange={handleChange("cidade")}
                 aria-invalid={!!erros.cidade}
+              aria-describedby={erros.cidade ? "cidade-erro" : undefined}
+              aria-required="true"
                 autoComplete="address-level2"
               />
               {campoErro("cidade")}
@@ -376,7 +397,7 @@ function CadastroCooperativa() {
       <section className="cadastro-cooperativa__sidespace">
 
       </section>
-    </div>
+    </main>
   );
 }
 

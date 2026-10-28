@@ -111,8 +111,8 @@ function Cooperativa() {
         toast.mostrar("Endereço atualizado.")
     }
 
-    if (carregando) return <p className="cooperativa__estado">Carregando...</p>
-    if (erro || !cooperativa) return <p className="cooperativa__estado cooperativa__estado--erro">{erro}</p>
+    if (carregando) return <p className="cooperativa__estado" role="status">Carregando...</p>
+    if (erro || !cooperativa) return <p className="cooperativa__estado cooperativa__estado--erro" role="alert">{erro}</p>
 
     const camposCooperativa: { rotulo: string; valor: string }[] = [
         { rotulo: "Nome da cooperativa", valor: cooperativa.nome },

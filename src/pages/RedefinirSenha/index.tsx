@@ -122,10 +122,11 @@ function RedefinirSenha() {
     }
 
     return (
-        <div className="login">
+        <main className="login">
             <section className="login__container">
                 <div className="login__header">
                     <img src={Nome} alt="Logo Renovai" className="nome__img" />
+                    <h1 className="sr-only">Redefinir senha</h1>
                     <p>{SUBTITULO[etapa]}</p>
                 </div>
 
@@ -143,7 +144,7 @@ function RedefinirSenha() {
                             />
                         </div>
 
-                        {erro && <p className="login__erro">{erro}</p>}
+                        {erro && <p className="login__erro" role="alert">{erro}</p>}
 
                         <button className="login__send" type="submit" disabled={loading}>
                             {loading ? "Enviando e-mail..." : "Enviar código"}
@@ -174,7 +175,7 @@ function RedefinirSenha() {
                             />
                         </div>
 
-                        {erro && <p className="login__erro">{erro}</p>}
+                        {erro && <p className="login__erro" role="alert">{erro}</p>}
                         {aviso && <p className="login__sucesso" role="status">{aviso}</p>}
 
                         <button className="login__send" type="submit" disabled={loading || codigo.length !== 6}>
@@ -224,7 +225,7 @@ function RedefinirSenha() {
                             />
                         </div>
 
-                        {erro && <p className="login__erro">{erro}</p>}
+                        {erro && <p className="login__erro" role="alert">{erro}</p>}
 
                         <button className="login__send" type="submit" disabled={loading}>
                             {loading ? "Salvando..." : "Redefinir senha"}
@@ -242,7 +243,7 @@ function RedefinirSenha() {
                 )}
             </section>
             <section className="login__sidespace" />
-        </div>
+        </main>
     )
 }
 

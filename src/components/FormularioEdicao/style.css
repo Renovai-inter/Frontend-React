@@ -50,7 +50,6 @@
     border: 1.5px solid #d9d4d6;
     border-radius: 10px;
     font-size: 1rem;
-    outline: none;
     transition: border-color 0.2s;
 }
 
@@ -60,17 +59,17 @@
 
 .formulario-edicao__campo input:focus,
 .formulario-edicao__campo select:focus {
-    border-color: var(--vermelho-renovai);
+    border-color: var(--vinho-renovai);
 }
 
 .formulario-edicao__campo input[aria-invalid="true"] {
-    border-color: #d32f2f;
+    border-color: #b3261e;
 }
 
 .formulario-edicao__erro,
 .formulario-edicao__erro-geral {
     font-size: 0.8rem;
-    color: #d32f2f;
+    color: #b3261e;
 }
 
 .formulario-edicao__acoes {
@@ -157,4 +156,16 @@
     .formulario-edicao__acoes .botao {
         width: 100%;
     }
+}
+
+.formulario-edicao__legenda {
+    margin: 0 0 4px;
+    font-size: 0.8125rem;
+    color: var(--cinza-texto);
+}
+
+/* O <input type="file"> fica invisível; quando ele recebe foco pelo teclado, o botão (label) mostra o contorno */
+.formulario-edicao__imagem-acoes:focus-within label {
+    outline: 2px solid var(--vinho-renovai);
+    outline-offset: 2px;
 }

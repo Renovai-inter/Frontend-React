@@ -87,8 +87,8 @@ function PerfilUsuario() {
         toast.mostrar("Perfil atualizado com sucesso.")
     }
 
-    if (carregando) return <p className="perfil__estado">Carregando...</p>
-    if (erro || !usuario) return <p className="perfil__estado perfil__estado--erro">{erro}</p>
+    if (carregando) return <p className="perfil__estado" role="status">Carregando...</p>
+    if (erro || !usuario) return <p className="perfil__estado perfil__estado--erro" role="alert">{erro}</p>
 
     const papel = lerSessao("renovai_role")
 

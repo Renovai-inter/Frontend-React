@@ -12,21 +12,21 @@
 
 .grafico-barras__titulo {
     color: #000;
-    font-size: 20px;
+    font-size: 1.25rem;
     font-weight: 500;
 }
 
 .grafico-barras__subtitulo {
     margin-top: 10px;
-    color: var(--verde-claro-renovai);
-    font-size: 14px;
+    color: var(--verde-texto-renovai);
+    font-size: 0.875rem;
     font-weight: 500;
 }
 
 .grafico-barras__vazio {
     padding: 40px 0;
     color: var(--cinza-texto);
-    font-size: 14px;
+    font-size: 0.875rem;
     text-align: center;
 }
 
@@ -69,8 +69,8 @@
     min-width: 100%;
     text-align: center;
     overflow: hidden;
-    color: var(--verde-claro-renovai);
-    font-size: 11px;
+    color: var(--verde-texto-renovai);
+    font-size: 0.6875rem;
     font-weight: 500;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -78,7 +78,7 @@
 
 .grafico-barras__valor {
     color: var(--vinho-renovai);
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 500;
     white-space: nowrap;
 }
@@ -91,7 +91,7 @@
     padding-top: 14px;
     border-top: 1px solid #e5e7eb;
     color: var(--cinza-texto);
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 500;
 }
 
@@ -106,7 +106,7 @@
     }
 
     .grafico-barras__titulo {
-        font-size: 17px;
+        font-size: 1.0625rem;
     }
 
     .grafico-barras__total {

@@ -19,7 +19,7 @@
 }
 
 .rotas__estado--erro {
-    color: var(--vermelho-renovai);
+    color: var(--vermelho-texto-renovai);
 }
 
 .rotas__informativo {
@@ -89,7 +89,7 @@
 }
 
 .rotas__item:focus-visible {
-    outline: 2px solid var(--vermelho-renovai);
+    outline: 2px solid var(--vinho-renovai);
     outline-offset: 2px;
 }
 
@@ -114,7 +114,7 @@
     padding: 2px 10px;
     border-radius: 999px;
     background: #e3f2e1;
-    color: var(--verde-base-renovai);
+    color: #1b4d22;
     font-size: 0.75rem;
     font-weight: 500;
     white-space: nowrap;
@@ -144,7 +144,7 @@
     padding: 0;
     border: none;
     background: none;
-    color: var(--vermelho-renovai);
+    color: var(--vermelho-texto-renovai);
     font-family: inherit;
     font-size: 0.8125rem;
     font-weight: 600;
@@ -156,7 +156,7 @@
 }
 
 .rotas__link:focus-visible {
-    outline: 2px solid var(--vermelho-renovai);
+    outline: 2px solid var(--vinho-renovai);
     outline-offset: 2px;
 }
 

@@ -192,8 +192,8 @@ function Funcionarios() {
         toast.mostrar("Funcionário adicionado com sucesso.")
     }
 
-    if (carregando) return <p className="funcionarios__estado">Carregando...</p>
-    if (erro) return <p className="funcionarios__estado funcionarios__estado--erro">{erro}</p>
+    if (carregando) return <p className="funcionarios__estado" role="status">Carregando...</p>
+    if (erro) return <p className="funcionarios__estado funcionarios__estado--erro" role="alert">{erro}</p>
 
     return (
         <div className="funcionarios">
@@ -213,8 +213,11 @@ function Funcionarios() {
                 ]}
                 ativa={visao}
                 onChange={setVisao}
+                idBase="funcionarios-visao"
+                rotulo="Forma de exibição dos funcionários"
             />
 
+            <div role="tabpanel" id="funcionarios-visao-painel" aria-labelledby={`funcionarios-visao-aba-${visao}`}>
             {visao === "organograma" ? (
                 <section className="funcionarios__painel">
                     <Organograma
@@ -232,8 +235,10 @@ function Funcionarios() {
                     rowKey={(f) => f.funcionarioId}
                     onEdit={setEditando}
                     emptyMessage="Nenhum funcionário cadastrado."
+                    rowLabel={(f) => f.usuarioNome}
                 />
             )}
+            </div>
 
             <FormularioEdicao
                 aberto={!!editando}

@@ -75,15 +75,17 @@ function CadastroUsuario() {
   };
 
   return (
-    <div className="cadastro-usuario">
+    <main className="cadastro-usuario">
       <section className="cadastro-usuario__container">
         <div className="cadastro-usuario__header">
           <img src={Nome} alt="Logo Renovai" className="nome__img" />
+          <h1 className="sr-only">Cadastro do responsável</h1>
           <p>Etapa 1 de 2 · Crie o acesso de administrador da cooperativa.</p>
         </div>
         <form className="cadastro-usuario__form" onSubmit={handleSubmit} noValidate>
+          <p className="cadastro-usuario__nota"><span aria-hidden="true">*</span> Campos obrigatórios</p>
           <div className="cadastro-usuario__field">
-            <label htmlFor="nomeResponsavel"> Nome do responsável </label>
+            <label htmlFor="nomeResponsavel"> Nome do responsável <span aria-hidden="true"> *</span></label>
             <input
               id="nomeResponsavel"
               type="text"
@@ -91,15 +93,17 @@ function CadastroUsuario() {
               value={form.nomeResponsavel}
               onChange={handleChange("nomeResponsavel")}
               aria-invalid={!!erros.nomeResponsavel}
+              aria-describedby={erros.nomeResponsavel ? "nomeResponsavel-erro" : undefined}
+              aria-required="true"
               autoComplete="name"
             />
             {erros.nomeResponsavel && (
-              <span className="cadastro-usuario__erro">{erros.nomeResponsavel}</span>
+              <span className="cadastro-usuario__erro" id="nomeResponsavel-erro">{erros.nomeResponsavel}</span>
             )}
           </div>
 
           <div className="cadastro-usuario__field">
-            <label htmlFor="cpfResponsavel"> CPF </label>
+            <label htmlFor="cpfResponsavel"> CPF <span aria-hidden="true"> *</span></label>
             <input
               id="cpfResponsavel"
               type="text"
@@ -109,14 +113,16 @@ function CadastroUsuario() {
               value={form.cpfResponsavel}
               onChange={handleChange("cpfResponsavel")}
               aria-invalid={!!erros.cpfResponsavel}
+              aria-describedby={erros.cpfResponsavel ? "cpfResponsavel-erro" : undefined}
+              aria-required="true"
             />
             {erros.cpfResponsavel && (
-              <span className="cadastro-usuario__erro">{erros.cpfResponsavel}</span>
+              <span className="cadastro-usuario__erro" id="cpfResponsavel-erro">{erros.cpfResponsavel}</span>
             )}
           </div>
 
           <div className="cadastro-usuario__field">
-            <label htmlFor="email"> E-mail </label>
+            <label htmlFor="email"> E-mail <span aria-hidden="true"> *</span></label>
             <input
               id="email"
               type="email"
@@ -124,36 +130,42 @@ function CadastroUsuario() {
               value={form.email}
               onChange={handleChange("email")}
               aria-invalid={!!erros.email}
+              aria-describedby={erros.email ? "email-erro" : undefined}
+              aria-required="true"
               autoComplete="email"
             />
-            {erros.email && <span className="cadastro-usuario__erro">{erros.email}</span>}
+            {erros.email && <span className="cadastro-usuario__erro" id="email-erro">{erros.email}</span>}
           </div>
 
           <div className="cadastro-usuario__field">
-            <label htmlFor="senha"> Senha </label>
+            <label htmlFor="senha"> Senha <span aria-hidden="true"> *</span></label>
             <SenhaInput
               id="senha"
               placeholder="Mínimo 6 caracteres"
               value={form.senha}
               onChange={handleChange("senha")}
               aria-invalid={!!erros.senha}
+              aria-describedby={erros.senha ? "senha-erro" : undefined}
+              aria-required="true"
               autoComplete="new-password"
             />
-            {erros.senha && <span className="cadastro-usuario__erro">{erros.senha}</span>}
+            {erros.senha && <span className="cadastro-usuario__erro" id="senha-erro">{erros.senha}</span>}
           </div>
 
           <div className="cadastro-usuario__field">
-            <label htmlFor="confirmarSenha"> Confirmar senha </label>
+            <label htmlFor="confirmarSenha"> Confirmar senha <span aria-hidden="true"> *</span></label>
             <SenhaInput
               id="confirmarSenha"
               placeholder="Repita a senha"
               value={form.confirmarSenha}
               onChange={handleChange("confirmarSenha")}
               aria-invalid={!!erros.confirmarSenha}
+              aria-describedby={erros.confirmarSenha ? "confirmarSenha-erro" : undefined}
+              aria-required="true"
               autoComplete="new-password"
             />
             {erros.confirmarSenha && (
-              <span className="cadastro-usuario__erro">{erros.confirmarSenha}</span>
+              <span className="cadastro-usuario__erro" id="confirmarSenha-erro">{erros.confirmarSenha}</span>
             )}
           </div>
 
@@ -171,7 +183,7 @@ function CadastroUsuario() {
       <section className="cadastro-usuario__sidespace">
 
       </section>
-    </div>
+    </main>
   );
 }
 

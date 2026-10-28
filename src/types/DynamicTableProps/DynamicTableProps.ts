@@ -19,4 +19,8 @@ export interface DynamicTableProps<T> {
     onDelete?: (row: T) => void
     rowKey?: (row: T, index: number) => string | number
     emptyMessage?: string
+    /** Nome da tabela para leitor de tela quando não há `titulo` visível. */
+    ariaLabel?: string
+    /** Identifica a linha nos botões: "Editar Maria" em vez de "Editar" repetido em toda linha. */
+    rowLabel?: (row: T) => string
 }

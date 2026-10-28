@@ -32,6 +32,7 @@ import {
 import type { LinhaEstoque } from "../../types/Estoque/EstoqueTypes"
 import Toast from "../../components/Toast"
 import { useToast } from "../../hooks/useToast"
+import { useFocoDialogo } from "../../hooks/useFocoDialogo"
 
 const COLUNAS_ESTOQUE: DynamicTableColumn<LinhaEstoque>[] = [
     { key: "material", label: "Material" },
@@ -162,6 +163,7 @@ function mensagemDeErro(err: unknown): string {
 }
 
 function Estoque() {
+    const refDialogo = useFocoDialogo()
     const toast = useToast()
     const cooperativaId = lerSessao("renovai_cooperativaId")
 
@@ -350,8 +352,8 @@ function Estoque() {
         return () => document.removeEventListener("keydown", aoTeclar)
     })
 
-    if (carregando) return <p className="estoque__estado">Carregando...</p>
-    if (erro) return <p className="estoque__estado estoque__estado--erro">{erro}</p>
+    if (carregando) return <p className="estoque__estado" role="status">Carregando...</p>
+    if (erro) return <p className="estoque__estado estoque__estado--erro" role="alert">{erro}</p>
 
     // Nomes que já estão no estoque desta cooperativa não podem ser cadastrados de novo
     const camposNovo = montarCamposNovo(new Set(linhas.map((l) => normalizarNome(l.material ?? ""))))
@@ -381,6 +383,7 @@ function Estoque() {
                 rowKey={(l) => l.estoqueId}
                 onEdit={setEditando}
                 onDelete={setExcluindo}
+                rowLabel={(l) => String(l.material ?? "")}
                 emptyMessage="Nenhum material em estoque."
             />
 
@@ -413,14 +416,14 @@ function Estoque() {
                         if (event.target === event.currentTarget) fecharExclusao()
                     }}
                 >
-                    <div className="formulario-edicao estoque__confirmacao" role="alertdialog" aria-modal="true" aria-labelledby="estoque-confirmacao-titulo">
+                    <div className="formulario-edicao estoque__confirmacao" ref={refDialogo} role="alertdialog" aria-modal="true" aria-labelledby="estoque-confirmacao-titulo">
                         <h2 id="estoque-confirmacao-titulo" className="formulario-edicao__titulo">Excluir material</h2>
                         <p className="estoque__confirmacao-texto">
                             Tem certeza que deseja excluir todo o estoque de <strong>{excluindo.material}</strong>?
                             A quantidade será zerada e o material ficará indisponível.
                         </p>
 
-                        {erroExclusao && <p className="formulario-edicao__erro-geral">{erroExclusao}</p>}
+                        {erroExclusao && <p className="formulario-edicao__erro-geral" role="alert">{erroExclusao}</p>}
 
                         <div className="formulario-edicao__acoes">
                             <Botao variante="secundario" onClick={fecharExclusao} ativo={!excluindoEmAndamento}>

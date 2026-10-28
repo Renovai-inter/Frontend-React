@@ -4,7 +4,7 @@
     width: 100%;
     min-width: 0;
     height: fit-content;
-    padding: clamp(14px, 3vw, 24px);
+    padding: clamp(0.875rem, 3vw, 1.5rem);
     border: 1px solid #e5e7eb;
     border-radius: 12px;
     background-color: var(--branco);
@@ -16,14 +16,14 @@
     align-items: center;
     justify-content: space-between;
     column-gap: 12px;
-    margin-bottom: clamp(8px, 2vw, 12px);
+    margin-bottom: clamp(0.5rem, 2vw, 0.75rem);
 }
 
 .card__title {
     color: var(--cinza-texto);
     min-width: 0;
     overflow-wrap: anywhere;
-    font-size: clamp(12px, 2.4vw, 14px);
+    font-size: clamp(0.75rem, 2.4vw, 0.875rem);
     font-weight: 500;
     letter-spacing: 0.02em;
     text-transform: uppercase;
@@ -58,20 +58,20 @@
     color: var(--vinho-fonte-renovai);
     min-width: 0;
     overflow-wrap: anywhere;
-    font-size: clamp(24px, 6vw, 36px);
+    font-size: clamp(1.5rem, 6vw, 2.25rem);
     font-weight: 600;
     line-height: 1;
 }
 
 .card__big-number-label {
-    font-size: clamp(13px, 3vw, 16px);
+    font-size: clamp(0.8125rem, 3vw, 1rem);
     font-weight: 500;
     line-height: 1;
 }
 
 .card__subtitle {
-    color: var(--verde-claro-renovai);
-    font-size: clamp(11px, 2.4vw, 12px);
+    color: var(--verde-texto-renovai);
+    font-size: clamp(0.6875rem, 2.4vw, 0.75rem);
     font-weight: 500;
     overflow-wrap: anywhere;
 }
