@@ -1,3 +1,4 @@
+import PaginaCarregando from "../../components/PaginaCarregando"
 import "./style.css"
 import "../../components/FormularioEdicao/style.css"
 import { useEffect, useState } from "react"
@@ -203,7 +204,7 @@ function Pedidos() {
         },
     ]
 
-    if (carregando) return <p className="pedidos__estado" role="status">Carregando...</p>
+    if (carregando) return <PaginaCarregando tipo="pedidos" />
     if (erro) return <p className="pedidos__estado pedidos__estado--erro" role="alert">{erro}</p>
 
     const totalPedidos = linhas.length
@@ -252,7 +253,7 @@ function Pedidos() {
                         </div>
 
                         <div className="pedidos__chat-mensagens" role="log" aria-label="Mensagens da negociação">
-                            {chat.carregando && <p className="pedidos__chat-vazio">Carregando mensagens...</p>}
+                            {chat.carregando && <PaginaCarregando tipo="mensagens" />}
                             {chat.erro && (
                                 <p className="pedidos__chat-vazio pedidos__estado--erro" role="alert">
                                     {chat.erro}

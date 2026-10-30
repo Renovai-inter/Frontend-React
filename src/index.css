@@ -88,9 +88,4 @@ main:focus {
         scroll-behavior: auto !important;
     }
 
-    /* O indicador de carregamento continua girando, devagar, para não parecer travado */
-    .pagina-carregando__spinner {
-        animation-duration: 2.4s !important;
-        animation-iteration-count: infinite !important;
-    }
 }

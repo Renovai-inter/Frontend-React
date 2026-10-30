@@ -1,3 +1,4 @@
+import PaginaCarregando from "../../components/PaginaCarregando"
 import "./style.css"
 import "../../components/FormularioEdicao/style.css"
 import { useCallback, useEffect, useMemo, useState } from "react"
@@ -267,7 +268,7 @@ function Rateios() {
         },
     ]
 
-    if (carregando) return <p className="rateios__estado" role="status">Carregando...</p>
+    if (carregando) return <PaginaCarregando tipo="rateios" />
     if (erro) return <p className="rateios__estado rateios__estado--erro" role="alert">{erro}</p>
 
     return (
@@ -464,7 +465,7 @@ function Rateios() {
                             Distribuição do rateio
                         </h2>
 
-                        {carregandoDetalhe && <p className="rateios__vazio">Carregando...</p>}
+                        {carregandoDetalhe && <PaginaCarregando tipo="detalhe" />}
                         {erroDetalhe && <p className="rateios__aviso rateios__aviso--erro" role="alert">{erroDetalhe}</p>}
                         {detalhe && (
                             <>

@@ -1,3 +1,4 @@
+import PaginaCarregando from "../../components/PaginaCarregando"
 import "./style.css"
 import { useEffect, useMemo, useState } from "react"
 import Header from "../../components/Header"
@@ -192,7 +193,7 @@ function Funcionarios() {
         toast.mostrar("Funcionário adicionado com sucesso.")
     }
 
-    if (carregando) return <p className="funcionarios__estado" role="status">Carregando...</p>
+    if (carregando) return <PaginaCarregando tipo="funcionarios" />
     if (erro) return <p className="funcionarios__estado funcionarios__estado--erro" role="alert">{erro}</p>
 
     return (

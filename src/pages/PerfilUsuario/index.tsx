@@ -1,3 +1,4 @@
+import PaginaCarregando from "../../components/PaginaCarregando"
 import "./style.css"
 import { useEffect, useState } from "react"
 import Botao from "../../components/Botao"
@@ -87,7 +88,7 @@ function PerfilUsuario() {
         toast.mostrar("Perfil atualizado com sucesso.")
     }
 
-    if (carregando) return <p className="perfil__estado" role="status">Carregando...</p>
+    if (carregando) return <PaginaCarregando tipo="perfil" />
     if (erro || !usuario) return <p className="perfil__estado perfil__estado--erro" role="alert">{erro}</p>
 
     const papel = lerSessao("renovai_role")

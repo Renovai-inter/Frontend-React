@@ -1,3 +1,4 @@
+import PaginaCarregando from "../../components/PaginaCarregando"
 import "./style.css"
 import "../../components/FormularioEdicao/style.css"
 import { useCallback, useEffect, useMemo, useState } from "react"
@@ -91,7 +92,7 @@ function Triagens() {
         },
     ]
 
-    if (carregando) return <p className="triagens__estado" role="status">Carregando...</p>
+    if (carregando) return <PaginaCarregando tipo="triagens" />
     if (erro) return <p className="triagens__estado triagens__estado--erro" role="alert">{erro}</p>
 
     const totalTriagens = linhas.length
