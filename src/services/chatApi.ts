@@ -8,9 +8,9 @@ const apiChat = axios.create({
 
 export interface ChatRequest {
     pergunta: string;
-    cooperativaId: string;
+    cooperativaId?: string;
     usuarioId: string;
-    sessionId: string;
+    sessionId?: string;
 }
 export interface ChatResponse {
     resposta: string;

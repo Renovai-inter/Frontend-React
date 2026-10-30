@@ -2,7 +2,8 @@ import axios, { type AxiosError } from "axios";
 import { redirecionarParaErro } from "../utils/erroNavegacao";
 import { lerSessao } from "../utils/armazenamentoSessao";
 
-const API_URL = "https://spring-api-2t71.onrender.com/api";
+const API_URL = "http://ad0d8c99545a84713891def8a28f1d46-c7cd4a13dc3dd2e8.elb.us-east-1.amazonaws.com/api";
+// https://spring-api-2t71.onrender.com/api
 
 const api = axios.create({
     baseURL: API_URL,

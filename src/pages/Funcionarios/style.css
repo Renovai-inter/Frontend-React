@@ -62,6 +62,10 @@
     color: #b3261e;
 }
 
+#funcionarios-visao-painel {
+    width: 100%;
+}
+
 @media (max-width: 640px) {
     .funcionarios {
         padding-right: 0;
