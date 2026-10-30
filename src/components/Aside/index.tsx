@@ -96,7 +96,12 @@ function Aside() {
     return (
         <>
             {mobile && !retraido && (
-                <div className="aside__fundo" onClick={alternarAside} aria-hidden="true" />
+                <button
+                    type="button"
+                    className="aside__fundo"
+                    onClick={alternarAside}
+                    aria-label="Fechar menu lateral"
+                />
             )}
             <aside className={classes}>
                 <section>
