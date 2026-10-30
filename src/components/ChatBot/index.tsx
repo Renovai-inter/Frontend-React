@@ -44,9 +44,9 @@ function ChatBot() {
         try {
             const { resposta } = await enviarMensagem({
                 pergunta,
-                cooperativaId: lerSessao("renovai_cooperativaId") ?? "",
-                usuarioId: lerSessao("renovai_userId") ?? "",
-                sessionId,
+                cooperativa_id: lerSessao("renovai_cooperativaId") ?? "",
+                user_id: lerSessao("renovai_userId") ?? "",
+                session_id: sessionId,
             })
             adicionar("bot", resposta)
         } catch {
@@ -85,7 +85,10 @@ function ChatBot() {
                         {m.texto}
                     </p>
                 ))}
-                {enviando && <p className="chatbot__mensagem chatbot__mensagem--bot chatbot__digitando">Nimo está digitando...</p>}
+                {enviando && <div className="chatbot__mensagem chatbot__mensagem--bot chatbot__digitando" role="status">
+                    <span className="sr-only">Nimo está digitando...</span>
+                    <span className="chatbot__skeleton" aria-hidden="true"><span /><span /></span>
+                </div>}
                 <div ref={fimRef} />
             </div>
 

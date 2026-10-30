@@ -1,3 +1,4 @@
+import PaginaCarregando from "../../components/PaginaCarregando"
 import "./style.css"
 import "../../components/FormularioEdicao/style.css"
 import { useEffect, useState } from "react"
@@ -196,7 +197,7 @@ function RotasColeta() {
         }
     }
 
-    if (carregando) return <p className="rotas__estado" role="status">Carregando...</p>
+    if (carregando) return <PaginaCarregando tipo="rotas" />
     if (erro) return <p className="rotas__estado rotas__estado--erro" role="alert">{erro}</p>
 
     const totalAtivas = rotas.filter((r) => r.estaAtiva).length

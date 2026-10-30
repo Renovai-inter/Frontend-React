@@ -1,3 +1,4 @@
+import PaginaCarregando from "../../components/PaginaCarregando"
 import "./style.css"
 import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
@@ -150,7 +151,7 @@ function Home() {
         }
     }, [cooperativaId])
 
-    if (carregando) return <p className="home-page__estado" role="status">Carregando...</p>
+    if (carregando) return <PaginaCarregando tipo="home" />
     if (erro || !resumo) return <p className="home-page__estado home-page__estado--erro" role="alert">{erro}</p>
 
     return (

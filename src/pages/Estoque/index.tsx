@@ -1,3 +1,4 @@
+import PaginaCarregando from "../../components/PaginaCarregando"
 import "./style.css"
 import { useCallback, useEffect, useState } from "react"
 import axios from "axios"
@@ -352,7 +353,7 @@ function Estoque() {
         return () => document.removeEventListener("keydown", aoTeclar)
     })
 
-    if (carregando) return <p className="estoque__estado" role="status">Carregando...</p>
+    if (carregando) return <PaginaCarregando tipo="estoque" />
     if (erro) return <p className="estoque__estado estoque__estado--erro" role="alert">{erro}</p>
 
     // Nomes que já estão no estoque desta cooperativa não podem ser cadastrados de novo

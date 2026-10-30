@@ -1,3 +1,4 @@
+import PaginaCarregando from "../../components/PaginaCarregando"
 import "./style.css"
 import "../../components/FormularioEdicao/style.css"
 import { useEffect, useState } from "react"
@@ -119,7 +120,7 @@ function Coletas() {
         },
     ]
 
-    if (carregando) return <p className="coletas__estado" role="status">Carregando...</p>
+    if (carregando) return <PaginaCarregando tipo="coletas" />
     if (erro) return <p className="coletas__estado coletas__estado--erro" role="alert">{erro}</p>
 
     const totalColetas = linhas.length

@@ -84,6 +84,10 @@
     cursor: pointer;
 }
 
+.chatbot__fechar svg {
+    color: inherit;
+}
+
 .chatbot__fechar:hover {
     background-color: var(--bege-renovai);
     svg {
@@ -128,9 +132,11 @@
     color: #6b1a37;
 }
 
-.chatbot__digitando {
-    color: var(--cinza-texto);
-    font-style: italic;
+.chatbot__skeleton { display: grid; gap: 8px; width: 160px; max-width: 100%; }
+.chatbot__skeleton span { height: 10px; border-radius: 5px; background: #d8d2d5; animation: skeleton-pulsar 0.9s ease-in-out infinite alternate; }
+.chatbot__skeleton span:last-child { width: 65%; }
+@media (prefers-reduced-motion: reduce) {
+    .chatbot__skeleton span { animation: none; }
 }
 
 .chatbot__form {

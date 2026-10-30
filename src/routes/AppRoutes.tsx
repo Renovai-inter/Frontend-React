@@ -43,7 +43,7 @@ function AppRoutes() {
             <AcessibilidadeRota />
             <Suspense fallback={<PaginaCarregando />}>
             <Routes>
-                <Route path="/login" element={<Login />} />
+                <Route path="/login" element={<Suspense fallback={<PaginaCarregando tipo="login" />}><Login /></Suspense>} />
                 <Route path="/redefinir-senha" element={<RedefinirSenha />} />
                 <Route path="/cadastro-usuario"element={<CadastroUsuario />} />
                 <Route path="/cadastro-cooperativa" element={<CadastroCooperativa />} />
