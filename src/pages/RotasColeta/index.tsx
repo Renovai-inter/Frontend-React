@@ -1,3 +1,4 @@
+import PaginaCarregando from "../../components/PaginaCarregando"
 import "./style.css"
 import "../../components/FormularioEdicao/style.css"
 import { useEffect, useState } from "react"
@@ -20,6 +21,7 @@ import {
 import { criar as criarEndereco } from "../../services/enderecoService"
 import Toast from "../../components/Toast"
 import { useToast } from "../../hooks/useToast"
+import { useFocoDialogo } from "../../hooks/useFocoDialogo"
 
 const TIPOS_LOCAL = ["Comércio", "Condomínio", "Instituição", "Destino"]
 
@@ -54,6 +56,7 @@ const textoParadas = (quantidade: number) => `${quantidade} ${quantidade === 1 ?
 const ordenarParadas = (paradas: RotaEnderecoResponse[]) => [...paradas].sort((a, b) => a.ordem - b.ordem)
 
 function RotasColeta() {
+    const refDialogo = useFocoDialogo()
     const toast = useToast()
     const cooperativaId = lerSessao("renovai_cooperativaId")
 
@@ -194,8 +197,8 @@ function RotasColeta() {
         }
     }
 
-    if (carregando) return <p className="rotas__estado">Carregando...</p>
-    if (erro) return <p className="rotas__estado rotas__estado--erro">{erro}</p>
+    if (carregando) return <PaginaCarregando tipo="rotas" />
+    if (erro) return <p className="rotas__estado rotas__estado--erro" role="alert">{erro}</p>
 
     const totalAtivas = rotas.filter((r) => r.estaAtiva).length
     const totalParadas = rotas.reduce((soma, r) => soma + r.enderecos.length, 0)
@@ -272,7 +275,7 @@ function RotasColeta() {
                                 <Botao onClick={() => setAdicionandoParada(true)}>Adicionar parada</Botao>
                             </div>
 
-                            {erroAcao && !excluindo && <p className="formulario-edicao__erro-geral">{erroAcao}</p>}
+                            {erroAcao && !excluindo && <p className="formulario-edicao__erro-geral" role="alert">{erroAcao}</p>}
 
                             {paradasSelecionada.length === 0 ? (
                                 <p className="rotas__vazio">Esta rota ainda não tem paradas.</p>
@@ -345,7 +348,7 @@ function RotasColeta() {
                         if (event.target === event.currentTarget && !excluindoEmAndamento) fecharExclusao()
                     }}
                 >
-                    <div className="formulario-edicao rotas__confirmacao" role="alertdialog" aria-modal="true" aria-labelledby="rotas-confirmacao-titulo">
+                    <div className="formulario-edicao rotas__confirmacao" ref={refDialogo} role="alertdialog" aria-modal="true" aria-labelledby="rotas-confirmacao-titulo">
                         <h2 id="rotas-confirmacao-titulo" className="formulario-edicao__titulo">
                             Excluir rota
                         </h2>
@@ -354,7 +357,7 @@ function RotasColeta() {
                             também serão perdidas.
                         </p>
 
-                        {erroAcao && <p className="formulario-edicao__erro-geral">{erroAcao}</p>}
+                        {erroAcao && <p className="formulario-edicao__erro-geral" role="alert">{erroAcao}</p>}
 
                         <div className="formulario-edicao__acoes">
                             <Botao variante="secundario" onClick={fecharExclusao} ativo={!excluindoEmAndamento}>

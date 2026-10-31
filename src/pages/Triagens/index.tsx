@@ -1,3 +1,4 @@
+import PaginaCarregando from "../../components/PaginaCarregando"
 import "./style.css"
 import "../../components/FormularioEdicao/style.css"
 import { useCallback, useEffect, useMemo, useState } from "react"
@@ -11,10 +12,12 @@ import { formatarDecimal } from "../../utils/formatadores"
 import { useApi } from "../../hooks/useApi"
 import { listarPorCooperativa as listarTriagens, type TriagemResponse } from "../../services/triagemService"
 import type { LinhaTriagem } from "../../types/Triagens/TriagensTypes"
+import { useFocoDialogo } from "../../hooks/useFocoDialogo"
 
 const formatarData = (data: string) => (data ? new Date(data).toLocaleDateString("pt-BR") : "—")
 
 function Triagens() {
+    const refDialogo = useFocoDialogo()
     const cooperativaId = lerSessao("renovai_cooperativaId")
     const [verCooperados, setVerCooperados] = useState<LinhaTriagem | null>(null)
 
@@ -89,7 +92,7 @@ function Triagens() {
         },
     ]
 
-    if (carregando) return <p className="triagens__estado" role="status">Carregando...</p>
+    if (carregando) return <PaginaCarregando tipo="triagens" />
     if (erro) return <p className="triagens__estado triagens__estado--erro" role="alert">{erro}</p>
 
     const totalTriagens = linhas.length
@@ -123,7 +126,7 @@ function Triagens() {
                 >
                     <div
                         className="formulario-edicao"
-                        role="dialog"
+                        ref={refDialogo} role="dialog"
                         aria-modal="true"
                         aria-labelledby="triagens-cooperados-titulo"
                     >

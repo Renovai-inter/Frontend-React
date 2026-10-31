@@ -1,3 +1,4 @@
+import PaginaCarregando from "../../components/PaginaCarregando"
 import "./style.css"
 import "../../components/FormularioEdicao/style.css"
 import { useEffect, useState } from "react"
@@ -12,6 +13,7 @@ import { listarPorCooperativa as listarRotas } from "../../services/rotaService"
 import { listarPorCooperativa as listarTriagens, type TriagemResponse } from "../../services/triagemService"
 import Card from "../../components/Card"
 import type { LinhaColeta } from "../../types/Coletas/ColetasTypes"
+import { useFocoDialogo } from "../../hooks/useFocoDialogo"
 
 const ROTULO_TIPO: Record<string, string> = {
     EXTERNA: "Externa",
@@ -21,6 +23,7 @@ const ROTULO_TIPO: Record<string, string> = {
 const formatarData = (data: string) => (data ? new Date(data).toLocaleDateString("pt-BR") : "—")
 
 function Coletas() {
+    const refDialogo = useFocoDialogo()
     const cooperativaId = lerSessao("renovai_cooperativaId")
 
     const [linhas, setLinhas] = useState<LinhaColeta[]>([])
@@ -117,8 +120,8 @@ function Coletas() {
         },
     ]
 
-    if (carregando) return <p className="coletas__estado">Carregando...</p>
-    if (erro) return <p className="coletas__estado coletas__estado--erro">{erro}</p>
+    if (carregando) return <PaginaCarregando tipo="coletas" />
+    if (erro) return <p className="coletas__estado coletas__estado--erro" role="alert">{erro}</p>
 
     const totalColetas = linhas.length
     const totalColetasFinalizadas = linhas.filter((l) => l.status === "Coletado").length
@@ -151,7 +154,7 @@ function Coletas() {
                 >
                     <div
                         className="formulario-edicao coletas__popup"
-                        role="dialog"
+                        ref={refDialogo} role="dialog"
                         aria-modal="true"
                         aria-labelledby="coletas-materiais-titulo"
                     >

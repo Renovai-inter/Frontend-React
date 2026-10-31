@@ -13,7 +13,7 @@
 }
 
 .triagens__estado--erro {
-    color: var(--vermelho-renovai);
+    color: var(--vermelho-texto-renovai);
 }
 
 .triagens__cooperados-botao {
@@ -21,8 +21,8 @@
     border: 1.5px solid var(--vermelho-renovai);
     border-radius: 6px;
     background: none;
-    color: var(--vermelho-renovai);
-    font-size: 12.5px;
+    color: var(--vermelho-texto-renovai);
+    font-size: 0.7812rem;
     font-weight: 600;
     cursor: pointer;
     transition: background .15s ease, color .15s ease;
@@ -34,7 +34,7 @@
 }
 
 .triagens__cooperados-botao:focus-visible {
-    outline: 2px solid var(--vermelho-renovai);
+    outline: 2px solid var(--vinho-renovai);
     outline-offset: 2px;
 }
 

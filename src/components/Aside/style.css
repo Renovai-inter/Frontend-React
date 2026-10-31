@@ -7,9 +7,10 @@ aside {
     padding: 22px 16px;
     position: sticky;
     height: 100vh;
+    height: 100dvh;
     flex: none;
     box-sizing: border-box;
-    overflow-x: hidden;
+    overflow: hidden;
     transition: width .25s ease, padding .25s ease;
 }
 
@@ -58,6 +59,9 @@ aside.retraido .signout {
     justify-content: center;
     padding: 15px 0;
 }
+aside.retraido nav a {
+    padding: 0;
+}
 aside.retraido .user-row {
     justify-content: center;
     padding: 0 0 10px;
@@ -80,26 +84,38 @@ aside.retraido nav{
     height: auto;
     margin-bottom: 16px;
 }
-nav {
+aside > section {
     flex: none;
+}
+/* Seção do menu: ocupa o espaço entre o cabeçalho e o rodapé */
+aside > section:has(> nav) {
+    flex: 1 1 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+nav {
+    /* Ocupa o espaço restante; os itens se comprimem em vez de rolar */
+    flex: 1 1 0;
+    min-height: 0;
     display: flex;
     flex-direction: column;
     gap: 4px;
-    scrollbar-width: inherit;
-    scrollbar-color: var(--vinho-renovai) var(--vinho-renovai);
-    overflow-y: auto;
-    height: 58%;
+    overflow: hidden;
 }
 
 nav a {
     display: flex;
     align-items: center;
     gap: 11px;
-    padding: 15px 12px;
+    flex: 1 1 0;
+    min-height: 0;
+    max-height: 60px;
+    padding: 0 12px;
     border-radius: 10px;
     color: var(--bege-renovai);
     text-decoration: none;
-    font-size: 14px;
+    font-size: 0.875rem;
     transition: background .15s ease, color .15s ease;
     cursor: pointer;
     font-weight: 400;
@@ -115,6 +131,12 @@ nav a.selected {
     color: var(--bege-renovai);
 }
 
+/* Fundo vinho: contorno claro e interno, pois o aside corta o overflow */
+aside :focus-visible {
+    outline: 2px solid var(--amarelo-renovai);
+    outline-offset: -2px;
+}
+
 svg {
     color: var(--bege-renovai);
 }
@@ -123,12 +145,12 @@ svg {
     flex: none;
     display: flex;
     flex-direction: column;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
 }
 .user hr {
     border: 1px solid rgba(255, 255, 255, .08);
     background-color: rgba(255, 255, 255, .08);
-    margin: 16px 0;
+    margin: 12px 0;
 }
 
 .user-row {
@@ -141,7 +163,7 @@ svg {
     border-radius: 10px;
     color: var(--bege-renovai);
     gap: 8px;
-    padding: 15px 12px;    
+    padding: 12px 12px;    
     text-decoration: none;
     cursor: pointer;
     text-align: left;
@@ -161,7 +183,7 @@ svg {
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 15px;
+    font-size: 0.9375rem;
     flex: none;
     overflow: hidden;
 }
@@ -188,14 +210,14 @@ svg {
 }
 
 .user-row .txt .name {
-    font-size: 12.5px;
+    font-size: 0.7812rem;
     font-weight: 600;
     color: var(--bege-renovai);
 }
 
 .user-row .txt .email {
-    font-size: 10.5px;
-    color: rgba(255, 255, 255, .55);
+    font-size: 0.6562rem;
+    color: rgba(255, 255, 255, .85);
 }
 
 .signout {
@@ -207,8 +229,8 @@ svg {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 15px;
-    padding: 15px 12px;    
+    font-size: 0.9375rem;
+    padding: 12px 12px;    
     text-decoration: none;
     cursor: pointer;
 }
@@ -226,6 +248,9 @@ svg {
     inset: 0;
     background: rgba(0, 0, 0, .55);
     z-index: 999;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
 }
 aside.mobile {
     position: fixed;
@@ -255,7 +280,6 @@ aside.mobile.retraido .bottom {
 
 @media(max-height: 760px){
     nav {
-        height: 50%;
+        height: 100%;
     }
-
 }

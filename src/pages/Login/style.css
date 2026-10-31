@@ -52,7 +52,8 @@
 }
 
 .login__field input:focus {
-    outline: none;
+    outline: 2px solid var(--vinho-renovai);
+    outline-offset: 1px;
     border-color: var(--vinho-renovai);
 }
 
@@ -89,7 +90,7 @@
     justify-content: space-between;
 }
 .login__utils span{
-    color: #6b7280;
+    color: var(--cinza-texto);
 }
 .login__utils button{
     border: none;
@@ -107,7 +108,7 @@
     padding: 10px 14px;
     border-radius: 10px;
     background: #e3f2e1;
-    color: var(--verde-base-renovai);
+    color: #1b4d22;
     font-size: 0.875rem;
 }
 

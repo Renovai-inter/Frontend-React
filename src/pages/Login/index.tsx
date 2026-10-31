@@ -27,10 +27,11 @@ function Login() {
   }
 
   return (
-    <div className="login">
+    <main className="login">
       <section className="login__container">
         <div className="login__header">
           <img src={Nome} alt="Logo Renovai" className="nome__img" />
+          <h1 className="sr-only">Entrar no Renovaí</h1>
           <p>Entre na sua conta de administrador para continuar.</p>
         </div>
         <form className="login__form" onSubmit={handleLogin}>
@@ -39,6 +40,8 @@ function Login() {
             <input
               id="email"
               type="email"
+              autoComplete="email"
+              autoFocus
               placeholder="Digite seu e-mail"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
@@ -53,7 +56,6 @@ function Login() {
               autoComplete="current-password"
               value={senha}
               onChange={(event) => setSenha(event.target.value)}
-              autoFocus
               required
             />
 
@@ -74,7 +76,7 @@ function Login() {
       <section className="login__sidespace">
         <img src={CabecaNimo} alt="Nimo, mascote da Renovai" className="login__nimo" />
       </section>
-    </div>
+    </main>
   );
 }
 

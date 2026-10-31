@@ -11,7 +11,7 @@ function Card({ title, bigNumber, subtitle, labelBigNumber, icon, className }: C
     return (
         <article className={className ? `card ${className}` : "card"}>
             <header className="card__header">
-                <h3 className="card__title">{title}</h3>
+                <h2 className="card__title">{title}</h2>
                 {icon && (
                     <div className="card__icon" aria-hidden="true">
                         {icon}

@@ -1,4 +1,4 @@
-import type { ReactNode } from "react"
+import { useId, type ReactNode } from "react"
 import "./style.css"
 import type { DynamicTableProps } from "../../types/DynamicTableProps/DynamicTableProps"
 
@@ -19,7 +19,11 @@ function DynamicTable<T>({
     onDelete,
     rowKey,
     emptyMessage = "Nenhum registro encontrado.",
+    ariaLabel,
+    rowLabel,
 }: DynamicTableProps<T>) {
+    const idTitulo = useId()
+    const nomeDaTabela = titulo ? { "aria-labelledby": idTitulo } : ariaLabel ? { "aria-label": ariaLabel } : {}
     const mostrarExcluir = isDeletable || !!onDelete
     const mostrarEditar = isEditable || !!onEdit
     const totalColunas =
@@ -29,13 +33,19 @@ function DynamicTable<T>({
         <section className="dynamic-table-container">
             {(titulo || acaoTitulo) && (
                 <div className="dynamic-table__header">
-                    {titulo && <h3 className="dynamic-table__title">{titulo}</h3>}
+                    {titulo && <h2 id={idTitulo} className="dynamic-table__title">{titulo}</h2>}
                     {acaoTitulo}
                 </div>
             )}
 
-            <div className={titulo ? "dynamic-table" : "dynamic-table dynamic-table--no-title"}>
-                <table>
+            {/* role="region" + tabIndex: quem usa só o teclado consegue rolar tabelas largas */}
+            <div
+                className={titulo ? "dynamic-table" : "dynamic-table dynamic-table--no-title"}
+                role="region"
+                tabIndex={0}
+                {...nomeDaTabela}
+            >
+                <table {...nomeDaTabela}>
                     <thead>
                         <tr>
                             {columns.map((column) => (
@@ -79,6 +89,7 @@ function DynamicTable<T>({
                                             <button
                                                 type="button"
                                                 className="dynamic-table__action dynamic-table__action--edit"
+                                                aria-label={rowLabel ? `Editar ${rowLabel(row)}` : undefined}
                                                 onClick={() => onEdit?.(row)}
                                             >
                                                 Editar
@@ -91,6 +102,7 @@ function DynamicTable<T>({
                                             <button
                                                 type="button"
                                                 className="dynamic-table__action dynamic-table__action--delete"
+                                                aria-label={rowLabel ? `Excluir ${rowLabel(row)}` : undefined}
                                                 onClick={() => onDelete?.(row)}
                                             >
                                                 Excluir

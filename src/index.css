@@ -6,7 +6,9 @@
     --verde-base-renovai: #519058;
     --amarelo-renovai: #D4E699;
     --bege-renovai: #F4F1F2;
-    --cinza-texto: #6b7280;
+    --cinza-texto: #586070;            /* era #6b7280 (4,3:1 sobre o bege); agora >= 5,4:1 */
+    --verde-texto-renovai: #2f6b36;    /* verde para TEXTO: 6,4:1 sobre branco (o verde-claro tinha 2,4:1) */
+    --vermelho-texto-renovai: #a63a63; /* rosa/vermelho para TEXTO: 5,5:1 sobre o bege */
     --branco: #ffffff;
     font-family: 'Kenit', sans-serif;
 }
@@ -28,4 +30,62 @@ body {
     body {
         align-items: center;
     }
+}
+:focus-visible {
+    outline: 2px solid var(--vinho-renovai);
+    outline-offset: 2px;
+}
+
+/* ---------- Acessibilidade ---------- */
+
+/* Texto só para leitores de tela (WCAG 1.3.1): sai da tela mas continua na árvore de acessibilidade */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Skip link (WCAG 2.4.1): invisível até receber foco pelo Tab */
+.skip-link {
+    position: fixed;
+    top: 8px;
+    left: 8px;
+    z-index: 3000;
+    padding: 10px 16px;
+    border-radius: 8px;
+    background: var(--vinho-renovai);
+    color: var(--branco);
+    font-weight: 600;
+    text-decoration: none;
+    transform: translateY(-200%);
+}
+
+.skip-link:focus {
+    transform: translateY(0);
+    outline: 3px solid var(--amarelo-renovai);
+    outline-offset: 2px;
+}
+
+/* O <main> recebe foco por código (tabIndex -1) ao usar o skip link; não precisa de contorno */
+main:focus {
+    outline: none;
+}
+
+/* Respeita "reduzir movimento" do sistema operacional (WCAG 2.3.3) */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
 }

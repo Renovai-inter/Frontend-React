@@ -20,10 +20,13 @@ function Nivel({ rotulo, pessoas }: { rotulo: string; pessoas: PessoaOrganograma
                 {pessoas.map((pessoa) => (
                     <li key={pessoa.id}>
                         <div className={`organograma__pessoa${pessoa.ativa ? "" : " organograma__pessoa--inativa"}`}>
-                            <span className={`organograma__avatar organograma__avatar--${pessoa.tom}`}>
+                            <span className={`organograma__avatar organograma__avatar--${pessoa.tom}`} aria-hidden="true">
                                 {iniciais(pessoa.nome)}
                             </span>
-                            <strong>{pessoa.nome}</strong>
+                            <strong>
+                                {pessoa.nome}
+                                {!pessoa.ativa && <span className="sr-only"> (afastado ou inativo)</span>}
+                            </strong>
                             <span>{pessoa.cargo}</span>
                         </div>
                     </li>

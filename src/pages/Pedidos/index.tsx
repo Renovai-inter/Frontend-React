@@ -1,3 +1,4 @@
+import PaginaCarregando from "../../components/PaginaCarregando"
 import "./style.css"
 import "../../components/FormularioEdicao/style.css"
 import { useEffect, useState } from "react"
@@ -16,6 +17,7 @@ import {
 } from "../../services/negociacaoService"
 import { buscarPorId as buscarPerfil } from "../../services/perfilService"
 import type { LinhaPedido, MensagemChat, EstadoChat } from "../../types/Pedidos/PedidosTypes"
+import { useFocoDialogo } from "../../hooks/useFocoDialogo"
 
 const CHAT_FECHADO: EstadoChat = { pedido: null, mensagens: [], carregando: false, erro: null }
 
@@ -60,6 +62,7 @@ async function identificarAutores(
 }
 
 function Pedidos() {
+    const refDialogo = useFocoDialogo()
     const cooperativaId = lerSessao("renovai_cooperativaId")
     const emailSessao = lerSessao("renovai_email")
 
@@ -201,7 +204,7 @@ function Pedidos() {
         },
     ]
 
-    if (carregando) return <p className="pedidos__estado">Carregando...</p>
+    if (carregando) return <PaginaCarregando tipo="pedidos" />
     if (erro) return <p className="pedidos__estado pedidos__estado--erro" role="alert">{erro}</p>
 
     const totalPedidos = linhas.length
@@ -235,7 +238,7 @@ function Pedidos() {
                 >
                     <div
                         className="formulario-edicao pedidos__chat"
-                        role="dialog"
+                        ref={refDialogo} role="dialog"
                         aria-modal="true"
                         aria-labelledby="pedidos-chat-titulo"
                     >
@@ -250,7 +253,7 @@ function Pedidos() {
                         </div>
 
                         <div className="pedidos__chat-mensagens" role="log" aria-label="Mensagens da negociação">
-                            {chat.carregando && <p className="pedidos__chat-vazio">Carregando mensagens...</p>}
+                            {chat.carregando && <PaginaCarregando tipo="mensagens" />}
                             {chat.erro && (
                                 <p className="pedidos__chat-vazio pedidos__estado--erro" role="alert">
                                     {chat.erro}

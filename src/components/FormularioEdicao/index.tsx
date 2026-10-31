@@ -10,6 +10,7 @@ import type {
     ValoresFormulario,
 } from "../../types/FormularioEdicao/FormularioEdicaoProps"
 import type { ErrosFormulario } from "../../types/FormularioEdicao/FormularioEdicaoProps"
+import { useFocoDialogo } from "../../hooks/useFocoDialogo"
 
 function validarCampos(campos: CampoFormulario[], valores: ValoresFormulario): ErrosFormulario {
     const erros: ErrosFormulario = {}
@@ -41,6 +42,7 @@ function Dialog({
     textoSalvar = "Salvar alterações",
 }: Omit<FormularioEdicaoProps, "aberto">) {
     const idBase = useId()
+    const refDialogo = useFocoDialogo()
     const [valores, setValores] = useState<ValoresFormulario>(() =>
         Object.fromEntries(campos.map((c) => [c.nome, valoresIniciais[c.nome] ?? ""]))
     )
@@ -82,7 +84,12 @@ function Dialog({
 
         const encontrados = validarCampos(campos, valores)
         setErros(encontrados)
-        if (Object.keys(encontrados).length > 0) return
+        if (Object.keys(encontrados).length > 0) {
+            // Leva o foco ao primeiro campo inválido: o leitor de tela lê o rótulo e a mensagem de erro
+            const primeiroInvalido = campos.find((campo) => encontrados[campo.nome])
+            if (primeiroInvalido) document.getElementById(`${idBase}-${primeiroInvalido.nome}`)?.focus()
+            return
+        }
 
         setSalvando(true)
         setErroGeral(null)
@@ -112,11 +119,15 @@ function Dialog({
         >
             <div
                 className="formulario-edicao"
+                ref={refDialogo}
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby={`${idBase}-titulo`}
             >
                 <h2 id={`${idBase}-titulo`} className="formulario-edicao__titulo">{titulo}</h2>
+                {campos.some((campo) => campo.obrigatorio) && (
+                    <p className="formulario-edicao__legenda"><span aria-hidden="true">*</span> Campo obrigatório</p>
+                )}
 
                 <form className="formulario-edicao__form" onSubmit={handleSubmit} noValidate>
                     {campos.map((campo, indice) => {
@@ -138,6 +149,7 @@ function Dialog({
                                                 id={id}
                                                 type="file"
                                                 accept="image/*"
+                                                aria-describedby={erros[campo.nome] ? `${id}-erro` : undefined}
                                                 className="formulario-edicao__arquivo"
                                                 onChange={handleImagem(campo)}
                                             />
@@ -153,7 +165,7 @@ function Dialog({
                                         </div>
                                     </div>
                                     {erros[campo.nome] && (
-                                        <span className="formulario-edicao__erro">{erros[campo.nome]}</span>
+                                        <span className="formulario-edicao__erro" id={`${id}-erro`}>{erros[campo.nome]}</span>
                                     )}
                                 </div>
                             )
@@ -161,7 +173,7 @@ function Dialog({
                         if (campo.tipo === "selecao") {
                             return (
                                 <div className="formulario-edicao__campo" key={campo.nome}>
-                                    <label htmlFor={id}>{campo.rotulo}</label>
+                                    <label htmlFor={id}>{campo.rotulo}{campo.obrigatorio && <span aria-hidden="true"> *</span>}</label>
                                     <select
                                         id={id}
                                         value={valores[campo.nome]}
@@ -171,20 +183,22 @@ function Dialog({
                                             setErros((atual) => ({ ...atual, [campo.nome]: undefined }))
                                         }}
                                         aria-invalid={!!erros[campo.nome]}
+                                        aria-required={campo.obrigatorio || undefined}
+                                        aria-describedby={erros[campo.nome] ? `${id}-erro` : undefined}
                                     >
                                         {campo.opcoes?.map((opcao) => (
                                             <option key={opcao.valor} value={opcao.valor}>{opcao.rotulo}</option>
                                         ))}
                                     </select>
                                     {erros[campo.nome] && (
-                                        <span className="formulario-edicao__erro">{erros[campo.nome]}</span>
+                                        <span className="formulario-edicao__erro" id={`${id}-erro`}>{erros[campo.nome]}</span>
                                     )}
                                 </div>
                             )
                         }
                         return (
                             <div className="formulario-edicao__campo" key={campo.nome}>
-                                <label htmlFor={id}>{campo.rotulo}</label>
+                                <label htmlFor={id}>{campo.rotulo}{campo.obrigatorio && <span aria-hidden="true"> *</span>}</label>
                                 <input
                                     id={id}
                                     type={campo.tipo ?? "text"}
@@ -192,17 +206,19 @@ function Dialog({
                                     value={valores[campo.nome]}
                                     onChange={handleChange(campo)}
                                     aria-invalid={!!erros[campo.nome]}
+                                        aria-required={campo.obrigatorio || undefined}
+                                        aria-describedby={erros[campo.nome] ? `${id}-erro` : undefined}
                                     autoFocus={indice === 0}
                                     autoComplete={campo.tipo === "password" ? "new-password" : undefined}
                                 />
                                 {erros[campo.nome] && (
-                                    <span className="formulario-edicao__erro">{erros[campo.nome]}</span>
+                                    <span className="formulario-edicao__erro" id={`${id}-erro`}>{erros[campo.nome]}</span>
                                 )}
                             </div>
                         )
                     })}
 
-                    {erroGeral && <p className="formulario-edicao__erro-geral">{erroGeral}</p>}
+                    {erroGeral && <p className="formulario-edicao__erro-geral" role="alert">{erroGeral}</p>}
 
                     <div className="formulario-edicao__acoes">
                         <Botao variante="secundario" onClick={onFechar} ativo={!salvando}>

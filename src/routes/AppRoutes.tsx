@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-route
 
 import PrivateRoute from "./PrivateRoute";
 import PaginaCarregando from "../components/PaginaCarregando";
+import AcessibilidadeRota from "../components/AcessibilidadeRota";
 import { registrarNavegacao } from "../utils/erroNavegacao";
 
 // Cada página vira um chunk separado: o navegador só baixa o código da tela que o usuário abre.
@@ -39,9 +40,10 @@ function AppRoutes() {
     return (
         <BrowserRouter>
             <RegistraNavegacao />
+            <AcessibilidadeRota />
             <Suspense fallback={<PaginaCarregando />}>
             <Routes>
-                <Route path="/login" element={<Login />} />
+                <Route path="/login" element={<Suspense fallback={<PaginaCarregando tipo="login" />}><Login /></Suspense>} />
                 <Route path="/redefinir-senha" element={<RedefinirSenha />} />
                 <Route path="/cadastro-usuario"element={<CadastroUsuario />} />
                 <Route path="/cadastro-cooperativa" element={<CadastroCooperativa />} />
