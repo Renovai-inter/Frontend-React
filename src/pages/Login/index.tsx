@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Nome from '../../assets/nome_renovai.svg'
 import SenhaInput from '../../components/SenhaInput';
-import CabecaNimo from '../../assets/cabeca_nimo.png'
+import CabecaNimo from '../../assets/nimo_regando.png'
 import { useAuth } from "../../hooks/useAuth";
 
 function Login() {
